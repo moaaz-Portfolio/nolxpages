@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>NOLX PAGES — Premium Digital Templates</title>
+<title>NOLX PAGES — Free Website Templates</title>
 
 <meta name="google-site-verification" content="dYUMKonlN5W7OsjaAC6ZLeyfFISMaJR3ldQc6bhXD4g">
 <meta name="description" content="NOLX PAGES — Premium website templates crafted for ambitious brands, creators and businesses.">
@@ -13,7 +13,7 @@
 <meta name="robots" content="index, follow">
 <meta name="author" content="NOLX PAGES">
 
-<meta property="og:title" content="NOLX PAGES — Premium Digital Templates">
+<meta property="og:title" content="NOLX PAGES — Free Website Templates">
 <meta property="og:description" content="Build something worth remembering. Premium digital templates by NOLX.">
 <meta property="og:image" content="https://nolxpages.store/og-image.jpg">
 <meta property="og:url" content="https://nolxpages.store/">
@@ -21,7 +21,7 @@
 <meta property="og:site_name" content="NOLX PAGES">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="NOLX PAGES — Premium Digital Templates">
+<meta name="twitter:title" content="NOLX PAGES — Free Website Templates">
 <meta name="twitter:description" content="Build something worth remembering.">
 <meta name="twitter:image" content="https://nolxpages.store/og-image.jpg">
 
@@ -34,119 +34,7 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-<script type="module">
 
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-
-import {
-    getAuth,
-    onAuthStateChanged
-}
-from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-
-const firebaseConfig = {
-
-    apiKey: "AIzaSyBbpP6uttRj_7LozBvtPRw7QtHzBfr72CU",
-
-    authDomain:
-        "nolxpages.firebaseapp.com",
-
-    projectId:
-        "nolxpages",
-
-    storageBucket:
-        "nolxpages.firebasestorage.app",
-
-    messagingSenderId:
-        "672585065953",
-
-    appId:
-        "1:672585065953:web:cb95a1eb3f962faff19ea0",
-
-    measurementId:
-        "G-ENEG3Q96W9"
-};
-
-
-const app =
-    initializeApp(firebaseConfig);
-
-const auth =
-    getAuth(app);
-
-let currentUser = null;
-
-
-onAuthStateChanged(auth, user => {
-
-    currentUser = user;
-
-    const guestActions =
-        document.getElementById(
-            "guestActions"
-        );
-
-    const userActions =
-        document.getElementById(
-            "userActions"
-        );
-
-    const avatar =
-        document.getElementById(
-            "userAvatar"
-        );
-
-
-    if (user) {
-
-        if (guestActions)
-            guestActions.style.display = "none";
-
-        if (userActions)
-            userActions.style.display = "flex";
-
-
-        const name =
-            user.displayName ||
-            user.email?.split("@")[0] ||
-            "User";
-
-
-        if (avatar) {
-
-            avatar.src =
-                user.photoURL ||
-                "https://ui-avatars.com/api/?name=" +
-                encodeURIComponent(name) +
-                "&background=D1F843&color=050505";
-
-        }
-
-    } else {
-
-        if (guestActions)
-            guestActions.style.display = "flex";
-
-        if (userActions)
-            userActions.style.display = "none";
-
-    }
-
-});
-
-
-window.__auth = {
-
-    auth,
-
-    getCurrentUser: () =>
-        currentUser
-
-};
-
-</script>
 
 
 <style>
@@ -3404,43 +3292,7 @@ AR
 </button>
 
 
-<div id="guestActions"
-style="display:flex;gap:7px;">
-
-<a
-    href="login.html"
-    class="login-btn"
-    id="loginBtn"
->
-    Login
-</a>
-
-<a
-    href="login.html?mode=signup"
-    class="start-btn magnetic"
->
-    Start
-</a>
-
-</div>
-
-
-<div
-    id="userActions"
-    class="user-actions"
->
-
-<a href="dashboard.html">
-
-<img
-    id="userAvatar"
-    class="avatar"
-    alt="User"
->
-
-</a>
-
-</div>
+<div id="guestActions" style="display:flex;gap:7px;"><a href="store.html" class="login-btn" id="loginBtn">استكشف القوالب</a><a href="store.html" class="start-btn magnetic">ابدأ مجانًا</a></div>
 
 </div>
 
@@ -3466,7 +3318,7 @@ style="display:flex;gap:7px;">
 <i class="fa-solid fa-circle"></i>
 
 <span data-i18n="eyebrow">
-Premium Digital Templates
+Free Website Templates
 </span>
 
 </div>
@@ -4115,7 +3967,7 @@ navAbout:
 "About",
 
 eyebrow:
-"Premium Digital Templates",
+"Free Website Templates",
 
 hero1:
 "Build.",
@@ -4856,6 +4708,6 @@ index * 130
 });
 
 </script>
-<script src="notify.js"></script>
+
 </body>
 </html>
