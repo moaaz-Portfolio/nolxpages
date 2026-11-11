@@ -1,56 +1,47 @@
-# NOLX Open Lab
+# NOLX PAGES — Public Prototype
 
-**NOLX Open Lab** is a free, browser-based prototype for exploring and editing website templates. It was separated from the earlier commercial NOLX Pages concept to create a version that can be inspected and tried without a purchase flow, wallet, or user account.
+NOLX PAGES is a browser-based prototype for browsing, previewing, and visually editing website templates.
 
-## What the prototype currently does
+## Current public behavior
 
-- Lists the templates registered in `templates/catalog.json`.
-- Shows a public preview of a selected template.
-- Opens a visual editor where a user can modify text, colors, and page elements.
-- Saves edits locally in the browser using `localStorage`.
-- Exports the edited page as a ZIP archive.
-
-The current repository contains **one template**. The catalog is intentionally explicit: add a template JSON file and register its ID and filename in `templates/catalog.json`.
+- No user account or login is required.
+- No prices, wallet, credits, purchase flow, recharge, or payment gateway.
+- Templates are listed in `templates/catalog.json`.
+- Users can preview a template, edit its content, save changes in the current browser, and export a ZIP archive.
+- User edits remain local to the browser; they are not uploaded to a server.
+- The former visit-notification script was removed from the deployed tree.
 
 ## Run locally
 
-The project uses static HTML, CSS, and JavaScript. Run it through a local HTTP server so the browser can load JSON files:
+Use a local HTTP server because the browser must fetch JSON files:
 
 ```bash
 python -m http.server 8000
 ```
 
-Then open:
+Open `http://localhost:8000/`.
 
-- `http://localhost:8000/`
-- `http://localhost:8000/store.html`
+## Pages
 
-Do not open the HTML files directly with a `file://` URL; browser fetch restrictions can prevent the catalog and template JSON from loading.
+- `index.html`: original NOLX landing page design.
+- `store.html`: public free template library.
+- `preview.html`: open template preview.
+- `editor.html`: local visual editor and ZIP export.
+- `dashboard.html`: local workspace overview.
+- `my-templates.html`: locally saved work in this browser.
+- `login.html` and `recharge.html`: compatibility pages explaining that accounts and payments are not required.
+- `admin.html` and `admin2.html`: local-only admin information/tools; they do not provide server-side permissions or modify GitHub.
 
-## Privacy and architecture
+## Security notes
 
-- No login or account is required.
-- There is no payment gateway, credit balance, wallet, or purchase restriction.
-- The public version does not load the former visit-tracking script.
-- Editing state is stored in the current browser profile. It is not uploaded to a server.
-- Export is generated in the browser and downloaded to the user's device.
-- Fonts, icons, and the ZIP library are currently loaded from public CDNs.
+Static GitHub Pages cannot securely enforce private administrator permissions or store private API tokens. Do not put service-role keys, bot tokens, GitHub tokens, passwords, or private user data in client-side HTML/JavaScript. Any real remote admin workflow must be implemented behind authenticated server-side endpoints with verified access policies.
 
-## Repository structure
-
-```text
-index.html                 Landing page
-store.html                 Public template library
-preview.html               Open template preview
-editor.html                Visual editor and ZIP export
-templates/catalog.json     List of available templates
-templates/template1.json   Template definition and HTML
-```
+A Telegram bot token was previously exposed in the repository's Git history. Removing the file from the latest tree does not invalidate the old token or erase historical commits. Revoke/rotate that token in BotFather immediately.
 
 ## Research status
 
-This repository is a **software prototype**, not a completed scientific study. A competitive science-fair submission still needs a clearly stated research question, a documented design rationale, reproducible tests, comparison against a baseline, measured results, limitations, and a discussion of what is genuinely new. No performance or user-study results are claimed in this repository.
+This is a software prototype, not a completed scientific study. An ISEF submission still needs a narrow research question, prior-work review, a specific technical contribution, reproducible tests, a meaningful baseline, measured results, limitations, and required approvals for any human-participant study. No research performance claims are made here.
 
 ## Licensing
 
-The prototype is publicly accessible and has no payment or account gate. A formal open-source/content license has **not** been assigned yet. Before inviting reuse or redistribution, the project author should verify rights to every included template, image, font, icon, and dependency, then choose suitable licenses for original code and creative assets.
+The repository is publicly accessible and the prototype has no paywall. No formal open-source license is assigned yet because rights to all template, image, font, icon, and dependency assets must be verified first.

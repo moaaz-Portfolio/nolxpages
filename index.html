@@ -1,44 +1,4713 @@
-<!doctype html>
-<html lang="ar" dir="rtl">
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#090a0f">
-<meta name="description" content="NOLX Open Lab — محرر بصري لتخصيص قوالب المواقع ومعاينتها وتصديرها مجانًا.">
-<title>NOLX Open Lab | محرر قوالب مواقع مجاني</title><link rel="icon" href="log.png">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="log.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NOLX PAGES — Free Website Templates</title>
+
+<meta name="google-site-verification" content="dYUMKonlN5W7OsjaAC6ZLeyfFISMaJR3ldQc6bhXD4g">
+<meta name="description" content="NOLX PAGES — مكتبة قوالب مواقع مجانية ومحرر بصري مفتوح للجميع.">
+<meta name="keywords" content="NOLX PAGES, website templates, free templates, HTML templates, website design, قوالب مواقع, قوالب احترافية">
+<meta name="robots" content="index, follow">
+<meta name="author" content="NOLX PAGES">
+
+<meta property="og:title" content="NOLX PAGES — Free Website Templates">
+<meta property="og:description" content="Build something worth remembering. Free Website Templates by NOLX.">
+<meta property="og:image" content="https://nolxpages.store/og-image.jpg">
+<meta property="og:url" content="https://nolxpages.store/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="NOLX PAGES">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NOLX PAGES — Free Website Templates">
+<meta name="twitter:description" content="Build something worth remembering.">
+<meta name="twitter:image" content="https://nolxpages.store/og-image.jpg">
+
+<link rel="canonical" href="https://nolxpages.store/">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+
+
+
 <style>
-:root{color-scheme:dark;--bg:#090a0f;--panel:#12141c;--line:rgba(255,255,255,.09);--muted:#9ca3af;--lime:#d1f843;--purple:#a78bfa}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 82% 8%,rgba(167,139,250,.12),transparent 30%),radial-gradient(circle at 10% 55%,rgba(209,248,67,.07),transparent 28%),var(--bg);color:#fff;font-family:Cairo,sans-serif;min-height:100vh}
-a{color:inherit;text-decoration:none}.wrap{width:min(1120px,calc(100% - 40px));margin:auto}
-header{height:82px;display:flex;align-items:center;border-bottom:1px solid var(--line);background:rgba(9,10,15,.68);backdrop-filter:blur(18px);position:sticky;top:0;z-index:10}
-.nav{display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font:900 19px Manrope,sans-serif;letter-spacing:2px}.brand span{color:var(--lime)}
-.navlinks{display:flex;gap:26px;color:#c4c7d0;font-size:13px}.navlinks a:hover{color:var(--lime)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 20px;border-radius:12px;border:1px solid var(--line);font-weight:800;font-size:13px;transition:.25s}
-.btn.primary{background:var(--lime);color:#111;border-color:var(--lime)}.btn:hover{transform:translateY(-2px);border-color:var(--lime)}
-.hero{padding:105px 0 90px;display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:55px;min-height:580px}
-.eyebrow{color:var(--lime);font-size:12px;font-weight:800;letter-spacing:1.5px}.hero h1{font-size:clamp(38px,6vw,72px);line-height:1.2;margin:20px 0;font-weight:900}.hero h1 span{color:var(--lime)}
-.lead{font-size:16px;line-height:2;color:#b9bdc8;max-width:610px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
-.visual{border:1px solid var(--line);border-radius:26px;padding:20px;background:linear-gradient(145deg,rgba(167,139,250,.13),rgba(255,255,255,.025));box-shadow:0 30px 90px rgba(0,0,0,.35)}
-.mocktop{display:flex;justify-content:space-between;align-items:center;padding:5px 4px 18px;color:#9ca3af;font:12px Manrope,sans-serif}.dots{display:flex;gap:6px}.dots i{height:7px;width:7px;border-radius:50%;background:#555}
-.mockscreen{background:#f6f6f4;color:#161616;border-radius:15px;overflow:hidden;padding:19px;min-height:285px}
-.mocknav{display:flex;justify-content:space-between;font:800 10px Manrope,sans-serif;border-bottom:1px solid #ddd;padding-bottom:14px}.mocktitle{font:900 clamp(22px,3vw,35px) Manrope,sans-serif;margin:34px 0 10px}.mocktitle span{color:#a78bfa}.mocktext{font-size:10px;color:#666;line-height:1.8;max-width:240px}.mockcards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:24px}.mockcards div{height:55px;background:#e6e6e2;border-radius:7px}
-.section{padding:72px 0;border-top:1px solid var(--line)}.section h2{font-size:clamp(26px,4vw,42px);margin:0 0 12px}.section-lead{color:var(--muted);line-height:1.9;max-width:680px}
-.features{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:32px}.feature{border:1px solid var(--line);background:rgba(255,255,255,.025);border-radius:18px;padding:23px}.feature i{font-size:21px;color:var(--lime)}.feature h3{font-size:15px;margin:18px 0 8px}.feature p{font-size:12px;line-height:1.8;color:var(--muted);margin:0}
-.notice{border:1px solid rgba(209,248,67,.22);background:rgba(209,248,67,.045);border-radius:16px;padding:19px 22px;margin-top:28px;color:#d6d9df;line-height:1.9;font-size:13px}
-footer{padding:25px 0;border-top:1px solid var(--line);color:#777;font-size:11px}.foot{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
-@media(max-width:850px){.hero{grid-template-columns:1fr;padding:75px 0;gap:35px}.visual{max-width:580px}.features{grid-template-columns:repeat(2,1fr)}.navlinks{display:none}}
-@media(max-width:500px){.wrap{width:min(100% - 28px,1120px)}header{height:68px}.brand{font-size:16px}.hero{padding:60px 0}.hero h1{font-size:39px}.lead{font-size:14px}.features{grid-template-columns:1fr}.btn{width:100%}.mockscreen{min-height:240px}}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
-</style></head><body>
-<header><div class="wrap nav"><a class="brand" href="index.html">NOLX <span>OPEN LAB</span></a><nav class="navlinks"><a href="#features">المميزات</a><a href="store.html">مكتبة القوالب</a><a href="about.html">عن المشروع</a></nav><a class="btn primary" href="store.html"><i class="fa-solid fa-layer-group"></i> افتح المكتبة</a></div></header>
-<main>
-<section class="wrap hero"><div><div class="eyebrow"><i class="fa-solid fa-code"></i> مشروع برمجي تجريبي · NOLX OPEN LAB</div><h1>صمّم موقعك.<br><span>عدّله بنفسك.</span></h1>
-<p class="lead">بيئة بسيطة لتجربة قوالب مواقع الويب وتخصيص النصوص والألوان والمحتوى من خلال محرر بصري، ثم تصدير النتيجة كملف ZIP يمكن تشغيله أو تطويره محليًا.</p>
-<div class="actions"><a class="btn primary" href="store.html"><i class="fa-solid fa-arrow-up-right-from-square"></i> استكشف القوالب</a><a class="btn" href="editor.html?id=1"><i class="fa-solid fa-pen-to-square"></i> جرّب المحرر</a></div>
-<div class="notice"><strong>متاح للجميع:</strong> ابدأ مباشرة دون إنشاء حساب. التعديلات تُحفظ على جهازك داخل المتصفح، ويمكنك تنزيل نسخة ZIP من عملك.</div></div>
-<div class="visual"><div class="mocktop"><span>NOLX / EDITOR</span><span class="dots"><i></i><i></i><i></i></span></div><div class="mockscreen"><div class="mocknav"><span>YOUR BRAND</span><span>HOME　WORK　CONTACT</span></div><div class="mocktitle">MAKE IT <span>YOURS.</span></div><p class="mocktext">Customize a template, preview your changes, and export your website project.</p><div class="mockcards"><div></div><div></div><div></div></div></div></div></section>
-<section class="section" id="features"><div class="wrap"><div class="eyebrow">كيف يعمل</div><h2>من القالب إلى ملف قابل للاستخدام</h2><p class="section-lead">المشروع يركز على مسار عمل مباشر: اختيار قالب، معاينته، تعديله، ثم الاحتفاظ بالنتيجة محليًا من خلال المتصفح مباشرةً دون الحاجة إلى خدمة حسابات خارجية.</p>
-<div class="features"><article class="feature"><i class="fa-solid fa-shapes"></i><h3>مكتبة قوالب</h3><p>استعرض القوالب المتاحة وتعرّف على وصف كل قالب وتصنيفه.</p></article><article class="feature"><i class="fa-solid fa-eye"></i><h3>معاينة مفتوحة</h3><p>اعرض الموقع كما سيظهر للزائر، دون حواجز تمنع فحص الصفحة أو نسخها.</p></article><article class="feature"><i class="fa-solid fa-wand-magic-sparkles"></i><h3>تحرير بصري</h3><p>عدّل النصوص والألوان والعناصر وأضف محتوى إلى القالب.</p></article><article class="feature"><i class="fa-solid fa-file-zipper"></i><h3>تصدير محلي</h3><p>نزّل نسخة ZIP إلى جهازك بدل رفع ملفاتك إلى حساب خارجي.</p></article></div>
-<div class="notice">هذه نسخة أولية من الأداة، وتحتوي حاليًا على قالب تجريبي واحد. وجود واجهة أو محرر وحده لا يثبت التفوق البحثي؛ يلزم لاحقًا تحديد مشكلة بحثية وقياس أداء الحل بتجارب موثقة.</div></div></section>
-</main><footer><div class="wrap foot"><span>NOLX OPEN LAB</span><span>نسخة تجريبية عامة · التعديلات تحفظ محليًا</span></div></footer></body></html>
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+:root {
+
+    --black:
+        #0a0a0a;
+
+    --black2:
+        #080808;
+
+    --surface:
+        #0c0c0c;
+
+    --white:
+        #ffffff;
+
+    --text:
+        rgba(255,255,255,.9);
+
+    --muted:
+        rgba(255,255,255,.42);
+
+    --dim:
+        rgba(255,255,255,.22);
+
+    --line:
+        rgba(255,255,255,.08);
+
+    --line-soft:
+        rgba(255,255,255,.045);
+
+    --lime:
+        #D1F843;
+
+    --lime-soft:
+        rgba(209,248,67,.08);
+
+    --max:
+        1240px;
+
+    --ease:
+        cubic-bezier(.16,1,.3,1);
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+
+}
+
+
+html {
+
+    background:
+        var(--black);
+
+    scroll-behavior:
+        smooth;
+
+}
+
+
+body {
+
+    min-height:
+        100vh;
+
+    overflow-x:
+        hidden;
+
+    background:
+        var(--black);
+
+    color:
+        var(--white);
+
+    font-family:
+        Inter,
+        Cairo,
+        sans-serif;
+
+    -webkit-font-smoothing:
+        antialiased;
+
+}
+
+
+body.rtl {
+
+    font-family:
+        Cairo,
+        Inter,
+        sans-serif;
+
+}
+
+
+a {
+
+    color:
+        inherit;
+
+    text-decoration:
+        none;
+
+}
+
+
+button {
+
+    font:
+        inherit;
+
+    border:
+        0;
+
+}
+
+
+::selection {
+
+    background:
+        var(--lime);
+
+    color:
+        #050505;
+
+}
+
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+/* الشبكة */
+.grid-pattern {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
+}
+
+/* خلفية النقاط - أوضح */
+.dot-pattern {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.3) 1.5px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+/* الخطوط المتقطعة */
+.dashed-line {
+  background-image: linear-gradient(to bottom, #333333 50%, transparent 50%);
+  background-size: 1px 32px;
+  background-repeat: repeat-y;
+}
+
+
+/* =========================================================
+   CURSOR
+========================================================= */
+
+.cursor-dot {
+
+    position:
+        fixed;
+
+    width:
+        5px;
+
+    height:
+        5px;
+
+    border-radius:
+        50%;
+
+    background:
+        var(--lime);
+
+    pointer-events:
+        none;
+
+    z-index:
+        99999;
+
+    transform:
+        translate(-50%,-50%);
+
+    opacity:
+        0;
+
+    box-shadow:
+        0 0 18px var(--lime);
+
+}
+
+
+.cursor-ring {
+
+    position:
+        fixed;
+
+    width:
+        34px;
+
+    height:
+        34px;
+
+    border:
+        1px solid rgba(209,248,67,.45);
+
+    border-radius:
+        50%;
+
+    pointer-events:
+        none;
+
+    z-index:
+        99998;
+
+    transform:
+        translate(-50%,-50%);
+
+    opacity:
+        0;
+
+    transition:
+        width .35s var(--ease),
+        height .35s var(--ease);
+}
+
+
+body.cursor-ready
+.cursor-dot,
+body.cursor-ready
+.cursor-ring {
+
+    opacity:
+        1;
+
+}
+
+
+body.cursor-hover
+.cursor-ring {
+
+    width:
+        58px;
+
+    height:
+        58px;
+
+}
+
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.nav-wrap {
+
+    position:
+        fixed;
+
+    top:
+        22px;
+
+    left:
+        50%;
+
+    width:
+        min(
+            calc(100% - 32px),
+            1120px
+        );
+
+    transform:
+        translateX(-50%);
+
+    z-index:
+        1000;
+
+}
+
+
+.nav {
+
+    position:
+        relative;
+
+    height:
+        68px;
+
+    padding:
+        0 10px 0 22px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    border:
+        1px solid var(--line);
+
+    border-radius:
+        100px;
+
+    background:
+        rgba(7,7,7,.62);
+
+    backdrop-filter:
+        blur(28px);
+
+    -webkit-backdrop-filter:
+        blur(28px);
+
+    box-shadow:
+        0 12px 50px rgba(0,0,0,.18);
+
+    transition:
+        .5s var(--ease);
+
+}
+
+
+.nav.scrolled {
+
+    height:
+        62px;
+
+    background:
+        rgba(5,5,5,.92);
+
+    border-color:
+        rgba(209,248,67,.12);
+
+}
+
+
+.logo {
+
+    position:
+        relative;
+
+    z-index:
+        2;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        4px;
+
+    text-decoration:
+        none;
+
+}
+
+
+.logo-img {
+
+    height:
+        25px;
+
+    width:
+        auto;
+
+    object-fit:
+        contain;
+
+    flex-shrink:
+        0;
+
+    max-height:
+        25px;
+
+    display:
+        block;
+
+}
+
+
+.logo-text {
+
+    font-size:
+        16px;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        -0.12em;
+
+    white-space:
+        nowrap;
+
+}
+
+
+.logo-text span {
+
+    color:
+        var(--lime);
+
+    font-weight:
+        400;
+
+}
+
+
+.nav-links {
+
+    position:
+        absolute;
+
+    left:
+        50%;
+
+    transform:
+        translateX(-50%);
+
+    display:
+        flex;
+
+    gap:
+        32px;
+
+    color:
+        rgba(255,255,255,.43);
+
+    font-size:
+        11px;
+
+    font-weight:
+        600;
+
+}
+
+
+.nav-links a {
+
+    transition:
+        color .3s ease;
+
+}
+
+
+.nav-links a:hover {
+
+    color:
+        white;
+
+}
+
+
+.nav-right {
+
+    position:
+        relative;
+
+    z-index:
+        2;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        7px;
+
+}
+
+
+.lang-btn,
+.login-btn {
+
+    height:
+        42px;
+
+    padding:
+        0 15px;
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        7px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius:
+        50px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    color:
+        rgba(255,255,255,.58);
+
+    font-size:
+        10px;
+
+    font-weight:
+        800;
+
+    cursor:
+        pointer;
+
+    transition:
+        .35s var(--ease);
+
+}
+
+
+.lang-btn:hover,
+.login-btn:hover {
+
+    color:
+        var(--lime);
+
+    border-color:
+        rgba(209,248,67,.25);
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+.start-btn {
+
+    height:
+        42px;
+
+    padding:
+        0 19px;
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    border-radius:
+        50px;
+
+    background:
+        var(--lime);
+
+    color:
+        #050505;
+
+    font-size:
+        10px;
+
+    font-weight:
+        900;
+
+    cursor:
+        pointer;
+
+    transition:
+        .4s var(--ease);
+
+}
+
+
+.start-btn:hover {
+
+    box-shadow:
+        0 12px 40px rgba(209,248,67,.17);
+
+}
+
+
+.user-actions {
+
+    display:
+        none;
+
+    align-items:
+        center;
+
+}
+
+
+.avatar {
+
+    width:
+        40px;
+
+    height:
+        40px;
+
+    border-radius:
+        50%;
+
+    object-fit:
+        cover;
+
+    border:
+        1px solid rgba(209,248,67,.25);
+
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+
+    position:
+        relative;
+
+    max-width:
+        1380px;
+
+    min-height:
+        100vh;
+
+    margin:
+        auto;
+
+    padding:
+        150px 40px 80px;
+
+    display:
+        grid;
+
+    grid-template-columns:
+        minmax(0, .9fr)
+        minmax(420px, 1.1fr);
+
+    align-items:
+        center;
+
+    gap:
+        70px;
+
+}
+
+
+.hero-copy-side {
+
+    position:
+        relative;
+
+    z-index:
+        3;
+
+}
+
+
+.eyebrow {
+
+    width:
+        max-content;
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        9px;
+
+    padding:
+        9px 15px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius:
+        100px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    color:
+        rgba(255,255,255,.43);
+
+    font-size:
+        9px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        .14em;
+
+    text-transform:
+        uppercase;
+
+}
+
+
+.eyebrow i {
+
+    color:
+        var(--lime);
+
+    font-size:
+        7px;
+
+    filter:
+        drop-shadow(
+            0 0 7px
+            var(--lime)
+        );
+
+}
+
+
+.hero h1 {
+
+    margin-top:
+        30px;
+
+    max-width:
+        760px;
+
+    font-size:
+        clamp(58px,7vw,105px);
+
+    line-height:
+        .86;
+
+    letter-spacing:
+        -.078em;
+
+    font-weight:
+        900;
+
+}
+
+
+.hero h1 span {
+
+    display:
+        inline-block;
+
+}
+
+
+.hero h1 .outline {
+
+    color:
+        transparent;
+
+    -webkit-text-stroke:
+        1px rgba(255,255,255,.25);
+
+}
+
+
+.hero h1 .accent {
+
+    color:
+        var(--lime);
+
+    text-shadow:
+        0 0 70px
+        rgba(209,248,67,.05);
+
+}
+
+
+.hero-description {
+
+    max-width:
+        510px;
+
+    margin-top:
+        30px;
+
+    color:
+        rgba(255,255,255,.36);
+
+    font-size:
+        12px;
+
+    line-height:
+        1.9;
+
+}
+
+
+.hero-actions {
+
+    margin-top:
+        34px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        10px;
+
+}
+
+
+.hero-primary,
+.hero-secondary {
+
+    min-height:
+        54px;
+
+    padding:
+        0 24px;
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        10px;
+
+    border-radius:
+        100px;
+
+    font-size:
+        11px;
+
+    font-weight:
+        900;
+
+    transition:
+        .4s var(--ease);
+
+}
+
+
+.hero-primary {
+
+    background:
+        var(--lime);
+
+    color:
+        #050505;
+
+}
+
+
+.hero-primary:hover {
+
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        0 18px 55px
+        rgba(209,248,67,.16);
+
+}
+
+
+.hero-secondary {
+
+    border:
+        1px solid var(--line);
+
+    background:
+        rgba(255,255,255,.018);
+
+    color:
+        rgba(255,255,255,.52);
+
+}
+
+
+.hero-secondary:hover {
+
+    color:
+        white;
+
+    border-color:
+        rgba(255,255,255,.18);
+
+    transform:
+        translateY(-3px);
+
+}
+
+
+/* =========================================================
+   HERO CARD
+========================================================= */
+
+.hero-card-area {
+
+    position:
+        relative;
+
+    min-height:
+        560px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+}
+
+
+.hero-card-glow {
+
+    position:
+        absolute;
+
+    width:
+        470px;
+
+    height:
+        470px;
+
+    border-radius:
+        50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(209,248,67,.13),
+            transparent 65%
+        );
+
+    filter:
+        blur(18px);
+
+    animation:
+        glowFloat 6s ease-in-out infinite;
+
+}
+
+
+@keyframes glowFloat {
+
+    0%,100% {
+
+        transform:
+            scale(.9);
+
+        opacity:
+            .55;
+
+    }
+
+    50% {
+
+        transform:
+            scale(1.08);
+
+        opacity:
+            1;
+
+    }
+
+}
+
+
+.hero-ring {
+
+    position:
+        absolute;
+
+    width:
+        510px;
+
+    height:
+        510px;
+
+    border:
+        1px solid rgba(209,248,67,.045);
+
+    border-radius:
+        50%;
+
+    animation:
+        ringRotate 18s linear infinite;
+
+}
+
+
+.hero-ring::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    inset:
+        65px;
+
+    border:
+        1px solid rgba(255,255,255,.035);
+
+    border-radius:
+        50%;
+
+}
+
+
+@keyframes ringRotate {
+
+    from {
+        transform:
+            rotate(0deg);
+    }
+
+    to {
+        transform:
+            rotate(360deg);
+    }
+
+}
+
+
+.visual-window {
+
+    position:
+        relative;
+
+    z-index:
+        5;
+
+    width:
+        min(100%, 570px);
+
+    aspect-ratio:
+        1.28 / 1;
+
+    border:
+        1px solid rgba(255,255,255,.11);
+
+    border-radius:
+        24px;
+
+    overflow:
+        hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            #121212,
+            #080808
+        );
+
+    box-shadow:
+
+        0 50px 110px
+        rgba(0,0,0,.6),
+
+        0 0 90px
+        rgba(209,248,67,.035),
+
+        inset 0 1px
+        rgba(255,255,255,.05);
+
+    transform:
+        perspective(1200px)
+        rotateY(-7deg)
+        rotateX(4deg);
+
+    transition:
+        transform .8s var(--ease);
+
+}
+
+
+.hero-card-area:hover
+.visual-window {
+
+    transform:
+        perspective(1200px)
+        rotateY(0deg)
+        rotateX(0deg)
+        translateY(-8px)
+        scale(1.015);
+
+}
+
+
+.window-bar {
+
+    height:
+        42px;
+
+    padding:
+        0 16px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        6px;
+
+    border-bottom:
+        1px solid rgba(255,255,255,.065);
+
+}
+
+
+.window-dot {
+
+    width:
+        7px;
+
+    height:
+        7px;
+
+    border-radius:
+        50%;
+
+    background:
+        rgba(255,255,255,.17);
+
+}
+
+
+.window-body {
+
+    position:
+        relative;
+
+    height:
+        calc(100% - 42px);
+
+    padding:
+        38px;
+
+    overflow:
+        hidden;
+
+}
+
+
+.window-top {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+}
+
+
+.window-brand {
+
+    color:
+        rgba(255,255,255,.65);
+
+    font-size:
+        9px;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        .12em;
+
+}
+
+
+.window-menu {
+
+    display:
+        flex;
+
+    gap:
+        8px;
+
+}
+
+
+.window-menu span {
+
+    width:
+        25px;
+
+    height:
+        3px;
+
+    border-radius:
+        10px;
+
+    background:
+        rgba(255,255,255,.09);
+
+}
+
+
+.window-main {
+
+    margin-top:
+        65px;
+
+}
+
+
+.window-main small {
+
+    color:
+        var(--lime);
+
+    font-size:
+        8px;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        .15em;
+
+}
+
+
+.window-title {
+
+    margin-top:
+        14px;
+
+    max-width:
+        390px;
+
+    font-size:
+        clamp(35px,4vw,59px);
+
+    line-height:
+        .9;
+
+    letter-spacing:
+        -.065em;
+
+    font-weight:
+        800;
+
+}
+
+
+.window-title span {
+
+    color:
+        var(--lime);
+
+}
+
+
+.window-lines {
+
+    margin-top:
+        25px;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        8px;
+
+}
+
+
+.window-line {
+
+    height:
+        4px;
+
+    border-radius:
+        10px;
+
+    background:
+        rgba(255,255,255,.08);
+
+}
+
+
+.window-line:nth-child(1) {
+    width: 57%;
+}
+
+
+.window-line:nth-child(2) {
+    width: 44%;
+}
+
+
+.window-line:nth-child(3) {
+    width: 29%;
+}
+
+
+.window-button {
+
+    position:
+        absolute;
+
+    left:
+        38px;
+
+    bottom:
+        38px;
+
+    width:
+        120px;
+
+    height:
+        38px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    border-radius:
+        50px;
+
+    background:
+        var(--lime);
+
+    color:
+        #050505;
+
+    font-size:
+        7px;
+
+    font-weight:
+        900;
+
+}
+
+
+.window-orb {
+
+    position:
+        absolute;
+
+    width:
+        220px;
+
+    height:
+        220px;
+
+    right:
+        -80px;
+
+    bottom:
+        -100px;
+
+    border:
+        1px solid rgba(209,248,67,.12);
+
+    border-radius:
+        50%;
+
+    box-shadow:
+        0 0 80px
+        rgba(209,248,67,.05);
+
+}
+
+
+/* =========================================================
+   FLOATING CARD DETAILS
+========================================================= */
+
+.floating-tag {
+
+    position:
+        absolute;
+
+    z-index:
+        10;
+
+    padding:
+        12px 15px;
+
+    border:
+        1px solid rgba(255,255,255,.09);
+
+    border-radius:
+        14px;
+
+    background:
+        rgba(10,10,10,.72);
+
+    backdrop-filter:
+        blur(18px);
+
+    color:
+        rgba(255,255,255,.55);
+
+    font-size:
+        8px;
+
+    font-weight:
+        700;
+
+    box-shadow:
+        0 20px 50px
+        rgba(0,0,0,.35);
+
+    animation:
+        floatingTag 5s ease-in-out infinite;
+
+}
+
+
+.floating-tag i {
+
+    margin-right:
+        7px;
+
+    color:
+        var(--lime);
+
+}
+
+
+.tag-one {
+
+    top:
+        18%;
+
+    right:
+        2%;
+
+}
+
+
+.tag-two {
+
+    bottom:
+        17%;
+
+    left:
+        1%;
+
+    animation-delay:
+        -2s;
+
+}
+
+
+@keyframes floatingTag {
+
+    0%,100% {
+        transform:
+            translateY(0);
+    }
+
+    50% {
+        transform:
+            translateY(-10px);
+    }
+
+}
+
+
+/* =========================================================
+   MARQUEE
+========================================================= */
+
+.marquee {
+
+    width:
+        100%;
+
+    overflow:
+        hidden;
+
+    border-top:
+        1px solid var(--line-soft);
+
+    border-bottom:
+        1px solid var(--line-soft);
+
+    padding:
+        19px 0;
+
+}
+
+
+.marquee-track {
+
+    display:
+        flex;
+
+    width:
+        max-content;
+
+    animation:
+        marquee 30s linear infinite;
+
+}
+
+
+.marquee-item {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        40px;
+
+    padding-right:
+        40px;
+
+    color:
+        rgba(255,255,255,.17);
+
+    font-size:
+        9px;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        .18em;
+
+    white-space:
+        nowrap;
+
+}
+
+
+.marquee-item i {
+
+    color:
+        var(--lime);
+
+    font-size:
+        5px;
+
+}
+
+
+@keyframes marquee {
+
+    from {
+        transform:
+            translateX(0);
+    }
+
+    to {
+        transform:
+            translateX(-50%);
+    }
+
+}
+
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+.section {
+
+    max-width:
+        var(--max);
+
+    margin:
+        auto;
+
+    padding:
+        130px 24px;
+
+}
+
+
+.section-header {
+
+    display:
+        flex;
+
+    align-items:
+        flex-end;
+
+    justify-content:
+        space-between;
+
+    gap:
+        50px;
+
+    margin-bottom:
+        50px;
+
+}
+
+
+.section-label {
+
+    margin-bottom:
+        13px;
+
+    color:
+        var(--lime);
+
+    font-size:
+        8px;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        .2em;
+
+    text-transform:
+        uppercase;
+
+}
+
+
+.section-title {
+
+    font-size:
+        clamp(40px,5vw,68px);
+
+    line-height:
+        .94;
+
+    letter-spacing:
+        -.06em;
+
+    font-weight:
+        800;
+
+}
+
+
+.section-description {
+
+    max-width:
+        320px;
+
+    color:
+        rgba(255,255,255,.27);
+
+    font-size:
+        11px;
+
+    line-height:
+        1.9;
+
+}
+
+
+/* =========================================================
+   SECOND SHOWCASE / ABOUT
+========================================================= */
+
+.about-box {
+
+    min-height:
+        360px;
+
+    padding:
+        55px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        50px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius:
+        28px;
+
+    background:
+        rgba(255,255,255,.018);
+
+}
+
+
+.about-box h3 {
+
+    max-width:
+        650px;
+
+    font-size:
+        clamp(35px,5vw,62px);
+
+    line-height:
+        .95;
+
+    letter-spacing:
+        -.06em;
+
+}
+
+
+.about-box h3 span {
+
+    color:
+        var(--lime);
+
+}
+
+
+.about-text {
+
+    max-width:
+        360px;
+
+    color:
+        rgba(255,255,255,.28);
+
+    font-size:
+        11px;
+
+    line-height:
+        1.9;
+
+}
+
+
+/* =========================================================
+   FEATURES
+========================================================= */
+
+.feature-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    border-top:
+        1px solid var(--line);
+
+    border-left:
+        1px solid var(--line);
+
+}
+
+
+.feature {
+
+    min-height:
+        270px;
+
+    padding:
+        34px;
+
+    border-right:
+        1px solid var(--line);
+
+    border-bottom:
+        1px solid var(--line);
+
+    transition:
+        .5s var(--ease);
+
+}
+
+
+.feature:hover {
+
+    background:
+        rgba(209,248,67,.025);
+
+    transform:
+        translateY(-3px);
+
+}
+
+
+.feature-number {
+
+    color:
+        rgba(255,255,255,.17);
+
+    font-size:
+        9px;
+
+    font-weight:
+        800;
+
+}
+
+
+.feature-icon {
+
+    margin-top:
+        45px;
+
+    color:
+        var(--lime);
+
+    font-size:
+        18px;
+
+    transition:
+        .4s var(--ease);
+
+}
+
+
+.feature:hover .feature-icon {
+
+    transform:
+        translateY(-4px)
+        scale(1.08);
+
+}
+
+
+.feature h3 {
+
+    margin-top:
+        17px;
+
+    font-size:
+        16px;
+
+}
+
+
+.feature p {
+
+    max-width:
+        270px;
+
+    margin-top:
+        8px;
+
+    color:
+        rgba(255,255,255,.25);
+
+    font-size:
+        10px;
+
+    line-height:
+        1.85;
+
+}
+
+
+/* =========================================================
+   CTA
+========================================================= */
+
+.cta-section {
+
+    max-width:
+        var(--max);
+
+    margin:
+        auto;
+
+    padding:
+        70px 24px 140px;
+
+}
+
+
+.cta-box {
+
+    position:
+        relative;
+
+    min-height:
+        450px;
+
+    padding:
+        30px;
+
+    overflow:
+        hidden;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    text-align:
+        center;
+
+    border:
+        1px solid rgba(209,248,67,.11);
+
+    border-radius:
+        32px;
+
+    background:
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(209,248,67,.12),
+            transparent 45%
+        ),
+
+        #090909;
+
+}
+
+
+.cta-box h2 {
+
+    position:
+        relative;
+
+    z-index:
+        2;
+
+    font-size:
+        clamp(45px,6vw,80px);
+
+    line-height:
+        .9;
+
+    letter-spacing:
+        -.07em;
+
+}
+
+
+.cta-box p {
+
+    position:
+        relative;
+
+    z-index:
+        2;
+
+    max-width:
+        430px;
+
+    margin:
+        23px 0 30px;
+
+    color:
+        rgba(255,255,255,.3);
+
+    font-size:
+        11px;
+
+    line-height:
+        1.85;
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer {
+
+    border-top:
+        1px solid var(--line);
+
+    padding:
+        75px 24px 30px;
+
+}
+
+
+.footer-inner {
+
+    max-width:
+        var(--max);
+
+    margin:
+        auto;
+
+}
+
+
+.footer-top {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    gap:
+        50px;
+
+}
+
+
+.footer-brand p {
+
+    max-width:
+        280px;
+
+    margin-top:
+        17px;
+
+    color:
+        rgba(255,255,255,.22);
+
+    font-size:
+        10px;
+
+    line-height:
+        1.9;
+
+}
+
+
+.footer-links {
+
+    display:
+        flex;
+
+    gap:
+        80px;
+
+}
+
+
+.footer-column h4 {
+
+    margin-bottom:
+        17px;
+
+    color:
+        rgba(255,255,255,.35);
+
+    font-size:
+        8px;
+
+    letter-spacing:
+        .15em;
+
+    text-transform:
+        uppercase;
+
+}
+
+
+.footer-column a {
+
+    display:
+        block;
+
+    margin-bottom:
+        11px;
+
+    color:
+        rgba(255,255,255,.25);
+
+    font-size:
+        10px;
+
+    transition:
+        .25s ease;
+
+}
+
+
+.footer-column a:hover {
+
+    color:
+        var(--lime);
+
+    transform:
+        translateX(3px);
+
+}
+
+
+.footer-bottom {
+
+    margin-top:
+        65px;
+
+    padding-top:
+        22px;
+
+    border-top:
+        1px solid var(--line-soft);
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    color:
+        rgba(255,255,255,.15);
+
+    font-size:
+        8px;
+
+}
+
+
+/* =========================================================
+   REVEAL
+========================================================= */
+
+.reveal {
+
+    opacity:
+        0;
+
+    transform:
+        translateY(35px);
+
+    transition:
+        opacity 1s var(--ease),
+        transform 1s var(--ease);
+
+}
+
+
+.reveal.visible {
+
+    opacity:
+        1;
+
+    transform:
+        translateY(0);
+
+}
+
+
+.reveal-delay-1 {
+    transition-delay:
+        .1s;
+}
+
+
+.reveal-delay-2 {
+    transition-delay:
+        .2s;
+}
+
+
+.reveal-delay-3 {
+    transition-delay:
+        .3s;
+}
+
+
+/* =========================================================
+   RTL FIX
+========================================================= */
+
+html[dir="rtl"] body {
+
+    font-family:
+        Cairo,
+        sans-serif;
+
+}
+
+
+html[dir="rtl"] .hero {
+
+    direction:
+        rtl;
+
+}
+
+
+html[dir="rtl"] .hero-copy-side {
+
+    text-align:
+        right;
+
+}
+
+
+html[dir="rtl"] .hero h1 {
+
+    direction:
+        rtl;
+
+    letter-spacing:
+        0 !important;
+
+    line-height:
+        1.12 !important;
+
+    word-spacing:
+        0;
+
+    font-weight:
+        800;
+
+}
+
+
+html[dir="rtl"] .hero h1 span {
+
+    letter-spacing:
+        0 !important;
+
+}
+
+
+html[dir="rtl"] .hero h1 .outline {
+
+    color:
+        rgba(255,255,255,.92);
+
+    -webkit-text-stroke:
+        0;
+
+}
+
+
+html[dir="rtl"] .hero h1 .accent {
+
+    color:
+        var(--lime);
+
+    text-shadow:
+        none;
+
+}
+
+
+html[dir="rtl"] .hero-description {
+
+    letter-spacing:
+        0 !important;
+
+    word-spacing:
+        1px;
+
+    line-height:
+        2 !important;
+
+}
+
+
+html[dir="rtl"] .hero-primary i {
+
+    transform:
+        rotate(180deg);
+
+}
+
+
+html[dir="rtl"] .about-box {
+
+    direction:
+        rtl;
+
+}
+
+
+html[dir="rtl"] .footer-column a:hover {
+
+    transform:
+        translateX(-3px);
+
+}
+
+
+html[dir="rtl"] .footer-bottom {
+
+    direction:
+        rtl;
+
+}
+
+
+/* =========================================================
+   MOBILE / TABLET
+========================================================= */
+
+@media(max-width:1050px) {
+
+    .hero {
+
+        grid-template-columns:
+            1fr;
+
+        padding:
+            145px 30px 80px;
+
+        text-align:
+            center;
+
+        gap:
+            30px;
+
+    }
+
+
+    .hero-copy-side {
+
+        display:
+            flex;
+
+        flex-direction:
+            column;
+
+        align-items:
+            center;
+
+        text-align:
+            center;
+
+    }
+
+
+    .hero-description {
+
+        text-align:
+            center;
+
+    }
+
+
+    .hero-card-area {
+
+        min-height:
+            480px;
+
+    }
+
+
+    .hero h1 {
+
+        max-width:
+            850px;
+
+    }
+
+
+    .feature-grid {
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+
+    html[dir="rtl"] .hero-copy-side {
+
+        text-align:
+            center;
+
+    }
+
+}
+
+
+@media(max-width:850px) {
+
+    .nav-wrap {
+
+        top:
+            12px;
+
+        width:
+            calc(100% - 20px);
+
+    }
+
+
+    .nav {
+
+        height:
+            58px;
+
+        padding:
+            0 7px 0 16px;
+
+    }
+
+
+    html[dir="rtl"] .nav {
+
+        padding:
+            0 16px 0 7px;
+
+    }
+
+
+    .nav-links {
+
+        display:
+            none;
+
+    }
+
+
+    .logo-text {
+
+        font-size:
+            14px;
+
+    }
+
+
+    .logo-img {
+
+        height:
+            20px;
+
+        max-height:
+            20px;
+
+    }
+
+
+    .login-btn {
+
+        display:
+            none;
+
+    }
+
+
+    .lang-btn {
+
+        height:
+            38px;
+
+        padding:
+            0 11px;
+
+    }
+
+
+    .start-btn {
+
+        height:
+            38px;
+
+        padding:
+            0 14px;
+
+    }
+
+
+    .hero {
+
+        min-height:
+            auto;
+
+        padding:
+            135px 20px 75px;
+
+    }
+
+
+    .hero h1 {
+
+        font-size:
+            clamp(52px,13vw,82px);
+
+    }
+
+
+    html[dir="rtl"] .hero h1 {
+
+        font-size:
+            clamp(47px,12.5vw,78px);
+
+        line-height:
+            1.12 !important;
+
+        letter-spacing:
+            0 !important;
+
+    }
+
+
+    .hero-description {
+
+        font-size:
+            11px;
+
+    }
+
+
+    .hero-actions {
+
+        width:
+            100%;
+
+        flex-direction:
+            column;
+
+    }
+
+
+    .hero-primary,
+    .hero-secondary {
+
+        width:
+            min(100%,300px);
+
+    }
+
+
+    .hero-card-area {
+
+        min-height:
+            390px;
+
+        margin-top:
+            10px;
+
+    }
+
+
+    .hero-ring {
+
+        width:
+            390px;
+
+        height:
+            390px;
+
+    }
+
+
+    .hero-card-glow {
+
+        width:
+            360px;
+
+        height:
+            360px;
+
+    }
+
+
+    .visual-window {
+
+        width:
+            min(100%,520px);
+
+    }
+
+
+    .floating-tag {
+
+        display:
+            none;
+
+    }
+
+
+    .section {
+
+        padding:
+            100px 20px;
+
+    }
+
+
+    .section-header {
+
+        display:
+            block;
+
+    }
+
+
+    .section-description {
+
+        margin-top:
+            20px;
+
+    }
+
+
+    .about-box {
+
+        display:
+            block;
+
+        padding:
+            40px 28px;
+
+    }
+
+
+    .about-text {
+
+        margin-top:
+            25px;
+
+    }
+
+
+    .feature-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .footer-top {
+
+        display:
+            block;
+
+    }
+
+
+    .footer-links {
+
+        margin-top:
+            45px;
+
+    }
+
+
+    .footer-bottom {
+
+        display:
+            block;
+
+        line-height:
+            2;
+
+    }
+
+}
+
+
+@media(max-width:560px) {
+
+    .hero {
+
+        padding:
+            125px 16px 65px;
+
+    }
+
+
+    .eyebrow {
+
+        font-size:
+            7px;
+
+        letter-spacing:
+            .08em;
+
+    }
+
+
+    .hero h1 {
+
+        font-size:
+            50px;
+
+        line-height:
+            .9;
+
+    }
+
+
+    html[dir="rtl"] .hero h1 {
+
+        font-size:
+            46px;
+
+        line-height:
+            1.16 !important;
+
+    }
+
+
+    .hero-description {
+
+        max-width:
+            330px;
+
+        font-size:
+            10px;
+
+        line-height:
+            1.9;
+
+    }
+
+
+    .hero-card-area {
+
+        min-height:
+            300px;
+
+    }
+
+
+    .hero-ring {
+
+        width:
+            290px;
+
+        height:
+            290px;
+
+    }
+
+
+    .hero-card-glow {
+
+        width:
+            280px;
+
+        height:
+            280px;
+
+    }
+
+
+    .visual-window {
+
+        width:
+            100%;
+
+        border-radius:
+            17px;
+
+        transform:
+            none;
+
+    }
+
+
+    .hero-card-area:hover
+    .visual-window {
+
+        transform:
+            translateY(-3px);
+
+    }
+
+
+    .window-bar {
+
+        height:
+            31px;
+
+    }
+
+
+    .window-dot {
+
+        width:
+            5px;
+
+        height:
+            5px;
+
+    }
+
+
+    .window-body {
+
+        height:
+            calc(100% - 31px);
+
+        padding:
+            22px;
+
+    }
+
+
+    .window-main {
+
+        margin-top:
+            38px;
+
+    }
+
+
+    .window-title {
+
+        font-size:
+            30px;
+
+    }
+
+
+    .window-button {
+
+        left:
+            22px;
+
+        bottom:
+            22px;
+
+        width:
+            90px;
+
+        height:
+            30px;
+
+        font-size:
+            6px;
+
+    }
+
+
+    .window-orb {
+
+        width:
+            130px;
+
+        height:
+            130px;
+
+        right:
+            -50px;
+
+        bottom:
+            -60px;
+
+    }
+
+
+    .section-title {
+
+        font-size:
+            38px;
+
+    }
+
+
+    .about-box h3 {
+
+        font-size:
+            38px;
+
+    }
+
+
+    .cta-section {
+
+        padding:
+            50px 20px 100px;
+
+    }
+
+
+    .cta-box {
+
+        min-height:
+            390px;
+
+        border-radius:
+            24px;
+
+    }
+
+
+    .cta-box h2 {
+
+        font-size:
+            45px;
+
+    }
+
+
+    .footer-links {
+
+        gap:
+            35px;
+
+    }
+
+
+    .logo-img {
+
+        height:
+            16px;
+
+        max-height:
+            16px;
+
+    }
+
+
+    .logo-text {
+
+        font-size:
+            12px;
+
+    }
+
+}
+
+
+@media(max-width:380px) {
+
+    .hero h1 {
+
+        font-size:
+            43px;
+
+    }
+
+
+    html[dir="rtl"] .hero h1 {
+
+        font-size:
+            41px;
+
+    }
+
+
+    .hero-card-area {
+
+        min-height:
+            260px;
+
+    }
+
+
+    .window-title {
+
+        font-size:
+            27px;
+
+    }
+
+
+    .logo-img {
+
+        height:
+            14px;
+
+        max-height:
+            14px;
+
+    }
+
+
+    .logo-text {
+
+        font-size:
+            10px;
+
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media(prefers-reduced-motion:reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration:
+            .01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        transition-duration:
+            .01ms !important;
+
+        scroll-behavior:
+            auto !important;
+
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE FIXES - free LOOK
+========================================================= */
+
+@media(max-width:560px) {
+
+    .hero h1 {
+        font-size: 62px;
+        line-height: 0.92;
+    }
+
+    html[dir="rtl"] .hero h1 {
+        font-size: 58px;
+        line-height: 1.2 !important;
+    }
+
+    .hero {
+        padding: 110px 16px 50px;
+    }
+
+    .hero-description {
+        font-size: 12px;
+        max-width: 400px;
+        line-height: 2;
+    }
+
+    .hero-primary, .hero-secondary {
+        min-height: 60px;
+        font-size: 13px;
+        width: min(100%, 350px);
+    }
+
+    .hero-card-area {
+        min-height: 400px;
+        margin-top: 20px;
+    }
+
+    .visual-window {
+        width: 95%;
+        max-width: 500px;
+        border-radius: 20px;
+    }
+
+    .window-dot {
+        width: 10px;
+        height: 10px;
+    }
+
+    .window-title {
+        font-size: 38px;
+    }
+
+    .window-body {
+        padding: 28px;
+    }
+
+    .window-main {
+        margin-top: 45px;
+    }
+
+    .window-button {
+        width: 110px;
+        height: 36px;
+        font-size: 8px;
+        left: 28px;
+        bottom: 28px;
+    }
+
+    .floating-tag {
+        display: flex;
+        font-size: 9px;
+        padding: 10px 14px;
+    }
+
+    .tag-one {
+        top: 5%;
+        right: 2%;
+    }
+
+    .tag-two {
+        bottom: 5%;
+        left: 2%;
+    }
+
+    .cta-box h2 {
+        font-size: 52px;
+    }
+
+    .cta-box {
+        min-height: 420px;
+        padding: 40px 20px;
+    }
+
+    .section-title {
+        font-size: 44px;
+    }
+
+    .about-box h3 {
+        font-size: 42px;
+    }
+
+}
+
+
+/* =========================================================
+   FOOTER LOGO
+========================================================= */
+
+.footer-brand .logo-img {
+    height: 22px;
+    max-height: 22px;
+}
+
+@media(max-width:850px) {
+    .footer-brand .logo-img {
+        height: 18px;
+        max-height: 18px;
+    }
+}
+
+@media(max-width:560px) {
+    .footer-brand .logo-img {
+        height: 15px;
+        max-height: 15px;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+<!-- =========================================================
+     BACKGROUND - شبكة + نقاط أوضح (مش scanline)
+========================================================= -->
+
+<div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+  <!-- الشبكة -->
+  <div class="grid-pattern"></div>
+  
+  <!-- الخطوط العمودية المتقطعة -->
+  <div class="absolute top-0 left-1/2 h-full w-[1200px] -translate-x-1/2">
+    <div class="absolute top-0 left-0 h-full w-px dashed-line"></div>
+    <div class="absolute top-0 right-0 h-full w-px dashed-line"></div>
+  </div>
+  
+  <!-- النقاط -->
+  <div class="absolute top-0 left-1/2 h-full w-[1480px] -translate-x-1/2 dot-pattern opacity-80">
+    <div class="absolute top-0 left-0 h-full w-px dashed-line"></div>
+    <div class="absolute top-0 right-0 h-full w-px dashed-line"></div>
+  </div>
+</div>
+
+
+<div class="cursor-dot"></div>
+<div class="cursor-ring"></div>
+
+
+<!-- =========================================================
+     NAV
+========================================================= -->
+
+<div class="nav-wrap">
+
+<nav class="nav" id="nav">
+
+<a href="index.html" class="logo">
+    <img src="logo.png" alt="NOLX PAGES" class="logo-img">
+    <span class="logo-text">NOLX<span>PAGES</span></span>
+</a>
+
+
+<div class="nav-links">
+
+<a href="#templates" data-i18n="navTemplates">
+    Templates
+</a>
+
+<a href="#features" data-i18n="navFeatures">
+    Features
+</a>
+
+<a href="#about" data-i18n="navAbout">
+    About
+</a>
+
+</div>
+
+
+<div class="nav-right">
+
+<button
+    class="lang-btn"
+    onclick="toggleLanguage()"
+>
+
+<i class="fa-solid fa-globe"></i>
+
+<span id="langText">
+AR
+</span>
+
+</button>
+
+
+<div id="guestActions" style="display:flex;gap:7px;"><a href="store.html" class="login-btn" id="loginBtn">استكشف القوالب</a><a href="store.html" class="start-btn magnetic">ابدأ مجانًا</a></div>
+
+</div>
+
+</nav>
+
+</div>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+
+<!-- LEFT -->
+
+<div class="hero-copy-side">
+
+
+<div class="eyebrow reveal">
+
+<i class="fa-solid fa-circle"></i>
+
+<span data-i18n="eyebrow">
+Free Website Templates
+</span>
+
+</div>
+
+
+<h1 class="reveal reveal-delay-1">
+
+<span data-i18n="hero1">
+Build.
+</span>
+
+<span
+class="outline"
+data-i18n="hero2"
+>
+Launch.
+</span>
+
+<br>
+
+<span
+class="accent"
+data-i18n="hero3"
+>
+Be Remembered.
+</span>
+
+</h1>
+
+
+<p
+class="hero-description reveal reveal-delay-2"
+data-i18n="heroDesc"
+>
+Exceptional website templates for people who refuse
+to look ordinary. Designed with precision. Built to perform.
+</p>
+
+
+<div class="hero-actions reveal reveal-delay-3">
+
+<a
+href="dashboard.html"
+class="hero-primary magnetic"
+>
+
+<span data-i18n="browse">
+Explore Templates
+</span>
+
+<i class="fa-solid fa-arrow-right"></i>
+
+</a>
+
+
+<a
+href="#templates"
+class="hero-secondary"
+>
+
+<i class="fa-regular fa-eye"></i>
+
+<span data-i18n="view">
+View Collection
+</span>
+
+</a>
+
+</div>
+
+</div>
+
+
+<!-- RIGHT / CARD -->
+
+<div class="hero-card-area reveal reveal-delay-2">
+
+
+<div class="hero-card-glow"></div>
+
+<div class="hero-ring"></div>
+
+
+<div class="floating-tag tag-one">
+
+<i class="fa-solid fa-wand-magic-sparkles"></i>
+
+<span data-i18n="floatingOne">
+free Experience
+</span>
+
+</div>
+
+
+<div class="floating-tag tag-two">
+
+<i class="fa-solid fa-bolt"></i>
+
+<span data-i18n="floatingTwo">
+Fast & Responsive
+</span>
+
+</div>
+
+
+<div class="visual-window">
+
+
+<div class="window-bar">
+
+<div class="window-bar">
+    <span class="window-dot" style="background:#ff5f57;"></span>
+    <span class="window-dot" style="background:#ffbd2e;"></span>
+    <span class="window-dot" style="background:#28c840;"></span>
+</div>
+</div>
+
+
+<div class="window-body">
+
+
+<div class="window-top">
+
+<div class="window-brand">
+NOLX PAGES
+</div>
+
+
+<div class="window-menu">
+
+<span></span>
+<span></span>
+<span></span>
+
+</div>
+
+</div>
+
+
+<div class="window-main">
+
+<small data-i18n="cardSmall">
+DIGITAL EXPERIENCE
+</small>
+
+
+<div class="window-title">
+
+Build
+<br>
+
+<span>
+something.
+</span>
+
+</div>
+
+
+<div class="window-lines">
+
+<div class="window-line"></div>
+<div class="window-line"></div>
+<div class="window-line"></div>
+
+</div>
+
+</div>
+
+
+<div class="window-button">
+
+NOLX PAGES
+
+</div>
+
+
+<div class="window-orb"></div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     MARQUEE
+========================================================= -->
+
+<div class="marquee">
+
+<div class="marquee-track">
+
+<div class="marquee-item">
+DESIGN WITHOUT LIMITS
+<i class="fa-solid fa-diamond"></i>
+</div>
+
+<div class="marquee-item">
+BUILT FOR AMBITION
+<i class="fa-solid fa-diamond"></i>
+</div>
+
+<div class="marquee-item">
+free DIGITAL EXPERIENCES
+<i class="fa-solid fa-diamond"></i>
+</div>
+
+<div class="marquee-item">
+NOLX PAGES
+<i class="fa-solid fa-diamond"></i>
+</div>
+
+<div class="marquee-item">
+DESIGN WITHOUT LIMITS
+<i class="fa-solid fa-diamond"></i>
+</div>
+
+<div class="marquee-item">
+BUILT FOR AMBITION
+<i class="fa-solid fa-diamond"></i>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =========================================================
+     ABOUT
+========================================================= -->
+
+<section
+class="section"
+id="about"
+>
+
+<div class="section-header reveal">
+
+<div>
+
+<div
+class="section-label"
+data-i18n="aboutLabel"
+>
+The Experience
+</div>
+
+<h2
+class="section-title"
+data-i18n="aboutTitle"
+>
+Less noise.<br>
+More impact.
+</h2>
+
+</div>
+
+
+<p
+class="section-description"
+data-i18n="aboutDesc"
+>
+Carefully crafted digital experiences made for brands,
+creators and businesses that care about every detail.
+</p>
+
+</div>
+
+
+<div class="about-box reveal">
+
+<h3 data-i18n="aboutHeading">
+
+Your idea.
+<br>
+
+<span>
+Better presented.
+</span>
+
+</h3>
+
+
+<p
+class="about-text"
+data-i18n="aboutText"
+>
+Start with a refined digital foundation and shape it
+around your own vision. Every detail is designed to
+feel intentional.
+</p>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     FEATURES
+========================================================= -->
+
+<section
+class="section"
+id="features"
+>
+
+<div class="section-header reveal">
+
+<div>
+
+<div
+class="section-label"
+data-i18n="featuresLabel"
+>
+Why NOLX
+</div>
+
+<h2
+class="section-title"
+data-i18n="featuresTitle"
+>
+Details make<br>
+the difference.
+</h2>
+
+</div>
+
+
+<p
+class="section-description"
+data-i18n="featuresDesc"
+>
+Every component is designed to feel intentional,
+fast and effortless.
+</p>
+
+</div>
+
+
+<div class="feature-grid">
+
+
+<div class="feature reveal">
+
+<div class="feature-number">
+01
+</div>
+
+<div class="feature-icon">
+<i class="fa-solid fa-layer-group"></i>
+</div>
+
+<h3 data-i18n="f1title">
+free Design
+</h3>
+
+<p data-i18n="f1desc">
+Carefully composed layouts with a strong visual identity.
+</p>
+
+</div>
+
+
+<div class="feature reveal reveal-delay-1">
+
+<div class="feature-number">
+02
+</div>
+
+<div class="feature-icon">
+<i class="fa-solid fa-bolt"></i>
+</div>
+
+<h3 data-i18n="f2title">
+Fast by Default
+</h3>
+
+<p data-i18n="f2desc">
+Lightweight experiences designed for speed and performance.
+</p>
+
+</div>
+
+
+<div class="feature reveal reveal-delay-2">
+
+<div class="feature-number">
+03
+</div>
+
+<div class="feature-icon">
+<i class="fa-solid fa-mobile-screen"></i>
+</div>
+
+<h3 data-i18n="f3title">
+Responsive
+</h3>
+
+<p data-i18n="f3desc">
+Beautiful on desktop, tablet and every mobile screen.
+</p>
+
+</div>
+
+
+<div class="feature reveal">
+
+<div class="feature-number">
+04
+</div>
+
+<div class="feature-icon">
+<i class="fa-solid fa-sliders"></i>
+</div>
+
+<h3 data-i18n="f4title">
+Easy to Customize
+</h3>
+
+<p data-i18n="f4desc">
+Make it yours without fighting complicated code.
+</p>
+
+</div>
+
+
+<div class="feature reveal reveal-delay-1">
+
+<div class="feature-number">
+05
+</div>
+
+<div class="feature-icon">
+<i class="fa-solid fa-code"></i>
+</div>
+
+<h3 data-i18n="f5title">
+Clean Code
+</h3>
+
+<p data-i18n="f5desc">
+Structured, readable and ready to build upon.
+</p>
+
+</div>
+
+
+<div class="feature reveal reveal-delay-2">
+
+<div class="feature-number">
+06
+</div>
+
+<div class="feature-icon">
+<i class="fa-solid fa-headset"></i>
+</div>
+
+<h3 data-i18n="f6title">
+Human Support
+</h3>
+
+<p data-i18n="f6desc">
+Real help when you need to take your project further.
+</p>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     CTA
+========================================================= -->
+
+<section class="cta-section">
+
+<div class="cta-box reveal">
+
+<div
+class="section-label"
+data-i18n="ctaLabel"
+>
+Your next chapter
+</div>
+
+
+<h2 data-i18n="ctaTitle">
+
+Make your<br>
+first impression count.
+
+</h2>
+
+
+<p data-i18n="ctaDesc">
+
+Choose a foundation that feels as ambitious
+as the thing you're building.
+
+</p>
+
+
+<a
+href="dashboard.html"
+class="hero-primary magnetic"
+>
+
+<span data-i18n="ctaButton">
+Explore NOLX
+</span>
+
+<i class="fa-solid fa-arrow-right"></i>
+
+</a>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer>
+
+<div class="footer-inner">
+
+
+<div class="footer-top">
+
+
+<div class="footer-brand">
+
+<div class="logo">
+    <img src="logo.png" alt="NOLX PAGES" class="logo-img">
+    <span class="logo-text">NOLX<span>PAGES</span></span>
+</div>
+
+<p data-i18n="footerDesc">
+Free Website Templates for people building
+something worth remembering.
+</p>
+
+</div>
+
+
+<div class="footer-links">
+
+
+<div class="footer-column">
+
+<h4 data-i18n="footerExplore">
+Explore
+</h4>
+
+<a
+href="dashboard.html"
+data-i18n="footerTemplates"
+>
+Templates
+</a>
+
+<a
+href="#features"
+data-i18n="footerFeatures"
+>
+Features
+</a>
+
+<a
+href="#about"
+data-i18n="footerAbout"
+>
+About
+</a>
+
+</div>
+
+
+<div class="footer-column">
+
+<h4 data-i18n="footerHelp">
+Help
+</h4>
+
+<a href="#" data-i18n="footerSupport">
+Support
+</a>
+
+<a href="#" data-i18n="footerPrivacy">
+Privacy
+</a>
+
+<a href="#" data-i18n="footerTerms">
+Terms
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="footer-bottom">
+
+<span>
+© 2026 NOLX PAGES
+</span>
+
+<span data-i18n="footerMade">
+Crafted for the digital generation.
+</span>
+
+</div>
+
+</div>
+
+</footer>
+
+
+<script>
+
+/* =========================================================
+   TRANSLATIONS
+========================================================= */
+
+const translations = {
+
+en: {
+
+navTemplates:
+"Templates",
+
+navFeatures:
+"Features",
+
+navAbout:
+"About",
+
+eyebrow:
+"Free Website Templates",
+
+hero1:
+"Build.",
+
+hero2:
+"Launch.",
+
+hero3:
+"Be Remembered.",
+
+heroDesc:
+"Exceptional website templates for people who refuse to look ordinary. Designed with precision. Built to perform.",
+
+browse:
+"Explore Templates",
+
+view:
+"View Collection",
+
+floatingOne:
+"free Experience",
+
+floatingTwo:
+"Fast & Responsive",
+
+cardSmall:
+"DIGITAL EXPERIENCE",
+
+aboutLabel:
+"The Experience",
+
+aboutTitle:
+"Less noise.<br>More impact.",
+
+aboutDesc:
+"Carefully crafted digital experiences made for brands, creators and businesses that care about every detail.",
+
+aboutHeading:
+"Your idea.<br><span>Better presented.</span>",
+
+aboutText:
+"Start with a refined digital foundation and shape it around your own vision. Every detail is designed to feel intentional.",
+
+featuresLabel:
+"Why NOLX",
+
+featuresTitle:
+"Details make<br>the difference.",
+
+featuresDesc:
+"Every component is designed to feel intentional, fast and effortless.",
+
+f1title:
+"free Design",
+
+f1desc:
+"Carefully composed layouts with a strong visual identity.",
+
+f2title:
+"Fast by Default",
+
+f2desc:
+"Lightweight experiences designed for speed and performance.",
+
+f3title:
+"Responsive",
+
+f3desc:
+"Beautiful on desktop, tablet and every mobile screen.",
+
+f4title:
+"Easy to Customize",
+
+f4desc:
+"Make it yours without fighting complicated code.",
+
+f5title:
+"Clean Code",
+
+f5desc:
+"Structured, readable and ready to build upon.",
+
+f6title:
+"Human Support",
+
+f6desc:
+"Real help when you need to take your project further.",
+
+ctaLabel:
+"Your next chapter",
+
+ctaTitle:
+"Make your<br>first impression count.",
+
+ctaDesc:
+"Choose a foundation that feels as ambitious as the thing you're building.",
+
+ctaButton:
+"Explore NOLX",
+
+footerDesc:
+"Free Website Templates for people building something worth remembering.",
+
+footerExplore:
+"Explore",
+
+footerTemplates:
+"Templates",
+
+footerFeatures:
+"Features",
+
+footerAbout:
+"About",
+
+footerHelp:
+"Help",
+
+footerSupport:
+"Support",
+
+footerPrivacy:
+"Privacy",
+
+footerTerms:
+"Terms",
+
+footerMade:
+"Crafted for the digital generation."
+
+},
+
+
+ar: {
+
+navTemplates:
+"القوالب",
+
+navFeatures:
+"المميزات",
+
+navAbout:
+"من نحن",
+
+eyebrow:
+"قوالب رقمية متميزة",
+
+hero1:
+"ابنِ.",
+
+hero2:
+"أطلق.",
+
+hero3:
+"اترك أثراً.",
+
+heroDesc:
+"قوالب مواقع استثنائية للأشخاص الذين يرفضون أن يكونوا عاديين. صُممت بدقة وبُنيت لتؤدي.",
+
+browse:
+"استكشف القوالب",
+
+view:
+"شاهد المجموعة",
+
+floatingOne:
+"تجربة متميزة",
+
+floatingTwo:
+"سريع ومتجاوب",
+
+cardSmall:
+"تجربة رقمية",
+
+aboutLabel:
+"التجربة",
+
+aboutTitle:
+"ضوضاء أقل.<br>تأثير أكبر.",
+
+aboutDesc:
+"تجارب رقمية مصممة بعناية للعلامات التجارية والمبدعين والشركات التي تهتم بكل تفصيلة.",
+
+aboutHeading:
+"فكرتك.<br><span>بشكل أفضل.</span>",
+
+aboutText:
+"ابدأ بأساس رقمي متطور وشكّله حول رؤيتك الخاصة. كل تفصيلة مصممة لتبدو مقصودة ومتناسقة.",
+
+featuresLabel:
+"لماذا NOLX",
+
+featuresTitle:
+"التفاصيل هي<br>الفرق.",
+
+featuresDesc:
+"كل عنصر مصمم ليكون سريعاً وواضحاً ومتناسقاً.",
+
+f1title:
+"تصميم فاخر",
+
+f1desc:
+"تخطيطات مدروسة بهوية بصرية قوية.",
+
+f2title:
+"أداء سريع",
+
+f2desc:
+"تجارب خفيفة مصممة للسرعة والأداء.",
+
+f3title:
+"متجاوب",
+
+f3desc:
+"تصميم رائع على الكمبيوتر والتابلت والموبايل.",
+
+f4title:
+"تخصيص سهل",
+
+f4desc:
+"اجعل القالب خاصاً بك بدون تعقيد في الكود.",
+
+f5title:
+"كود نظيف",
+
+f5desc:
+"كود منظم وواضح وجاهز للتطوير.",
+
+f6title:
+"دعم حقيقي",
+
+f6desc:
+"مساعدة حقيقية عندما تحتاج لتطوير مشروعك.",
+
+ctaLabel:
+"خطوتك القادمة",
+
+ctaTitle:
+"اجعل انطباعك<br>الأول لا يُنسى.",
+
+ctaDesc:
+"اختر أساساً يليق بالطموح الذي تبنيه.",
+
+ctaButton:
+"استكشف NOLX",
+
+footerDesc:
+"قوالب رقمية متميزة للأشخاص الذين يبنون شيئاً يستحق أن يُذكر.",
+
+footerExplore:
+"استكشف",
+
+footerTemplates:
+"القوالب",
+
+footerFeatures:
+"المميزات",
+
+footerAbout:
+"من نحن",
+
+footerHelp:
+"المساعدة",
+
+footerSupport:
+"الدعم",
+
+footerPrivacy:
+"الخصوصية",
+
+footerTerms:
+"الشروط",
+
+footerMade:
+"صُنع للجيل الرقمي."
+
+}
+
+};
+
+
+/* =========================================================
+   LANGUAGE
+========================================================= */
+
+let currentLang =
+localStorage.getItem("nolxLang") || "en";
+
+
+function applyLanguage(lang) {
+
+currentLang =
+lang;
+
+localStorage.setItem(
+"nolxLang",
+lang
+);
+
+
+document.documentElement.lang =
+lang;
+
+
+document.documentElement.dir =
+lang === "ar"
+? "rtl"
+: "ltr";
+
+
+document.body.classList.toggle(
+"rtl",
+lang === "ar"
+);
+
+
+const langText =
+document.getElementById(
+"langText"
+);
+
+
+if (langText) {
+
+langText.textContent =
+lang === "ar"
+? "EN"
+: "AR";
+
+}
+
+
+document
+.querySelectorAll("[data-i18n]")
+.forEach(el => {
+
+const key =
+el.getAttribute(
+"data-i18n"
+);
+
+const value =
+translations[lang][key];
+
+if (value !== undefined) {
+
+el.innerHTML =
+value;
+
+}
+
+});
+
+}
+
+
+function toggleLanguage() {
+
+applyLanguage(
+currentLang === "ar"
+? "en"
+: "ar"
+);
+
+}
+
+
+/* =========================================================
+   NAV SCROLL
+========================================================= */
+
+const nav =
+document.getElementById(
+"nav"
+);
+
+
+function updateNav() {
+
+if (window.scrollY > 30) {
+
+nav.classList.add(
+"scrolled"
+);
+
+} else {
+
+nav.classList.remove(
+"scrolled"
+);
+
+}
+
+}
+
+
+window.addEventListener(
+"scroll",
+updateNav,
+{ passive:true }
+);
+
+
+/* =========================================================
+   REVEAL
+========================================================= */
+
+const observer =
+new IntersectionObserver(
+entries => {
+
+entries.forEach(entry => {
+
+if (entry.isIntersecting) {
+
+entry.target.classList.add(
+"visible"
+);
+
+observer.unobserve(
+entry.target
+);
+
+}
+
+});
+
+},
+{
+threshold:.1,
+rootMargin:
+"0px 0px -35px 0px"
+}
+);
+
+
+document
+.querySelectorAll(".reveal")
+.forEach(el => {
+
+observer.observe(el);
+
+});
+
+
+/* =========================================================
+   MAGNETIC
+========================================================= */
+
+document
+.querySelectorAll(".magnetic")
+.forEach(button => {
+
+button.addEventListener(
+"mousemove",
+e => {
+
+if (window.innerWidth <= 850)
+return;
+
+
+const rect =
+button.getBoundingClientRect();
+
+
+const x =
+e.clientX -
+rect.left -
+rect.width / 2;
+
+
+const y =
+e.clientY -
+rect.top -
+rect.height / 2;
+
+
+button.style.transform =
+`translate(${x*.1}px,${y*.1}px)`;
+
+});
+
+
+button.addEventListener(
+"mouseleave",
+() => {
+
+button.style.transform =
+"";
+
+});
+
+});
+
+
+/* =========================================================
+   CURSOR
+========================================================= */
+
+const dot =
+document.querySelector(
+".cursor-dot"
+);
+
+const ring =
+document.querySelector(
+".cursor-ring"
+);
+
+
+let mouseX = 0;
+let mouseY = 0;
+
+let ringX = 0;
+let ringY = 0;
+
+
+if (
+window.matchMedia(
+"(pointer:fine)"
+).matches
+) {
+
+document.body.classList.add(
+"cursor-ready"
+);
+
+
+window.addEventListener(
+"mousemove",
+e => {
+
+mouseX =
+e.clientX;
+
+mouseY =
+e.clientY;
+
+
+dot.style.left =
+mouseX + "px";
+
+dot.style.top =
+mouseY + "px";
+
+
+document.documentElement
+.style
+.setProperty(
+"--mouse-x",
+(mouseX /
+window.innerWidth *
+100) + "%"
+);
+
+
+document.documentElement
+.style
+.setProperty(
+"--mouse-y",
+(mouseY /
+window.innerHeight *
+100) + "%"
+);
+
+});
+
+
+function animateCursor() {
+
+ringX +=
+(mouseX - ringX) * .14;
+
+ringY +=
+(mouseY - ringY) * .14;
+
+
+ring.style.left =
+ringX + "px";
+
+ring.style.top =
+ringY + "px";
+
+
+requestAnimationFrame(
+animateCursor
+);
+
+}
+
+
+animateCursor();
+
+
+document
+.querySelectorAll(
+"a,button,.feature,.visual-window"
+)
+.forEach(el => {
+
+el.addEventListener(
+"mouseenter",
+() => {
+
+document.body.classList.add(
+"cursor-hover"
+);
+
+});
+
+
+el.addEventListener(
+"mouseleave",
+() => {
+
+document.body.classList.remove(
+"cursor-hover"
+);
+
+});
+
+});
+
+}
+
+
+/* =========================================================
+   HERO CARD PARALLAX
+========================================================= */
+
+const cardArea =
+document.querySelector(
+".hero-card-area"
+);
+
+const card =
+document.querySelector(
+".visual-window"
+);
+
+
+if (cardArea && card) {
+
+cardArea.addEventListener(
+"mousemove",
+e => {
+
+if (window.innerWidth <= 850)
+return;
+
+
+const rect =
+cardArea.getBoundingClientRect();
+
+
+const x =
+(e.clientX -
+rect.left) /
+rect.width -
+.5;
+
+
+const y =
+(e.clientY -
+rect.top) /
+rect.height -
+.5;
+
+
+card.style.transform =
+
+`perspective(1200px)
+rotateY(${x * -10}deg)
+rotateX(${y * 7}deg)
+translateY(-8px)
+scale(1.015)`;
+
+});
+
+
+cardArea.addEventListener(
+"mouseleave",
+() => {
+
+card.style.transform =
+
+`perspective(1200px)
+rotateY(-7deg)
+rotateX(4deg)`;
+
+});
+
+}
+
+
+/* =========================================================
+   INIT
+========================================================= */
+
+document.addEventListener(
+"DOMContentLoaded",
+() => {
+
+applyLanguage(
+currentLang
+);
+
+updateNav();
+
+
+setTimeout(
+() => {
+
+document
+.querySelectorAll(
+".hero .reveal"
+)
+.forEach(
+(el,index) => {
+
+setTimeout(
+() => {
+
+el.classList.add(
+"visible"
+);
+
+},
+index * 130
+);
+
+});
+
+},
+100
+);
+
+});
+
+</script>
+
+</body>
+</html>

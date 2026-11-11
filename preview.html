@@ -1,7 +1,176 @@
-<!doctype html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NOLX Open Lab | معاينة القالب</title><link rel="icon" href="log.png"><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-<style>*{box-sizing:border-box}body{margin:0;background:#090a0f;color:#fff;font-family:Cairo,sans-serif}.bar{height:64px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 18px;border-bottom:1px solid #292b35;background:#10121a}.brand{font-weight:900;letter-spacing:1px}.brand span{color:#d1f843}.actions{display:flex;gap:8px}.btn{border:1px solid #343744;border-radius:9px;padding:9px 14px;color:#fff;text-decoration:none;font:700 12px Cairo}.btn.primary{background:#d1f843;border-color:#d1f843;color:#101010}.frame{display:block;width:100%;height:calc(100vh - 64px);border:0;background:#fff}.status{position:absolute;inset:64px 0 0;display:grid;place-items:center;color:#9ca3af;pointer-events:none}.frame[hidden]{display:none}.error{color:#ff9b9b;text-align:center;padding:30px;line-height:1.9}@media(max-width:480px){.bar{padding:0 10px}.btn{padding:8px 9px;font-size:10px}}</style></head><body>
-<header class="bar"><a class="brand" href="store.html">NOLX <span>OPEN LAB</span></a><div class="actions"><a class="btn" href="store.html">رجوع للمكتبة</a><a class="btn primary" id="editLink" href="editor.html?id=1">افتح في المحرر</a></div></header>
-<div class="status" id="status">جاري تحميل المعاينة...</div><iframe class="frame" id="preview" title="معاينة القالب" sandbox="allow-scripts" hidden></iframe>
-<script>
-(async()=>{const params=new URLSearchParams(location.search),id=params.get('id')||'1',status=document.getElementById('status'),frame=document.getElementById('preview');document.getElementById('editLink').href='editor.html?id='+encodeURIComponent(id);if(!/^[a-zA-Z0-9_-]+$/.test(id)){status.textContent='معرّف القالب غير صالح.';return}try{const catalogResponse=await fetch('templates/catalog.json',{cache:'no-store'});const catalog=catalogResponse.ok?await catalogResponse.json():{templates:[]};const entry=(catalog.templates||[]).find(item=>String(item.id)===id);const file=entry?.file||('template'+id+'.json');const response=await fetch('templates/'+file);if(!response.ok)throw new Error('template not found');const template=await response.json();let html=String(template.html||'');for(const [key,value] of Object.entries(template.variables||{})){html=html.split('{{'+key+'}}').join(String(value??''))}document.title='NOLX Open Lab | '+(template.name||'معاينة');frame.srcdoc=html;frame.hidden=false;status.remove()}catch(error){status.className='error';status.textContent='تعذر تحميل القالب. ارجع إلى مكتبة القوالب وحاول مرة أخرى.'}})();
-</script></body></html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+        <link rel="icon" type="image/png" href="log.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معاينة القالب - NOLX PAGES</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            flex-shrink: 0;
+        }
+        .preview-header .logo {
+            font-weight: 900;
+            font-size: 1rem;
+            color: #fff;
+        }
+        .preview-header .logo span { color: #D1F843; }
+        .preview-header .actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .preview-header .actions button {
+            padding: 6px 18px;
+            border-radius: 60px;
+            border: none;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 0.75rem;
+        }
+        .btn-close-preview {
+            background: rgba(255,255,255,0.04);
+            color: rgba(255,255,255,0.4);
+            border: 1px solid rgba(255,255,255,0.06) !important;
+        }
+        .btn-close-preview:hover {
+            background: rgba(255,255,255,0.08);
+            color: #fff;
+        }
+        .btn-edit-preview {
+            background: #D1F843;
+            color: #0a0a0f;
+        }
+        .btn-edit-preview:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(209,248,67,0.15);
+        }
+        .preview-frame {
+            width: 100%;
+            height: calc(100vh - 60px);
+            border: none;
+            background: #fff;
+        }
+        .watermark {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            padding: 8px 16px;
+            border-radius: 60px;
+            font-size: 0.6rem;
+            color: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.04);
+            pointer-events: none;
+            letter-spacing: 1px;
+        }
+        .watermark strong {
+            color: #D1F843;
+            font-weight: 800;
+        }
+        .loading-preview {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            background: #0a0a0f;
+            flex-direction: column;
+            gap: 16px;
+            color: rgba(255,255,255,0.05);
+        }
+        .loading-preview i {
+            font-size: 3rem;
+            color: #D1F843;
+            opacity: 0.2;
+        }
+        .loading-preview p {
+            font-size: 0.9rem;
+        }
+        .security-toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(220, 38, 38, 0.9);
+            backdrop-filter: blur(12px);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.8rem;
+            z-index: 999999;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            animation: slideDown 0.3s ease;
+            max-width: 90%;
+            text-align: center;
+            font-weight: 700;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        @media (max-width: 768px) {
+            .preview-header { padding: 8px 12px; }
+            .preview-header .logo { font-size: 0.8rem; }
+            .preview-header .actions button { font-size: 0.6rem; padding: 4px 12px; }
+            .watermark { font-size: 0.5rem; padding: 4px 12px; bottom: 10px; right: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="preview-header">
+        <div class="logo">NOLX<span>PAGES</span> <span style="font-size:0.6rem;color:rgba(255,255,255,0.1);font-weight:300;">معاينة</span></div>
+        <div class="actions">
+            <button class="btn-close-preview" onclick="closePreview()">
+                <i class="fas fa-times"></i> إغلاق
+            </button>
+            <button class="btn-edit-preview" onclick="openEditor()"><i class="fas fa-pen"></i> افتح المحرر مجانًا</button>
+        </div>
+    </div>
+
+    <iframe id="previewFrame" class="preview-frame" srcdoc=""></iframe>
+
+    <div class="watermark">
+        <strong>NOLX PAGES</strong> · معاينة مفتوحة · متاح للجميع
+    </div>
+
+    <script>
+const params=new URLSearchParams(location.search),templateId=params.get('id')||'1',frame=document.getElementById('previewFrame');
+function closePreview(){location.href='store.html'}
+function openEditor(){location.href='editor.html?id='+encodeURIComponent(templateId)}
+async function loadTemplate(){
+ try{
+  const c=await fetch('templates/catalog.json',{cache:'no-store'});if(!c.ok)throw Error('catalog');const catalog=await c.json();
+  const entry=(catalog.templates||[]).find(x=>String(x.id)===String(templateId));if(!entry)throw Error('template');
+  const r=await fetch('templates/'+(entry.file||('template'+templateId+'.json')));if(!r.ok)throw Error('template');
+  const t=await r.json();let html=String(t.html||'');
+  for(const [k,v] of Object.entries(t.variables||{}))html=html.split('{{'+k+'}}').join(String(v??''));
+  html=html.replace(/<div class="card-delete-btn"[^>]*>[\s\S]*?<\/div>/g,'').replace(/<div class="add-project-card"[^>]*>[\s\S]*?<\/div>/g,'').replace(/window\.parent\.[^"]*"/g,'');
+  frame.removeAttribute('sandbox');frame.srcdoc=html;
+ }catch(e){frame.srcdoc='<main style="font-family:sans-serif;padding:40px;text-align:center">تعذر تحميل القالب. ارجع للمكتبة وحاول مرة أخرى.</main>'}
+}
+loadTemplate();
+</script>
+</body>
+</html>

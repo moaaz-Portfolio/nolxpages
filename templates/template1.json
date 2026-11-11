@@ -2,10 +2,15 @@
   "id": "1",
   "name": "NOIR — Smart Responsive Portfolio",
   "category": "portfolio",
-  "preview_image": "template1.png","type": "portfolio",
+  "preview_image": "template1.png",
+  "type": "portfolio",
   "allow_add": true,
   "item_label": "مشروع",
-  "item_fields": ["image", "title", "desc"],
+  "item_fields": [
+    "image",
+    "title",
+    "desc"
+  ],
   "description": "An ultra-smart, fully responsive dark-themed portfolio template with fluid typography and bulletproof layout structures.",
   "variables": {
     "page_title": "NOIR | Portfolio",
