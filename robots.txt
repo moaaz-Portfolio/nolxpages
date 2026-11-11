@@ -1,9 +1,2 @@
 User-agent: *
 Allow: /
-Disallow: /admin/
-Disallow: /dashboard/
-Disallow: /control-panel/
-Disallow: /editor/
-Disallow: /login/
-
-Sitemap: https://nolxpages.store/sitemap.xml
