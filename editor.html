@@ -221,153 +221,6 @@
         .loading-state i { font-size: 2rem; color: var(--accent); opacity: 0.3; }
         .loading-state p { margin-top: 10px; font-size: 0.8rem; }
         
-        /* ===== PUBLISH SUCCESS MODAL ===== */
-        #publishSuccessModal .modal-box {
-            max-width: 480px;
-            text-align: center;
-            padding: 35px 30px;
-            animation: modalIn 0.4s cubic-bezier(0.16,1,0.3,1);
-        }
-        #publishSuccessModal .modal-box .publish-icon {
-            font-size: 3rem;
-            margin-bottom: 12px;
-        }
-        #publishSuccessModal .modal-box .publish-title {
-            font-size: 1.3rem;
-            font-weight: 900;
-            color: #fff;
-            margin-bottom: 4px;
-        }
-        #publishSuccessModal .modal-box .publish-sub {
-            color: rgba(255,255,255,0.2);
-            font-size: 0.8rem;
-            margin-bottom: 16px;
-        }
-        #publishSuccessModal .modal-box .url-box {
-            background: rgba(255,255,255,0.04);
-            border-radius: 12px;
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border: 1px solid rgba(255,255,255,0.06);
-            margin-bottom: 16px;
-            text-align: right;
-        }
-        #publishSuccessModal .modal-box .url-box .link-icon {
-            color: #D1F843;
-            flex-shrink: 0;
-        }
-        #publishSuccessModal .modal-box .url-box .url-text {
-            font-size: 0.7rem;
-            color: rgba(255,255,255,0.4);
-            word-break: break-all;
-            flex: 1;
-        }
-        #publishSuccessModal .modal-box .url-box .copy-btn {
-            background: rgba(209,248,67,0.1);
-            border: none;
-            color: #D1F843;
-            padding: 4px 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.6rem;
-            font-weight: 700;
-            flex-shrink: 0;
-            font-family: var(--font);
-        }
-        #publishSuccessModal .modal-box .url-box .copy-btn:hover {
-            background: rgba(209,248,67,0.18);
-        }
-        #publishSuccessModal .modal-box .waiting-box {
-            background: rgba(245,158,11,0.06);
-            border: 1px solid rgba(245,158,11,0.08);
-            border-radius: 12px;
-            padding: 14px 16px;
-            margin-bottom: 16px;
-        }
-        #publishSuccessModal .modal-box .waiting-box .waiting-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            justify-content: center;
-            margin-bottom: 4px;
-        }
-        #publishSuccessModal .modal-box .waiting-box .waiting-header .dot-waiting {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #f59e0b;
-            display: inline-block;
-            animation: pulse-dot 1s infinite;
-        }
-        #publishSuccessModal .modal-box .waiting-box .waiting-header .waiting-label {
-            font-weight: 800;
-            font-size: 0.8rem;
-            color: #f59e0b;
-        }
-        #publishSuccessModal .modal-box .waiting-box .waiting-note {
-            font-size: 0.65rem;
-            color: rgba(255,255,255,0.25);
-            line-height: 1.8;
-        }
-        #publishSuccessModal .modal-box .waiting-box .waiting-note strong {
-            color: rgba(255,255,255,0.4);
-        }
-        #publishSuccessModal .modal-box .waiting-box .waiting-note .highlight {
-            color: #D1F843;
-        }
-        #publishSuccessModal .modal-box .waiting-box .waiting-note .time {
-            color: #f59e0b;
-        }
-        #publishSuccessModal .modal-box .waiting-box .waiting-note .small-note {
-            color: rgba(255,255,255,0.1);
-            font-size: 0.55rem;
-        }
-        #publishSuccessModal .modal-box .modal-actions-center {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        #publishSuccessModal .modal-box .modal-actions-center .btn-visit {
-            background: #D1F843;
-            color: #0a0a0f;
-            border: none;
-            padding: 10px 24px;
-            border-radius: 12px;
-            font-weight: 800;
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: var(--font);
-        }
-        #publishSuccessModal .modal-box .modal-actions-center .btn-visit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(209,248,67,0.12);
-        }
-        #publishSuccessModal .modal-box .modal-actions-center .btn-ok {
-            background: rgba(255,255,255,0.04);
-            color: rgba(255,255,255,0.3);
-            border: 1px solid rgba(255,255,255,0.06);
-            padding: 10px 24px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: var(--font);
-        }
-        #publishSuccessModal .modal-box .modal-actions-center .btn-ok:hover {
-            background: rgba(255,255,255,0.08);
-            color: #fff;
-        }
-        #publishSuccessModal .modal-box .footer-note {
-            font-size: 0.5rem;
-            color: rgba(255,255,255,0.05);
-            margin-top: 12px;
-        }
-        
         @keyframes pulse-dot {
             0%, 100% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.3; transform: scale(0.7); }
@@ -384,18 +237,12 @@
             .modal-box { padding: 20px; }
             .details-box .details-image { height: 250px; }
             .details-box .details-body { padding: 20px; }
-            #publishSuccessModal .modal-box { padding: 25px 20px; }
-            #publishSuccessModal .modal-box .url-box { flex-wrap: wrap; justify-content: center; }
-            #publishSuccessModal .modal-box .modal-actions-center { flex-direction: column; align-items: center; }
-            #publishSuccessModal .modal-box .modal-actions-center button { width: 100%; justify-content: center; }
         }
         @media (max-width: 480px) {
             .top-nav .hide-mobile { display: none; }
             .top-nav .status { display: none; }
             .toolbar .hide-mobile { display: none; }
             .details-box .details-image { height: 200px; }
-            #publishSuccessModal .modal-box { padding: 20px 16px; }
-            #publishSuccessModal .modal-box .publish-title { font-size: 1.1rem; }
         }
     </style>
 </head>
@@ -948,7 +795,7 @@
         }
 
         // ============================================================
-        // تصدير القالب (يستخدم عند الشراء)
+        // تصدير المشروع كملف ZIP
         // ============================================================
 
         function exportProject() {
