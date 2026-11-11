@@ -1,4 +1,2684 @@
-<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>مساحة العمل | NOLX PAGES</title><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet"><style>
-:root{--bg:#08090d;--panel:#12141b;--line:rgba(255,255,255,.09);--muted:#9ca3af;--lime:#d1f843;--purple:#a78bfa}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 85% 0,rgba(167,139,250,.1),transparent 30%),var(--bg);color:#fff;font-family:Cairo,Arial,sans-serif;min-height:100vh}a{color:inherit;text-decoration:none}.wrap{width:min(1100px,calc(100% - 32px));margin:auto}header{height:76px;border-bottom:1px solid var(--line);display:flex;align-items:center}.nav{display:flex;align-items:center;justify-content:space-between;gap:16px}.logo{font-weight:900;letter-spacing:2px}.logo span{color:var(--lime)}.links{display:flex;gap:20px;color:#aaa;font-size:13px}.links a:hover{color:var(--lime)}main{padding:65px 0}.eyebrow{color:var(--lime);font-size:11px;letter-spacing:1.5px;font-weight:800}h1{font-size:clamp(30px,5vw,48px);margin:12px 0}.lead{color:var(--muted);line-height:2;max-width:720px}.panel{border:1px solid var(--line);background:var(--panel);border-radius:18px;padding:22px;margin-top:24px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:24px}.stat{border:1px solid var(--line);background:rgba(255,255,255,.025);border-radius:14px;padding:20px}.stat strong{display:block;color:var(--lime);font-size:28px}.stat span{color:var(--muted);font-size:12px}.btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:10px;padding:11px 17px;font-weight:800;font-size:13px;margin:6px 6px 0 0}.btn.primary{background:var(--lime);color:#101010;border-color:var(--lime)}.item{padding:14px;border:1px solid var(--line);border-radius:12px;margin:10px 0;display:flex;justify-content:space-between;gap:12px;align-items:center}.muted{color:var(--muted);font-size:12px;line-height:1.8}input,textarea{width:100%;padding:12px;border-radius:10px;background:#090b11;color:#fff;border:1px solid var(--line);font:inherit}footer{border-top:1px solid var(--line);padding:22px 0;color:#777;font-size:11px}@media(max-width:650px){.links{gap:10px;font-size:11px}.links a:nth-child(n+3){display:none}main{padding:42px 0}}
-</style></head><body><header><div class="wrap nav"><a class="logo" href="index.html">NOLX<span>PAGES</span></a><nav class="links"><a href="index.html">الرئيسية</a><a href="store.html">مكتبة القوالب</a><a href="my-templates.html">أعمالي</a><a href="about.html">عن المشروع</a></nav></div></header><main class="wrap"><div class="eyebrow">OPEN WORKSPACE</div><h1>مساحة العمل</h1><p class="lead">استخدم الأدوات مباشرة دون حساب أو رصيد. ملفاتك وتعديلاتك تظل داخل متصفحك على هذا الجهاز.</p><div class="grid"><div class="stat"><strong id="savedCount">0</strong><span>مشاريع محفوظة محليًا</span></div><div class="stat"><strong>مجاني</strong><span>لا توجد عمليات شراء أو شحن</span></div><div class="stat"><strong>ZIP</strong><span>تصدير نسخة من عملك</span></div></div><section class="panel"><h2>ابدأ العمل</h2><a class="btn primary" href="store.html">استكشف القوالب</a><a class="btn" href="editor.html?id=1">افتح المحرر</a><a class="btn" href="my-templates.html">مشاريعي المحفوظة</a><p class="muted">ملاحظة: الحفظ المحلي مرتبط بالمتصفح والجهاز، ومسح بيانات المتصفح قد يحذف التعديلات.</p></section><script>let n=0;for(let i=0;i<localStorage.length;i++){if(/^nolx_html_/.test(localStorage.key(i)))n++}document.getElementById('savedCount').textContent=n;</script></main><footer><div class="wrap">NOLX PAGES · نموذج مجاني مفتوح للجميع</div></footer></body></html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+        <link rel="icon" type="image/png" href="log.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NOLX PAGES | لوحة التحكم</title>
+
+    <meta name="description"
+        content="NOLX PAGES workspace for your saved website projects.">
+
+    <meta name="theme-color" content="#090A0B">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* =========================================================
+           ROOT
+        ========================================================= */
+
+        :root {
+            --bg: #090a0b;
+            --bg-soft: #0d0f10;
+            --panel: #111314;
+            --panel-2: #151718;
+
+            --border: rgba(255, 255, 255, .075);
+            --border-soft: rgba(255, 255, 255, .045);
+
+            --text: #f5f6f2;
+            --muted: #858b88;
+            --muted-2: #555b58;
+
+            --lime: #D1F843;
+            --lime-soft: rgba(209, 248, 67, .10);
+            --lime-border: rgba(209, 248, 67, .20);
+
+            --red: #ff5d67;
+            --blue: #6c9cff;
+            --purple: #a98cff;
+
+            --radius-lg: 24px;
+            --radius-md: 18px;
+            --radius-sm: 14px;
+
+            --sidebar-width: 245px;
+        }
+
+        /* =========================================================
+           RESET
+        ========================================================= */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            min-height: 100%;
+            background: var(--bg);
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(
+                    circle at 80% -10%,
+                    rgba(209, 248, 67, .055),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at 10% 100%,
+                    rgba(209, 248, 67, .025),
+                    transparent 28%
+                ),
+                var(--bg);
+
+            color: var(--text);
+            font-family: "Cairo", sans-serif;
+            overflow-x: hidden;
+        }
+
+        button,
+        input,
+        textarea,
+        select {
+            font: inherit;
+        }
+
+        button {
+            border: 0;
+            cursor: pointer;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        ::selection {
+            background: var(--lime);
+            color: #080909;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #262a29;
+            border-radius: 100px;
+        }
+
+        /* =========================================================
+           LOADING - إنيميشن بطيء وطويل
+        ========================================================= */
+
+        #loadingScreen {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #090a0b;
+        }
+
+        .loader-wrap {
+            text-align: center;
+        }
+
+        .loader-logo-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: visible;
+        }
+
+        .loader-logo-img {
+            height: 32px;
+            width: auto;
+            object-fit: contain;
+            opacity: 0;
+            transform: translateX(-60px) scale(0.3) rotate(-15deg);
+            animation: logoSlideIn 4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .loader-logo {
+            font-family: "Manrope", sans-serif;
+            font-size: 25px;
+            font-weight: 900;
+            letter-spacing: -.05em;
+            opacity: 0;
+            transform: translateX(30px) scale(0.95);
+            animation: textFadeIn 2.8s ease 1s forwards;
+            position: relative;
+        }
+
+        .loader-logo::before {
+            content: "";
+            position: absolute;
+            inset: -8px -12px;
+            background: radial-gradient(circle at center, rgba(209, 248, 67, 0.08), transparent 70%);
+            border-radius: 50%;
+            filter: blur(20px);
+            opacity: 0;
+            animation: glowPulse 2.5s ease 2s infinite;
+            z-index: -1;
+        }
+
+        .loader-logo span {
+            color: var(--lime);
+            font-weight: 500;
+            display: inline-block;
+            animation: textGlow 3s ease 1.8s infinite;
+        }
+
+        @keyframes logoSlideIn {
+            0% {
+                opacity: 0;
+                transform: translateX(-80px) scale(0.2) rotate(-20deg);
+            }
+            35% {
+                opacity: 1;
+                transform: translateX(10px) scale(1.15) rotate(3deg);
+            }
+            60% {
+                transform: translateX(-5px) scale(0.95) rotate(-1deg);
+            }
+            80% {
+                transform: translateX(3px) scale(1.02) rotate(0.5deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) scale(1) rotate(0deg);
+            }
+        }
+
+        @keyframes textFadeIn {
+            0% {
+                opacity: 0;
+                transform: translateX(40px) scale(0.9);
+                filter: blur(8px);
+            }
+            35% {
+                opacity: 0.6;
+                transform: translateX(-5px) scale(1.03);
+                filter: blur(2px);
+            }
+            65% {
+                opacity: 0.9;
+                transform: translateX(3px) scale(0.98);
+                filter: blur(0);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+                filter: blur(0);
+            }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% {
+                opacity: 0.3;
+                transform: scale(0.8);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.2);
+            }
+        }
+
+        @keyframes textGlow {
+            0%, 100% {
+                text-shadow: 0 0 20px rgba(209, 248, 67, 0.1);
+            }
+            50% {
+                text-shadow: 0 0 40px rgba(209, 248, 67, 0.25), 0 0 80px rgba(209, 248, 67, 0.08);
+            }
+        }
+
+        .loader {
+            width: 32px;
+            height: 32px;
+            margin: auto;
+
+            border: 2px solid rgba(255,255,255,.08);
+            border-top-color: var(--lime);
+
+            border-radius: 50%;
+
+            animation: spin 2s cubic-bezier(0.6, 0, 0.4, 1) infinite;
+        }
+
+        .loader-text {
+            margin-top: 16px;
+            color: var(--muted-2);
+            font-size: 11px;
+            opacity: 0;
+            animation: textFadeIn 2s ease 3s forwards;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg) scale(1);
+            }
+            50% {
+                transform: rotate(180deg) scale(1.05);
+            }
+            100% {
+                transform: rotate(360deg) scale(1);
+            }
+        }
+
+        /* =========================================================
+           APP
+        ========================================================= */
+
+        .app {
+            min-height: 100vh;
+        }
+
+        /* =========================================================
+           SIDEBAR
+        ========================================================= */
+
+        .sidebar {
+            position: fixed;
+            inset: 0 auto 0 0;
+
+            width: var(--sidebar-width);
+
+            padding: 26px 18px;
+
+            background: rgba(12, 14, 15, .92);
+            border-right: 1px solid var(--border);
+
+            display: flex;
+            flex-direction: column;
+
+            z-index: 1000;
+
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        html[dir="rtl"] .sidebar {
+            inset: 0 0 0 auto;
+            border-right: 0;
+            border-left: 1px solid var(--border);
+        }
+
+        /* =========================================================
+           BRAND
+        ========================================================= */
+
+        .brand {
+            padding: 4px 8px 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-logo {
+            height: 32px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .brand-main {
+            font-family: "Manrope", sans-serif;
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: -.06em;
+        }
+
+        .brand-main span {
+            color: var(--lime);
+            font-weight: 500;
+        }
+
+        .brand-sub {
+            margin-top: 3px;
+
+            color: var(--muted-2);
+            font-family: "Manrope", sans-serif;
+
+            font-size: 8px;
+            font-weight: 800;
+            letter-spacing: .24em;
+            text-transform: uppercase;
+        }
+
+        /* =========================================================
+           NAV
+        ========================================================= */
+
+        .nav-title {
+            padding: 0 10px 9px;
+
+            color: #444a47;
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .nav-item {
+            min-height: 48px;
+
+            display: flex;
+            align-items: center;
+            gap: 13px;
+
+            padding: 0 13px;
+
+            color: #6c726f;
+
+            border: 1px solid transparent;
+            border-radius: 14px;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            transition:
+                background .2s ease,
+                color .2s ease,
+                border .2s ease,
+                transform .2s ease;
+        }
+
+        .nav-item i {
+            width: 20px;
+
+            text-align: center;
+            font-size: 14px;
+
+            opacity: .75;
+        }
+
+        .nav-item:hover {
+            color: #e9ece9;
+            background: rgba(255,255,255,.035);
+        }
+
+        .nav-item.active {
+            color: var(--lime);
+
+            background: var(--lime-soft);
+            border-color: var(--lime-border);
+        }
+
+        .nav-item.active i {
+            opacity: 1;
+        }
+
+        .nav-badge {
+            margin-left: auto;
+
+            padding: 3px 8px;
+
+            color: #747a77;
+            background: rgba(255,255,255,.035);
+
+            border-radius: 8px;
+
+            font-family: "Manrope", sans-serif;
+            font-size: 8px;
+            font-weight: 800;
+        }
+
+        html[dir="rtl"] .nav-badge {
+            margin-left: 0;
+            margin-right: auto;
+        }
+
+        .nav-item.active .nav-badge {
+            color: var(--lime);
+            background: rgba(209,248,67,.09);
+        }
+
+        /* =========================================================
+           SIDEBAR FOOTER
+        ========================================================= */
+
+        .sidebar-bottom {
+            margin-top: auto;
+        }
+
+        .account-mini {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            padding: 11px;
+
+            border: 1px solid var(--border-soft);
+            border-radius: 15px;
+
+            background: rgba(255,255,255,.02);
+
+            margin-bottom: 9px;
+        }
+
+        .account-mini img {
+            width: 35px;
+            height: 35px;
+
+            border-radius: 50%;
+            object-fit: cover;
+
+            background: var(--lime);
+        }
+
+        .account-mini-info {
+            min-width: 0;
+        }
+
+        .account-mini-name {
+            color: #e7e9e7;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .account-mini-email {
+            margin-top: 1px;
+
+            color: #555b58;
+
+            font-family: "Manrope", sans-serif;
+            font-size: 8px;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .logout {
+            width: 100%;
+            min-height: 45px;
+
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding: 0 13px;
+
+            color: #777;
+
+            background: transparent;
+            border: 1px solid transparent;
+
+            border-radius: 13px;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            transition: .2s ease;
+        }
+
+        .logout:hover {
+            color: var(--red);
+            background: rgba(255,93,103,.055);
+            border-color: rgba(255,93,103,.12);
+        }
+
+        .logout i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* =========================================================
+           MAIN
+        ========================================================= */
+
+        .main {
+            min-height: 100vh;
+
+            margin-left: var(--sidebar-width);
+            padding: 28px 34px 50px;
+        }
+
+        html[dir="rtl"] .main {
+            margin-left: 0;
+            margin-right: var(--sidebar-width);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1380px;
+            margin: auto;
+        }
+
+        /* =========================================================
+           TOPBAR
+        ========================================================= */
+
+        .topbar {
+            min-height: 64px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 28px;
+        }
+
+        .page-title small {
+            display: block;
+
+            margin-bottom: 2px;
+
+            color: #4f5552;
+
+            font-family: "Manrope", sans-serif;
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: .16em;
+            text-transform: uppercase;
+        }
+
+        .page-title h1 {
+            font-size: 25px;
+            font-weight: 900;
+            letter-spacing: -.03em;
+        }
+
+        .page-title-inner {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* LANGUAGE */
+
+        .language {
+            display: flex;
+            gap: 2px;
+
+            padding: 3px;
+
+            background: #111415;
+            border: 1px solid var(--border);
+
+            border-radius: 11px;
+        }
+
+        .language button {
+            min-width: 38px;
+            height: 30px;
+
+            color: #555b58;
+            background: transparent;
+
+            border-radius: 8px;
+
+            font-family: "Manrope", sans-serif;
+            font-size: 9px;
+            font-weight: 900;
+
+            transition: .2s ease;
+        }
+
+        .language button.active {
+            color: #0a0b0b;
+            background: var(--lime);
+        }
+
+        /* TOP USER */
+
+        .top-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            padding-left: 10px;
+        }
+
+        html[dir="rtl"] .top-user {
+            padding-left: 0;
+            padding-right: 10px;
+        }
+
+        .top-user-text {
+            text-align: right;
+        }
+
+        html[dir="ltr"] .top-user-text {
+            text-align: left;
+        }
+
+        .top-user-name {
+            color: #e6e8e6;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .top-user-email {
+            margin-top: 1px;
+
+            color: #505653;
+
+            font-family: "Manrope", sans-serif;
+            font-size: 8px;
+        }
+
+        .top-avatar {
+            width: 39px;
+            height: 39px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            border: 1px solid var(--border);
+        }
+
+        /* =========================================================
+           HEADER LOGO - يظهر جنب Dashboard على الموبايل
+        ========================================================= */
+
+        .mobile-logo-header {
+            display: none;
+        }
+
+        @media (max-width: 760px) {
+            .mobile-logo-header {
+                display: block !important;
+                height: 22px;
+                width: auto;
+                object-fit: contain;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .mobile-logo-header {
+                height: 18px;
+            }
+        }
+
+        /* =========================================================
+           WELCOME HERO
+        ========================================================= */
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+
+            min-height: 205px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 36px 40px;
+
+            background:
+                linear-gradient(
+                    110deg,
+                    rgba(209,248,67,.09),
+                    rgba(255,255,255,.018) 55%,
+                    rgba(255,255,255,.01)
+                );
+
+            border: 1px solid var(--border);
+
+            border-radius: var(--radius-lg);
+
+            margin-bottom: 18px;
+        }
+
+        .hero::after {
+            content: "";
+
+            position: absolute;
+
+            width: 380px;
+            height: 380px;
+
+            top: -220px;
+            left: -120px;
+
+            border-radius: 50%;
+
+            background: rgba(209,248,67,.055);
+
+            filter: blur(70px);
+
+            pointer-events: none;
+        }
+
+        html[dir="rtl"] .hero::after {
+            left: auto;
+            right: -120px;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            color: var(--lime);
+
+            font-family: "Manrope", sans-serif;
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: .08em;
+            text-transform: uppercase;
+
+            margin-bottom: 13px;
+        }
+
+        .hero-label::before {
+            content: "";
+
+            width: 6px;
+            height: 6px;
+
+            border-radius: 50%;
+
+            background: var(--lime);
+
+            box-shadow: 0 0 14px rgba(209,248,67,.7);
+        }
+
+        .hero h2 {
+            max-width: 680px;
+
+            font-size: clamp(27px, 3vw, 42px);
+            line-height: 1.25;
+
+            font-weight: 900;
+
+            letter-spacing: -.045em;
+        }
+
+        .hero h2 span {
+            color: var(--lime);
+        }
+
+        .hero-description {
+            max-width: 520px;
+
+            margin-top: 11px;
+
+            color: #777e7a;
+
+            font-size: 12px;
+            line-height: 1.9;
+        }
+
+        .hero-action {
+            position: relative;
+            z-index: 2;
+
+            flex-shrink: 0;
+
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+
+            padding: 13px 18px;
+
+            color: #090a0b;
+            background: var(--lime);
+
+            border-radius: 12px;
+
+            font-size: 11px;
+            font-weight: 900;
+
+            box-shadow: 0 10px 30px rgba(209,248,67,.10);
+
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+
+        .hero-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(209,248,67,.16);
+        }
+
+        /* =========================================================
+           GRID
+        ========================================================= */
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.45fr) minmax(280px, .75fr);
+            gap: 18px;
+
+            margin-bottom: 18px;
+        }
+
+        /* =========================================================
+           BALANCE CARD
+        ========================================================= */
+
+        .balance-card {
+            position: relative;
+            overflow: hidden;
+
+            min-height: 230px;
+
+            padding: 27px;
+
+            background: #101213;
+
+            border: 1px solid var(--border);
+
+            border-radius: var(--radius-lg);
+        }
+
+        .balance-card::before {
+            content: "";
+
+            position: absolute;
+
+            width: 260px;
+            height: 260px;
+
+            right: -90px;
+            bottom: -150px;
+
+            border-radius: 50%;
+
+            background: rgba(209,248,67,.07);
+
+            filter: blur(40px);
+        }
+
+        html[dir="ltr"] .balance-card::before {
+            right: auto;
+            left: -90px;
+        }
+
+        .balance-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .eyebrow {
+            color: #555b58;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .balance-icon {
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: var(--lime);
+
+            background: var(--lime-soft);
+            border: 1px solid var(--lime-border);
+
+            border-radius: 12px;
+
+            font-size: 14px;
+        }
+
+        .balance-number {
+            position: relative;
+            z-index: 2;
+
+            margin-top: 24px;
+
+            display: flex;
+            align-items: baseline;
+            gap: 9px;
+        }
+
+        .balance-number strong {
+            font-family: "Manrope", sans-serif;
+
+            font-size: clamp(38px, 5vw, 58px);
+            line-height: 1;
+
+            font-weight: 800;
+
+            letter-spacing: -.07em;
+        }
+
+        .balance-number span {
+            color: #686e6b;
+
+            font-family: "Manrope", sans-serif;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .balance-footer {
+            position: relative;
+            z-index: 2;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-top: 28px;
+            padding-top: 16px;
+
+            border-top: 1px solid var(--border-soft);
+
+            color: #4f5552;
+
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        .balance-footer strong {
+            color: #7c837f;
+        }
+
+        /* =========================================================
+           QUICK STATS
+        ========================================================= */
+
+        .stats-card {
+            padding: 23px;
+
+            background: #101213;
+            border: 1px solid var(--border);
+
+            border-radius: var(--radius-lg);
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 17px;
+        }
+
+        .section-heading h3 {
+            font-size: 13px;
+            font-weight: 900;
+        }
+
+        .section-heading span {
+            color: #464c49;
+
+            font-family: "Manrope", sans-serif;
+            font-size: 8px;
+            font-weight: 800;
+        }
+
+        .stat-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding: 12px 0;
+
+            border-bottom: 1px solid var(--border-soft);
+        }
+
+        .stat-row:last-child {
+            border-bottom: 0;
+        }
+
+        .stat-icon {
+            width: 35px;
+            height: 35px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 11px;
+
+            font-size: 12px;
+        }
+
+        .stat-icon.lime {
+            color: var(--lime);
+            background: var(--lime-soft);
+        }
+
+        .stat-icon.blue {
+            color: var(--blue);
+            background: rgba(108,156,255,.10);
+        }
+
+        .stat-icon.purple {
+            color: var(--purple);
+            background: rgba(169,140,255,.10);
+        }
+
+        .stat-info {
+            min-width: 0;
+        }
+
+        .stat-label {
+            color: #565d59;
+            font-size: 8px;
+            font-weight: 700;
+        }
+
+        .stat-value {
+            margin-top: 1px;
+
+            color: #e5e8e5;
+
+            font-family: "Manrope", sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        /* =========================================================
+           SECTION CARD
+        ========================================================= */
+
+        .section-card {
+            padding: 23px;
+
+            background: #101213;
+
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+
+            margin-bottom: 18px;
+        }
+
+        /* =========================================================
+           ACTIONS
+        ========================================================= */
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .action {
+            min-height: 92px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+
+            padding: 15px;
+
+            background: #141617;
+            border: 1px solid var(--border-soft);
+
+            border-radius: 15px;
+
+            transition:
+                border .2s ease,
+                transform .2s ease,
+                background .2s ease;
+        }
+
+        .action:hover {
+            transform: translateY(-3px);
+
+            background: #181b1c;
+            border-color: rgba(209,248,67,.16);
+        }
+
+        .action-icon {
+            width: 32px;
+            height: 32px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 9px;
+
+            border-radius: 9px;
+
+            color: var(--lime);
+            background: var(--lime-soft);
+
+            font-size: 12px;
+        }
+
+        .action-title {
+            color: #d6dad7;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .action-description {
+            margin-top: 2px;
+
+            color: #4e5551;
+
+            font-size: 8px;
+        }
+
+        /* =========================================================
+           PURCHASED TEMPLATES
+        ========================================================= */
+
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .template-card {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+
+            min-width: 0;
+
+            padding: 13px;
+
+            background: #141617;
+            border: 1px solid var(--border-soft);
+
+            border-radius: 15px;
+
+            transition: .2s ease;
+        }
+
+        .template-card:hover {
+            border-color: rgba(209,248,67,.15);
+            background: #171a1b;
+        }
+
+        .template-icon {
+            width: 46px;
+            height: 46px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: var(--lime);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(209,248,67,.13),
+                    rgba(209,248,67,.025)
+                );
+
+            border: 1px solid rgba(209,248,67,.12);
+
+            border-radius: 12px;
+
+            font-size: 15px;
+        }
+
+        .template-info {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .template-category {
+            color: #565c59;
+
+            font-size: 8px;
+            font-weight: 700;
+        }
+
+        .template-name {
+            margin-top: 2px;
+
+            color: #dfe2df;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .edit-template {
+            flex-shrink: 0;
+
+            padding: 8px 10px;
+
+            color: var(--lime);
+            background: var(--lime-soft);
+
+            border: 1px solid rgba(209,248,67,.10);
+            border-radius: 9px;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            transition: .2s ease;
+        }
+
+        .edit-template:hover {
+            background: rgba(209,248,67,.16);
+        }
+
+        /* EMPTY */
+
+        .empty-state {
+            grid-column: 1 / -1;
+
+            text-align: center;
+
+            padding: 35px 15px;
+
+            color: #4d5450;
+        }
+
+        .empty-state i {
+            display: block;
+
+            margin-bottom: 11px;
+
+            font-size: 25px;
+            color: #303634;
+        }
+
+        .empty-state p {
+            font-size: 10px;
+        }
+
+        .empty-state a {
+            display: inline-block;
+
+            margin-top: 10px;
+
+            color: var(--lime);
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        /* =========================================================
+           ACCOUNT
+        ========================================================= */
+
+        .account-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 9px;
+        }
+
+        .account-item {
+            min-width: 0;
+
+            padding: 14px;
+
+            background: #141617;
+
+            border: 1px solid var(--border-soft);
+            border-radius: 13px;
+        }
+
+        .account-item.full {
+            grid-column: 1 / -1;
+        }
+
+        .account-label {
+            color: #4e5551;
+
+            font-size: 8px;
+            font-weight: 800;
+
+            margin-bottom: 4px;
+        }
+
+        .account-value {
+            color: #dfe2df;
+
+            font-family: "Manrope", sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+
+            word-break: break-word;
+        }
+
+        .account-value.rtl-text {
+            font-family: "Cairo", sans-serif;
+        }
+
+        .verified {
+            color: var(--lime);
+        }
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+
+        footer {
+            padding: 8px 0 20px;
+
+            color: #363b38;
+
+            text-align: center;
+
+            font-family: "Manrope", sans-serif;
+            font-size: 8px;
+            font-weight: 700;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        footer .footer-logo {
+            height: 18px;
+            width: auto;
+            object-fit: contain;
+            vertical-align: middle;
+        }
+
+        footer span {
+            color: var(--lime);
+            font-weight: 900;
+        }
+
+        /* =========================================================
+           MODAL
+        ========================================================= */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+
+            z-index: 9999;
+
+            display: none;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            background: rgba(0,0,0,.72);
+
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-box {
+            width: 100%;
+            max-width: 390px;
+
+            padding: 28px;
+
+            background: #111314;
+
+            border: 1px solid var(--border);
+
+            border-radius: 22px;
+
+            text-align: center;
+
+            animation: modalIn .25s ease;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px) scale(.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-icon {
+            width: 52px;
+            height: 52px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin: 0 auto 15px;
+
+            color: var(--red);
+            background: rgba(255,93,103,.08);
+
+            border: 1px solid rgba(255,93,103,.12);
+            border-radius: 15px;
+
+            font-size: 18px;
+        }
+
+        .modal h3 {
+            font-size: 17px;
+            font-weight: 900;
+        }
+
+        .modal p {
+            margin-top: 6px;
+
+            color: #656c68;
+
+            font-size: 10px;
+            line-height: 1.8;
+        }
+
+        .modal-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+
+            margin-top: 22px;
+        }
+
+        .modal-btn {
+            min-height: 44px;
+
+            border-radius: 11px;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .modal-cancel {
+            color: #818783;
+            background: #191c1d;
+            border: 1px solid var(--border);
+        }
+
+        .modal-confirm {
+            color: white;
+            background: var(--red);
+        }
+
+        /* =========================================================
+           FADE
+        ========================================================= */
+
+        .fade {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeUp .5s ease forwards;
+        }
+
+        .delay-1 {
+            animation-delay: .06s;
+        }
+
+        .delay-2 {
+            animation-delay: .12s;
+        }
+
+        .delay-3 {
+            animation-delay: .18s;
+        }
+
+        .delay-4 {
+            animation-delay: .24s;
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* =========================================================
+           MOBILE HEADER
+        ========================================================= */
+
+        .mobile-topbar {
+            display: none;
+        }
+
+        /* =========================================================
+           TABLET
+        ========================================================= */
+
+        @media (max-width: 1050px) {
+
+            :root {
+                --sidebar-width: 215px;
+            }
+
+            .main {
+                padding: 23px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* =========================================================
+           MOBILE        ========================================================= */
+
+        @media (max-width: 760px) {
+
+            body {
+                padding-bottom: 76px;
+            }
+
+            .sidebar {
+                top: auto;
+                bottom: 0;
+                left: 0;
+                right: 0;
+
+                width: 100%;
+                height: 68px;
+
+                padding: 6px 7px;
+
+                flex-direction: row;
+                align-items: stretch;
+
+                background: rgba(13,15,16,.96);
+
+                border: 0;
+                border-top: 1px solid var(--border);
+
+                backdrop-filter: blur(20px);
+            }
+
+            html[dir="rtl"] .sidebar {
+                left: 0;
+                right: 0;
+
+                border: 0;
+                border-top: 1px solid var(--border);
+            }
+
+            .brand,
+            .nav-title,
+            .sidebar-bottom {
+                display: none;
+            }
+
+            .nav {
+                width: 100%;
+
+                display: grid;
+                grid-template-columns: repeat(5, 1fr);
+
+                gap: 3px;
+            }
+
+            .nav-item {
+                min-height: 55px;
+
+                flex-direction: column;
+                justify-content: center;
+
+                gap: 4px;
+
+                padding: 4px 2px;
+
+                border-radius: 11px;
+
+                font-size: 7px;
+            }
+
+            .nav-item i {
+                width: auto;
+
+                font-size: 15px;
+            }
+
+            .nav-item .nav-text {
+                display: block;
+                line-height: 1.1;
+
+                white-space: nowrap;
+            }
+
+            .nav-badge {
+                display: none;
+            }
+
+            .main,
+            html[dir="rtl"] .main {
+                margin: 0;
+
+                padding: 17px 11px 30px;
+            }
+
+            .topbar {
+                min-height: 52px;
+
+                margin-bottom: 16px;
+            }
+
+            .page-title small {
+                font-size: 7px;
+            }
+
+            .page-title h1 {
+                font-size: 20px;
+            }
+
+            .top-user-text {
+                display: none;
+            }
+
+            .top-user {
+                padding: 0;
+            }
+
+            html[dir="rtl"] .top-user {
+                padding: 0;
+            }
+
+            .top-avatar {
+                width: 36px;
+                height: 36px;
+            }
+
+            .language button {
+                min-width: 32px;
+                height: 27px;
+
+                font-size: 8px;
+            }
+
+            .hero {
+                min-height: auto;
+
+                display: block;
+
+                padding: 25px 21px;
+
+                border-radius: 19px;
+
+                margin-bottom: 12px;
+            }
+
+            .hero-label {
+                font-size: 8px;
+            }
+
+            .hero h2 {
+                font-size: 25px;
+                letter-spacing: -.035em;
+            }
+
+            .hero-description {
+                margin-top: 8px;
+
+                font-size: 10px;
+                line-height: 1.8;
+            }
+
+            .hero-action {
+                margin-top: 19px;
+
+                padding: 11px 15px;
+
+                font-size: 9px;
+            }
+
+            .dashboard-grid {
+                gap: 12px;
+                margin-bottom: 12px;
+            }
+
+            .balance-card {
+                min-height: 190px;
+
+                padding: 21px;
+
+                border-radius: 19px;
+            }
+
+            .balance-number {
+                margin-top: 20px;
+            }
+
+            .balance-number strong {
+                font-size: 43px;
+            }
+
+            .stats-card,
+            .section-card {
+                padding: 18px;
+
+                border-radius: 19px;
+            }
+
+            .actions-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 7px;
+            }
+
+            .action {
+                min-height: 85px;
+                padding: 12px;
+            }
+
+            .action-title {
+                font-size: 9px;
+            }
+
+            .action-description {
+                font-size: 7px;
+            }
+
+            .templates-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .account-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .account-item.full {
+                grid-column: auto;
+            }
+
+            .section-heading {
+                margin-bottom: 13px;
+            }
+
+            .section-heading h3 {
+                font-size: 12px;
+            }
+
+            footer {
+                padding-bottom: 5px;
+                font-size: 7px;
+                gap: 4px;
+            }
+
+            footer .footer-logo {
+                height: 16px;
+            }
+        }
+
+        /* =========================================================
+           SMALL MOBILE
+        ========================================================= */
+
+        @media (max-width: 380px) {
+
+            .main,
+            html[dir="rtl"] .main {
+                padding-left: 8px;
+                padding-right: 8px;
+            }
+
+            .hero h2 {
+                font-size: 22px;
+            }
+
+            .balance-number strong {
+                font-size: 38px;
+            }
+
+            .nav-item {
+                font-size: 6.5px;
+            }
+
+            .nav-item i {
+                font-size: 14px;
+            }
+
+            footer .footer-logo {
+                height: 14px;
+            }
+        }
+
+        /* =========================================================
+           LTR
+        ========================================================= */
+
+        html[dir="ltr"] body {
+            font-family: "Manrope", "Cairo", sans-serif;
+        }
+
+        html[dir="ltr"] .hero-description,
+        html[dir="ltr"] .account-value.rtl-text {
+            font-family: "Manrope", "Cairo", sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================================================
+         LOADING
+    ========================================================= -->
+
+    <div id="loadingScreen">
+        <div class="loader-wrap">
+
+            <div class="loader-logo-wrap">
+                <img src="logo.png" alt="NOLX" class="loader-logo-img">
+                <div class="loader-logo">
+                    NOLX<span>PAGES</span>
+                </div>
+            </div>
+
+            <div class="loader"></div>
+
+            <div class="loader-text" id="loadingText">
+                جاري تحميل لوحة التحكم...
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- =========================================================
+         APP
+    ========================================================= -->
+
+    <div class="app">
+
+        <!-- =====================================================
+             SIDEBAR
+        ===================================================== -->
+
+        <aside class="sidebar">
+
+            <div class="brand">
+
+                <img src="logo.png" alt="NOLX" class="brand-logo">
+
+                <div>
+
+                    <div class="brand-main">
+                        NOLX<span>PAGES</span>
+                    </div>
+
+                    <div class="brand-sub">
+                        Creative workspace
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="nav-title">
+                Workspace
+            </div>
+
+
+            <nav class="nav">
+
+                <a href="#" class="nav-item active">
+
+                    <i class="fas fa-grid-2"></i>
+
+                    <span class="nav-text"
+                        data-i18n="dashboard">
+                        لوحة التحكم
+                    </span>
+
+                    <span class="nav-badge">
+                        v2
+                    </span>
+
+                </a>
+
+
+                <a href="store.html" class="nav-item">
+
+                    <i class="fas fa-store"></i>
+
+                    <span class="nav-text"
+                        data-i18n="explore">
+                        استكشف القوالب
+                    </span>
+
+                </a>
+
+
+                <a href="my-templates.html" class="nav-item">
+
+                    <i class="fas fa-layer-group"></i>
+
+                    <span class="nav-text"
+                        data-i18n="myTemplates">
+                        قوالبي
+                    </span>
+
+                    <span class="nav-badge"
+                        id="templateBadge">
+                        0
+                    </span>
+
+                </a>
+
+
+                <a href="editor.html?id=1" class="nav-item">
+                    <i class="fas fa-pen-to-square"></i>
+                    <span class="nav-text" data-i18n="editor">المحرر</span>
+                </a>
+
+
+                <a href="chat.html" class="nav-item">
+
+                    <i class="fas fa-headset"></i>
+
+                    <span class="nav-text"
+                        data-i18n="support">
+                        الدعم الفني
+                    </span>
+
+                </a>
+
+            </nav>
+
+        </aside>
+
+
+        <!-- =====================================================
+             MAIN
+        ===================================================== -->
+
+        <main class="main">
+
+            <div class="container">
+
+
+                <!-- =================================================
+                     TOPBAR
+                ================================================= -->
+
+                <header class="topbar fade">
+
+                    <div class="page-title">
+
+                        <div class="page-title-inner">
+                            <img src="logo.png" alt="NOLX" class="mobile-logo-header">
+                            <div>
+                                <small>NOLX PAGES</small>
+                                <h1 data-i18n="dashboard">لوحة التحكم</h1>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="top-actions">
+
+
+                        <!-- LANGUAGE -->
+
+                        <div class="language">
+
+                            <button id="arBtn"
+                                class="active"
+                                type="button"
+                                onclick="setLanguage('ar')">
+                                AR
+                            </button>
+
+                            <button id="enBtn"
+                                type="button"
+                                onclick="setLanguage('en')">
+                                EN
+                            </button>
+
+                        </div>
+
+
+                        <!-- USER -->
+
+                        <div class="top-user">
+
+                            <div class="top-user-text">
+
+                                <div id="headerUserName"
+                                    class="top-user-name">
+                                    مستخدم
+                                </div>
+
+                                <div id="headerUserEmail"
+                                    class="top-user-email">
+                                    جاري التحميل...
+                                </div>
+
+                            </div>
+
+
+                            <img id="headerAvatar"
+                                class="top-avatar"
+                                src=""
+                                alt="User">
+
+                        </div>
+
+                    </div>
+
+                </header>
+
+
+                <!-- =================================================
+                     HERO
+                ================================================= -->
+
+                <section class="hero fade delay-1">
+
+                    <div class="hero-content">
+
+                        <div class="hero-label">
+                            NOLX WORKSPACE
+                        </div>
+
+                        <h2>
+                            <span data-i18n="hello">
+                                أهلاً
+                            </span>
+                            <span>,</span>
+                            <span id="welcomeName">
+                                مستخدم
+                            </span>
+                        </h2>
+
+                        <p class="hero-description"
+                            data-i18n="workspaceReady">
+                            مساحة عمل NOLX الخاصة بك جاهزة.
+                        </p>
+
+                    </div>
+
+
+                    <a href="store.html"
+                        class="hero-action">
+
+                        <i class="fas fa-arrow-left"></i>
+
+                        <span data-i18n="explore">
+                            استكشف القوالب
+                        </span>
+
+                    </a>
+
+                </section>
+
+
+                <!-- =================================================
+                     BALANCE + STATS
+                ================================================= -->
+
+                <section class="dashboard-grid fade delay-2">
+
+
+                    <!-- WORKSPACE CARD -->
+                    <div class="balance-card">
+                        <div class="balance-top">
+                            <div><div class="eyebrow" data-i18n="availableBalance">المشاريع المحفوظة</div></div>
+                            <div class="balance-icon"><i class="fas fa-folder-open"></i></div>
+                        </div>
+                        <div class="balance-number">
+                            <strong id="userBalance">0</strong>
+                            <span data-i18n="savedProjects">مشروع</span>
+                        </div>
+                        <div class="balance-footer">
+                            <span>NOLX PAGES</span>
+                            <strong><i class="fas fa-layer-group"></i> WORKSPACE</strong>
+                        </div>
+                    </div>
+
+                    <!-- STATS -->
+
+                    <div class="stats-card">
+
+                        <div class="section-heading">
+
+                            <h3 data-i18n="total">
+                                الإحصائيات
+                            </h3>
+
+                            <span>
+                                OVERVIEW
+                            </span>
+
+                        </div>
+
+
+                        <div class="stat-row">
+                            <div class="stat-icon lime"><i class="fas fa-folder-open"></i></div>
+                            <div class="stat-info">
+                                <div class="stat-label" data-i18n="availableTemplates">القوالب المتاحة</div>
+                                <div class="stat-value"><span id="statAvailable">0</span></div>
+                            </div>
+                        </div>
+
+                        <div class="stat-row">
+
+                            <div class="stat-icon blue">
+                                <i class="fas fa-layer-group"></i>
+                            </div>
+
+                            <div class="stat-info">
+
+                                <div class="stat-label"
+                                    data-i18n="myTemplates">
+                                    القوالب المشتراة
+                                </div>
+
+                                <div class="stat-value"
+                                    id="statTemplates">
+                                    0
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="stat-row">
+
+                            <div class="stat-icon purple">
+                                <i class="fas fa-download"></i>
+                            </div>
+
+                            <div class="stat-info">
+
+                                <div class="stat-label"
+                                    data-i18n="exports">
+                                    التحميلات
+                                </div>
+
+                                <div class="stat-value"
+                                    id="statDownloads">
+                                    0
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     QUICK ACTIONS
+                ================================================= -->
+
+                <section class="section-card fade delay-3">
+
+                    <div class="section-heading">
+
+                        <h3 data-i18n="quickActions">
+                            وصول سريع
+                        </h3>
+
+                        <span>
+                            SHORTCUTS
+                        </span>
+
+                    </div>
+
+
+                    <div class="actions-grid">
+
+
+                        <a href="store.html"
+                            class="action">
+
+                            <div class="action-icon">
+                                <i class="fas fa-store"></i>
+                            </div>
+
+                            <div class="action-title"
+                                data-i18n="explore">
+                                استكشف القوالب
+                            </div>
+
+                            <div class="action-description">
+                                Browse templates
+                            </div>
+
+                        </a>
+
+
+                        <a href="my-templates.html"
+                            class="action">
+
+                            <div class="action-icon">
+                                <i class="fas fa-layer-group"></i>
+                            </div>
+
+                            <div class="action-title"
+                                data-i18n="myTemplates">
+                                قوالبي
+                            </div>
+
+                            <div class="action-description">
+                                Your collection
+                            </div>
+
+                        </a>
+
+
+                        <a href="editor.html?id=1" class="action">
+                            <div class="action-icon"><i class="fas fa-pen-to-square"></i></div>
+                            <div class="action-title" data-i18n="editor">افتح المحرر</div>
+                            <div class="action-description">Visual editor</div>
+                        </a>
+
+
+                        <a href="chat.html"
+                            class="action">
+
+                            <div class="action-icon">
+                                <i class="fas fa-headset"></i>
+                            </div>
+
+                            <div class="action-title"
+                                data-i18n="support">
+                                الدعم الفني
+                            </div>
+
+                            <div class="action-description">
+                                Need help?
+                            </div>
+
+                        </a>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     PURCHASED TEMPLATES
+                ================================================= -->
+
+                <section class="section-card fade delay-3">
+
+                    <div class="section-heading">
+
+                        <div>
+
+                            <h3 data-i18n="myTemplates">
+                                مشاريعك المحفوظة
+                            </h3>
+
+                        </div>
+
+                        <span>
+                            COLLECTION
+                        </span>
+
+                    </div>
+
+
+                    <div id="savedProjectsList"
+                        class="templates-grid">
+
+                        <div class="empty-state">
+
+                            <i class="fas fa-spinner fa-spin"></i>
+
+                            <p>
+                                جاري تحميل القوالب...
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     ACCOUNT
+                ================================================= -->
+
+                <section class="section-card fade delay-4">
+
+                    <div class="section-heading">
+
+                        <h3 data-i18n="workspaceInformation">
+                            معلومات الحساب
+                        </h3>
+
+                        <span>
+                            ACCOUNT
+                        </span>
+
+                    </div>
+
+
+                    <div class="account-grid">
+
+
+                        <div class="account-item">
+
+                            <div class="account-label"
+                                data-i18n="workspaceName">
+                                اسم المستخدم
+                            </div>
+
+                            <div id="accountName"
+                                class="account-value rtl-text">
+                                -
+                            </div>
+
+                        </div>
+
+
+                        <div class="account-item">
+
+                            <div class="account-label"
+                                data-i18n="storageType">
+                                البريد الإلكتروني
+                            </div>
+
+                            <div id="accountEmail"
+                                class="account-value">
+                                -
+                            </div>
+
+                        </div>
+
+
+                        <div class="account-item">
+
+                            <div class="account-label"
+                                data-i18n="saveStatus">
+                                مزود تسجيل الدخول
+                            </div>
+
+                            <div id="accountProvider"
+                                class="account-value">
+                                -
+                            </div>
+
+                        </div>
+
+
+                        <div class="account-item">
+
+                            <div class="account-label"
+                                data-i18n="exportStatus">
+                                التحقق من البريد
+                            </div>
+
+                            <div id="accountVerification"
+                                class="account-value">
+                                -
+                            </div>
+
+                        </div>
+
+
+                        <div class="account-item full">
+
+                            <div class="account-label"
+                                data-i18n="workspaceId">
+                                معرف الحساب
+                            </div>
+
+                            <div id="accountUid"
+                                class="account-value">
+                                -
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <footer>
+                    <img src="logo.png" alt="NOLX" class="footer-logo">
+                    <span>NOLX PAGES</span> — Creative Workspace
+                </footer>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <!-- =========================================================
+         LOGOUT MODAL
+    ========================================================= -->
+
+    <div id="logoutModal"
+        class="modal">
+
+        <div class="modal-box">
+
+            <div class="modal-icon">
+                <i class="fas fa-right-from-bracket"></i>
+            </div>
+
+            <h3 data-i18n="logoutTitle">
+                تأكيد تسجيل الخروج
+            </h3>
+
+            <p data-i18n="logoutDescription">
+                هل أنت متأكد من رغبتك في تسجيل الخروج من حسابك؟
+            </p>
+
+
+            <div class="modal-actions">
+
+                <button class="modal-btn modal-cancel"
+                    onclick="closeLogoutModal()"
+                    data-i18n="cancel">
+                    إلغاء
+                </button>
+
+                <button class="modal-btn modal-confirm"
+                    id="confirmLogoutBtn"
+                    data-i18n="logout">
+                    تسجيل الخروج
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+(function () {
+    "use strict";
+    const translations = {
+        ar: {
+            dashboard:"لوحة التحكم", explore:"استكشف القوالب", myTemplates:"مشاريعي",
+            editor:"المحرر", support:"الدعم الفني", hello:"أهلاً",
+            workspaceReady:"مساحة عمل NOLX الخاصة بك جاهزة.",
+            availableBalance:"المشاريع المحفوظة", savedProjects:"مشروع", availableTemplates:"القوالب المتاحة",
+            total:"نظرة عامة", exports:"التصديرات", quickActions:"وصول سريع",
+            workspaceInformation:"معلومات مساحة العمل", workspaceName:"مساحة العمل",
+            storageType:"مكان الحفظ", saveStatus:"حالة الحفظ", exportStatus:"التصدير",
+            workspaceId:"معرّف مساحة العمل", logoutTitle:"العودة إلى الرئيسية؟",
+            logoutDescription:"يمكنك الرجوع إلى الصفحة الرئيسية في أي وقت.",
+            cancel:"إلغاء", logout:"الرئيسية", loading:"جاري تحميل لوحة التحكم..."
+        },
+        en: {
+            dashboard:"Dashboard", explore:"Explore templates", myTemplates:"My projects",
+            editor:"Editor", support:"Support", hello:"Hello",
+            workspaceReady:"Your NOLX workspace is ready.",
+            availableBalance:"Saved projects", savedProjects:"projects", availableTemplates:"Available templates",
+            total:"Workspace overview", exports:"Exports", quickActions:"Quick actions",
+            workspaceInformation:"Workspace information", workspaceName:"Workspace",
+            storageType:"Storage", saveStatus:"Save status", exportStatus:"Export",
+            workspaceId:"Workspace ID", logoutTitle:"Return to home?",
+            logoutDescription:"You can return to the home page at any time.",
+            cancel:"Cancel", logout:"Home", loading:"Loading workspace..."
+        }
+    };
+    let currentLanguage = localStorage.getItem("nolxDashboardLang") || "ar";
+    const $ = id => document.getElementById(id);
+    window.setLanguage = function (lang) {
+        currentLanguage = translations[lang] ? lang : "ar";
+        localStorage.setItem("nolxDashboardLang", currentLanguage);
+        document.documentElement.lang = currentLanguage;
+        document.documentElement.dir = currentLanguage === "ar" ? "rtl" : "ltr";
+        document.querySelectorAll("[data-i18n]").forEach(node => {
+            const key = node.getAttribute("data-i18n");
+            if (translations[currentLanguage][key]) node.textContent = translations[currentLanguage][key];
+        });
+        $("arBtn")?.classList.toggle("active", currentLanguage === "ar");
+        $("enBtn")?.classList.toggle("active", currentLanguage === "en");
+    };
+    function getSavedIds() {
+        const ids = new Set();
+        for (let i = 0; i < localStorage.length; i++) {
+            const match = (localStorage.key(i) || "").match(/^nolx_html_(.+)$/);
+            if (match) ids.add(match[1]);
+        }
+        return [...ids];
+    }
+    function make(tag, className, text) {
+        const node = document.createElement(tag);
+        if (className) node.className = className;
+        if (text !== undefined) node.textContent = text;
+        return node;
+    }
+    async function loadSavedProjects() {
+        const ids = getSavedIds(), count = ids.length;
+        $("userBalance").textContent = String(count);
+        $("statTemplates").textContent = String(count);
+        $("templateBadge").textContent = String(count);
+        $("statDownloads").textContent = localStorage.getItem("nolx_download_count") || "0";
+        const container = $("savedProjectsList");
+        if (!container) return;
+        container.replaceChildren();
+        if (!count) {
+            const empty = make("div", "empty-state");
+            empty.append(make("i", "fas fa-folder-open"));
+            empty.append(make("p", "", currentLanguage === "ar" ? "لسه مفيش مشاريع محفوظة." : "No saved projects yet."));
+            const link = make("a", "", currentLanguage === "ar" ? "استكشف القوالب ←" : "Explore templates →");
+            link.href = "store.html"; empty.append(link); container.append(empty); return;
+        }
+        let catalog = { templates: [] };
+        try {
+            const response = await fetch("templates/catalog.json", { cache: "no-store" });
+            if (response.ok) catalog = await response.json();
+        } catch (error) { console.warn("[NOLX] Catalog unavailable:", error); }
+        const byId = new Map((catalog.templates || []).map(item => [String(item.id), item]));
+        let found = 0;
+        for (const id of ids) {
+            const entry = byId.get(String(id)) || { id, file: "template" + id + ".json" };
+            let template = {};
+            try {
+                const response = await fetch("templates/" + (entry.file || ("template" + id + ".json")));
+                if (response.ok) template = await response.json();
+            } catch (_) {}
+            const card = make("article", "template-card");
+            const icon = make("div", "template-icon");
+            if (template.preview_image) {
+                const img = make("img"); img.src = template.preview_image;
+                img.alt = template.name || ("Template " + id); img.loading = "lazy";
+                img.style.width = "100%"; img.style.height = "100%"; img.style.objectFit = "cover";
+                icon.replaceChildren(img);
+            } else icon.append(make("i", "fas fa-window-maximize"));
+            const info = make("div", "template-info");
+            info.append(make("div", "template-category", template.category || "NOLX"));
+            info.append(make("div", "template-name", template.name || (currentLanguage === "ar" ? "قالب رقم " + id : "Template " + id)));
+            const edit = make("a", "edit-template", currentLanguage === "ar" ? "متابعة التعديل" : "Continue editing");
+            edit.href = "editor.html?id=" + encodeURIComponent(id);
+            info.append(edit); card.append(icon, info); container.append(card); found++;
+        }
+        $("statAvailable").textContent = String((catalog.templates || []).length);
+    }
+    function setupWorkspaceProfile() {
+        const fields = {
+            headerUserName: currentLanguage === "ar" ? "مساحة العمل" : "Workspace",
+            headerUserEmail: "NOLX PAGES",
+            welcomeName: currentLanguage === "ar" ? "بك" : "to your workspace",
+            accountName: "NOLX PAGES",
+            accountEmail: currentLanguage === "ar" ? "هذا المتصفح" : "This browser",
+            accountProvider: "Local Storage",
+            accountVerification: currentLanguage === "ar" ? "جاهز" : "Ready",
+            accountUid: "NOLX-WORKSPACE"
+        };
+        Object.entries(fields).forEach(([id, value]) => { if ($(id)) $(id).textContent = value; });
+        if ($("headerAvatar")) $("headerAvatar").src = "logo.png";
+    }
+    window.openLogoutModal = function () { $("logoutModal")?.classList.add("show"); };
+    window.closeLogoutModal = function () { $("logoutModal")?.classList.remove("show"); };
+    $("confirmLogoutBtn")?.addEventListener("click", () => { window.location.href = "index.html"; });
+    $("logoutModal")?.addEventListener("click", event => { if (event.target === $("logoutModal")) window.closeLogoutModal(); });
+    document.addEventListener("keydown", event => { if (event.key === "Escape") window.closeLogoutModal(); });
+    window.setLanguage(currentLanguage);
+    setupWorkspaceProfile();
+    loadSavedProjects();
+    window.addEventListener("storage", loadSavedProjects);
+    const loader = $("loadingScreen");
+    if (loader) setTimeout(() => { loader.style.display = "none"; }, 450);
+})();
+</script>
+
+</body>
+</html>
