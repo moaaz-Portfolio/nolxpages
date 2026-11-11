@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+        <link rel="icon" type="image/png" href="log.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>NOLX PAGES | Control Panel</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nolxDark: '#005840',
+                        nolxLime: '#D1F843',
+                        nolxBg: '#ECF0EF'
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .bg-dark-grid {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background: #0a0a0f;
+        }
+        .dot-grid canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.3;
+        }
+        .dot-grid .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+        }
+        .dot-grid .glow-orb.g1 { width: 500px; height: 500px; top: -200px; right: -150px; background: rgba(209, 248, 67, 0.05); animation: floatGlow 25s ease-in-out infinite alternate; }
+        .dot-grid .glow-orb.g2 { width: 400px; height: 400px; bottom: -150px; left: -100px; background: rgba(209, 248, 67, 0.03); animation: floatGlow 20s ease-in-out infinite alternate-reverse; }
+        @keyframes floatGlow { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(40px,-50px) scale(1.3); } }
+
+        .glass {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255,255,255,0.04);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+
+        .sidebar {
+            background: rgba(255,255,255,0.02);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-left: 1px solid rgba(255,255,255,0.04);
+            color: #fff;
+            transition: all 0.3s ease;
+            z-index: 50;
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 260px;
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-thumb { background: rgba(209,248,67,0.08); border-radius: 99px; }
+        .sidebar .logo-text .brand { font-size: 1.4rem; font-weight: 900; letter-spacing: 0.05em; color: #fff; }
+        .sidebar .logo-text .brand span { color: #D1F843; font-weight: 300; }
+        .sidebar .logo-text .sub { font-size: 9px; color: rgba(255,255,255,0.15); letter-spacing: 0.3em; margin-top: 2px; }
+
+        .nav-item {
+            transition: all .25s ease;
+            color: rgba(255,255,255,0.35);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .nav-item:hover { background: rgba(255,255,255,0.04); color: #fff; transform: translateX(-4px); }
+        .nav-item.active { background: rgba(209,248,67,0.06); color: #D1F843; border: 1px solid rgba(209,248,67,0.06); }
+        .nav-item i { width: 22px; text-align: center; font-size: 1.05rem; }
+        .nav-item .nav-badge { margin-right: auto; font-size: 9px; background: rgba(209,248,67,0.08); color: #D1F843; padding: 2px 10px; border-radius: 99px; }
+
+        .logout-btn {
+            transition: all .25s ease;
+            margin-top: auto;
+            padding: 12px 16px;
+            border-radius: 14px;
+            border: 1px solid rgba(239,68,68,0.12);
+            color: rgba(239,68,68,0.5);
+            font-weight: 700;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: transparent;
+            cursor: pointer;
+            width: 100%;
+        }
+        .logout-btn:hover { transform: translateY(-2px); background: rgba(239,68,68,0.06); border-color: rgba(239,68,68,0.2); color: #ef4444; }
+        .logout-btn i { font-size: 1.05rem; width: 22px; text-align: center; }
+
+        .main-content {
+            margin-right: 260px;
+            width: calc(100% - 260px);
+            min-height: 100vh;
+            padding: 28px;
+            position: relative;
+            z-index: 10;
+            overflow-x: hidden;
+        }
+
+        .btn-action {
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-action:hover { transform: translateY(-2px); }
+
+        .btn-add { background: rgba(16,185,129,0.12); color: #34d399; border: 1px solid rgba(16,185,129,0.08); }
+        .btn-add:hover { background: rgba(16,185,129,0.18); }
+
+        .btn-deduct { background: rgba(239,68,68,0.12); color: #f87171; border: 1px solid rgba(239,68,68,0.08); }
+        .btn-deduct:hover { background: rgba(239,68,68,0.18); }
+
+        .btn-history { background: rgba(59,130,246,0.12); color: #60a5fa; border: 1px solid rgba(59,130,246,0.08); }
+        .btn-history:hover { background: rgba(59,130,246,0.18); }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.show { display: flex; }
+        .modal-box {
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 24px;
+            padding: 28px 24px;
+            max-width: 420px;
+            width: 100%;
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn { from { opacity: 0; transform: scale(0.9) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        .modal-box h3 { font-size: 1.2rem; font-weight: 900; color: #fff; margin-bottom: 6px; }
+        .modal-box p { font-size: 0.85rem; color: rgba(255,255,255,0.25); margin-bottom: 20px; }
+
+        .input-dark {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.04);
+            color: #fff;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .input-dark:focus { border-color: rgba(209,248,67,0.1); background: rgba(255,255,255,0.06); }
+        .input-dark::placeholder { color: rgba(255,255,255,0.15); }
+
+        .btn-confirm {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            background: #D1F843;
+            color: #0a0a0f;
+            font-weight: 800;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Cairo', sans-serif;
+        }
+        .btn-confirm:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(209,248,67,0.12); }
+
+        .btn-cancel-modal {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            background: transparent;
+            color: rgba(255,255,255,0.3);
+            font-weight: 700;
+            border: 1px solid rgba(255,255,255,0.06);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Cairo', sans-serif;
+        }
+        .btn-cancel-modal:hover { background: rgba(255,255,255,0.04); color: #fff; }
+
+        .fade-in { animation: fadeIn 0.5s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(209,248,67,0.08); border-radius: 99px; }
+
+        .search-input {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 14px;
+            padding: 12px 18px;
+            color: #fff;
+            width: 100%;
+            max-width: 320px;
+            font-family: 'Cairo', sans-serif;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .search-input:focus { border-color: rgba(209,248,67,0.08); background: rgba(255,255,255,0.05); }
+        .search-input::placeholder { color: rgba(255,255,255,0.12); }
+
+        @media (max-width: 768px) {
+            .sidebar { width: 72px; padding: 16px 8px !important; }
+            .sidebar-text { display: none; }
+            .main-content { margin-right: 72px; padding: 16px 12px !important; }
+            .sidebar .logo-text { display: none; }
+            .nav-item { padding: 12px 10px !important; justify-content: center; gap: 0; }
+            .nav-item i { font-size: 1.1rem; margin: 0; }
+            .nav-item .nav-badge { display: none; }
+            .logout-btn { padding: 12px 10px !important; justify-content: center; }
+            .logout-btn span { display: none; }
+            .logout-btn i { margin: 0; }
+            .btn-action { font-size: 0.7rem; padding: 5px 10px; }
+            .search-input { max-width: 100%; }
+        }
+
+        @media (max-width: 500px) {
+            .sidebar { width: 60px; padding: 12px 4px !important; }
+            .main-content { margin-right: 60px; padding: 12px 8px !important; }
+            .nav-item { padding: 10px 6px !important; border-radius: 10px; }
+            .nav-item i { font-size: 0.9rem; }
+            .logout-btn { padding: 10px 6px !important; border-radius: 10px; }
+        }
+        
+        /* ===== RESULT CARD ===== */
+        .result-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 16px;
+            padding: 20px 24px;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        .result-card:hover {
+            border-color: rgba(209,248,67,0.06);
+            background: rgba(255,255,255,0.04);
+        }
+        .result-card .user-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .result-card .user-info .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .result-card .user-info .details .name {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #fff;
+        }
+        .result-card .user-info .details .email {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.2);
+        }
+        .result-card .stats {
+            display: flex;
+            gap: 24px;
+            padding: 12px 0;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 16px;
+        }
+        .result-card .stats .stat-item {
+            text-align: center;
+        }
+        .result-card .stats .stat-item .label {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.15);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .result-card .stats .stat-item .value {
+            font-weight: 900;
+            font-size: 1.1rem;
+            color: #D1F843;
+        }
+        .result-card .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .not-found {
+            text-align: center;
+            padding: 40px 20px;
+            color: rgba(255,255,255,0.08);
+        }
+        .not-found i {
+            font-size: 3rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .not-found p {
+            font-size: 0.9rem;
+        }
+        
+        /* ===== PASS MODAL ===== */
+        #passModal { 
+            position: fixed; 
+            inset: 0; 
+            background: #0a0a0f; 
+            z-index: 99999; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== PASSWORD MODAL ===== -->
+    <div id="passModal">
+        <div class="modal-box" style="max-width:300px;text-align:center;">
+            <h3 style="margin-bottom:20px;">🔐 دخول الإدارة</h3>
+            <input id="passInput" type="password" class="input-dark" placeholder="كلمة السر...">
+            <button onclick="checkPass()" class="btn-confirm" style="margin-top:15px;">دخول</button>
+        </div>
+    </div>
+
+    <!-- ===== BACKGROUND ===== -->
+    <div class="bg-dark-grid">
+        <div class="dot-grid">
+            <canvas id="networkCanvas"></canvas>
+            <div class="glow-orb g1"></div>
+            <div class="glow-orb g2"></div>
+        </div>
+    </div>
+
+    <!-- ===== LOADING ===== -->
+    <div id="loadingScreen" style="position:fixed;inset:0;background:#0a0a0f;display:flex;align-items:center;justify-content:center;z-index:9999;">
+        <div class="text-center">
+            <div style="width:45px;height:45px;border:3px solid rgba(209,248,67,0.08);border-top-color:#D1F843;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px;"></div>
+            <p class="font-semibold text-white/20 text-sm">جاري تحميل لوحة التحكم...</p>
+        </div>
+    </div>
+    <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+
+    <!-- ===== MODALS ===== -->
+    <div id="addModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3>💰 إضافة رصيد</h3>
+            <p id="addUserInfo">إضافة رصيد للمستخدم</p>
+            <div class="space-y-4">
+                <input id="addAmount" type="number" class="input-dark" placeholder="المبلغ (EGP)" min="1" step="1">
+                <input id="addNote" type="text" class="input-dark" placeholder="ملاحظة (اختياري)">
+                <button onclick="confirmAdd()" class="btn-confirm">إضافة الرصيد</button>
+                <button onclick="closeModal('addModal')" class="btn-cancel-modal">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="deductModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3>➖ خصم رصيد</h3>
+            <p id="deductUserInfo">خصم رصيد من المستخدم</p>
+            <div class="space-y-4">
+                <input id="eductAmount" type="number" class="input-dark" placeholder="المبلغ (EGP)" min="1" step="1">
+                <input id="deductNote" type="text" class="input-dark" placeholder="ملاحظة (اختياري)">
+                <button onclick="confirmDeduct()" class="btn-confirm" style="background:#ef4444;color:#fff;">خصم الرصيد</button>
+                <button onclick="closeModal('deductModal')" class="btn-cancel-modal">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="historyModal" class="modal-overlay">
+        <div class="modal-box" style="max-width: 520px;">
+            <h3>📜 سجل المعاملات</h3>
+            <p id="historyUserInfo" style="margin-bottom:16px;">سجل معاملات المستخدم</p>
+            <div id="historyList" style="max-height:300px;overflow-y:auto;margin-bottom:16px;">
+                <div class="text-center text-white/15 text-sm py-4">جاري التحميل...</div>
+            </div>
+            <button onclick="closeModal('historyModal')" class="btn-cancel-modal">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar">
+        <div class="logo-text mb-6">
+            <div class="brand">NOLX<span>PAGES</span></div>
+            <div class="sub">CONTROL PANEL</div>
+        </div>
+        <nav class="space-y-1 flex-1">
+            <div class="nav-item active" onclick="window.location.href='control-panel.html'">
+                <i class="fas fa-users-cog"></i>
+                <span class="sidebar-text">إدارة المستخدمين</span>
+                <span class="nav-badge" id="userCount">🔍</span>
+            </div>
+            <div class="nav-item" onclick="window.location.href='dashboard.html'">
+                <i class="fas fa-chart-pie"></i>
+                <span class="sidebar-text">لوحة التحكم</span>
+            </div>
+        </nav>
+        <button id="logoutBtn" class="logout-btn">
+            <i class="fas fa-right-from-bracket"></i>
+            <span class="sidebar-text">تسجيل الخروج</span>
+        </button>
+    </aside>
+
+    <!-- ===== MAIN ===== -->
+    <main class="main-content">
+
+        <header class="glass rounded-2xl px-6 py-4 mb-6 flex flex-wrap items-center justify-between gap-4 fade-in">
+            <div>
+                <p class="text-[10px] font-bold uppercase tracking-widest text-white/15">NOLX PAGES</p>
+                <h1 class="text-xl sm:text-2xl font-black mt-0.5">👑 إدارة المستخدمين</h1>
+            </div>
+            <div class="flex items-center gap-3">
+                <span id="adminBadge" class="text-xs bg-[#D1F843]/10 text-[#D1F843] px-4 py-1.5 rounded-full font-bold">أدمين</span>
+                <img id="headerAvatar" src="https://ui-avatars.com/api/?name=Admin&background=D1F843&color=0a0a0f" class="w-10 h-10 rounded-full object-cover border border-white/10 shadow-lg" alt="Admin">
+            </div>
+        </header>
+
+        <div class="fade-in">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+                <div class="relative flex-1 max-w-md">
+                    <i class="fas fa-search absolute right-4 top-1/2 -translate-y-1/2 text-white/10"></i>
+                    <input id="searchInput" type="text" class="search-input pr-12" placeholder="🔍 بحث عن مستخدم (UID أو البريد الإلكتروني)" onkeydown="if(event.key === 'Enter') searchUser()">
+                </div>
+                <button onclick="clearSearch()" class="btn-action" style="background:rgba(255,255,255,0.03);color:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.04);padding:10px 18px;">
+                    <i class="fas fa-times"></i> مسح
+                </button>
+            </div>
+
+            <div id="resultContainer">
+                <div class="text-center text-white/15 py-12">
+                    <i class="fas fa-search text-3xl mb-4 block"></i>
+                    <p>ابحث عن مستخدم باستخدام البريد الإلكتروني أو UID</p>
+                    <p class="text-xs mt-1 text-white/5">مثال: user@email.com أو abc123...</p>
+                </div>
+            </div>
+        </div>
+
+        <footer class="text-center py-6 text-[10px] text-white/8">
+            NOLX Pages — Control Panel v2.0 (Search Only - Zero Reads on Load)
+        </footer>
+
+    </main>
+
+    <!-- ===== FIREBASE ===== -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, getDoc, updateDoc, setDoc, query, where, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBbpP6uttRj_7LozBvtPRw7QtHzBfr72CU",
+            authDomain: "nolxpages.firebaseapp.com",
+            projectId: "nolxpages",
+            storageBucket: "nolxpages.firebasestorage.app",
+            messagingSenderId: "672585065953",
+            appId: "1:672585065953:web:cb95a1eb3f962faff19ea0",
+            measurementId: "G-ENEG3Q96W9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // ===== NETWORK CANVAS =====
+        (function() {
+            const canvas = document.getElementById('networkCanvas');
+            const ctx = canvas.getContext('2d');
+            let width, height, dots = [];
+            const NUM_DOTS = 40, CONNECTION_DISTANCE = 100;
+
+            function resize() {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = width;
+                canvas.height = height;
+            }
+
+            function createDots() {
+                dots = [];
+                for (let i = 0; i < NUM_DOTS; i++) {
+                    dots.push({
+                        x: Math.random() * width,
+                        y: Math.random() * height,
+                        vx: (Math.random() - 0.5) * 0.3,
+                        vy: (Math.random() - 0.5) * 0.3,
+                        r: 1 + Math.random() * 1.5
+                    });
+                }
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+                for (let d of dots) {
+                    d.x += d.vx;
+                    d.y += d.vy;
+                    if (d.x < 0 || d.x > width) d.vx *= -1;
+                    if (d.y < 0 || d.y > height) d.vy *= -1;
+                }
+                for (let i = 0; i < dots.length; i++) {
+                    for (let j = i + 1; j < dots.length; j++) {
+                        const dx = dots[i].x - dots[j].x;
+                        const dy = dots[i].y - dots[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < CONNECTION_DISTANCE) {
+                            const alpha = 1 - (dist / CONNECTION_DISTANCE);
+                            ctx.beginPath();
+                            ctx.moveTo(dots[i].x, dots[i].y);
+                            ctx.lineTo(dots[j].x, dots[j].y);
+                            ctx.strokeStyle = `rgba(209, 248, 67, ${alpha * 0.05})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                for (let d of dots) {
+                    ctx.beginPath();
+                    ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(209, 248, 67, 0.08)';
+                    ctx.fill();
+                }
+                requestAnimationFrame(draw);
+            }
+
+            window.addEventListener('resize', () => { resize(); createDots(); });
+            resize();
+            createDots();
+            draw();
+        })();
+
+        // ===== GLOBALS =====
+        let currentUserData = null;
+
+        // ===== DOM REFS =====
+        const resultContainer = document.getElementById('resultContainer');
+        const searchInput = document.getElementById('searchInput');
+
+        // ===== PASSWORD CHECK =====
+        window.checkPass = function() {
+            const pass = document.getElementById('passInput').value;
+            if(pass === "123456") { // 🔑 غير الباسورد هنا
+                document.getElementById('passModal').style.display = 'none';
+                document.getElementById('loadingScreen').style.display = 'none';
+                console.log('[NOLX] Panel Initialized - Zero Reads Mode');
+            } else {
+                alert("❌ كلمة السر غلط!");
+            }
+        };
+
+        // ===== SEARCH USER (Optimized) =====
+        window.searchUser = async function() {
+            const queryText = searchInput.value.trim();
+            if (!queryText) {
+                clearSearch();
+                return;
+            }
+
+            resultContainer.innerHTML = `
+                <div class="text-center text-white/15 py-12">
+                    <i class="fas fa-spinner fa-spin text-2xl mb-3 block"></i>
+                    <p>جاري البحث...</p>
+                </div>
+            `;
+
+            try {
+                let userData = null;
+
+                // 1. البحث بالـ UID مباشرة (قراءة واحدة)
+                try {
+                    const userRef = doc(db, "users", queryText);
+                    const userSnap = await getDoc(userRef);
+                    if (userSnap.exists()) {
+                        userData = { uid: queryText, ...userSnap.data() };
+                    }
+                } catch (e) {}
+
+                // 2. البحث بالإيميل (قراءة واحدة مع where)
+                if (!userData) {
+                    try {
+                        const usersRef = collection(db, "users");
+                        const q = query(usersRef, where("email", "==", queryText), limit(1));
+                        const querySnapshot = await getDocs(q);
+
+                        if (!querySnapshot.empty) {
+                            const docSnap = querySnapshot.docs[0];
+                            userData = { uid: docSnap.id, ...docSnap.data() };
+                        }
+                    } catch (e) {
+                        console.error("Email search error:", e);
+                    }
+                }
+
+                // 3. البحث بالـ username (قراءة واحدة مع where)
+                if (!userData) {
+                    try {
+                        const usersRef = collection(db, "users");
+                        const q = query(usersRef, where("username", "==", queryText), limit(1));
+                        const querySnapshot = await getDocs(q);
+
+                        if (!querySnapshot.empty) {
+                            const docSnap = querySnapshot.docs[0];
+                            userData = { uid: docSnap.id, ...docSnap.data() };
+                        }
+                    } catch (e) {
+                        console.error("Username search error:", e);
+                    }
+                }
+
+                if (userData) {
+                    currentUserData = { uid: userData.uid, ...userData };
+                    renderUserCard(userData);
+                } else {
+                    resultContainer.innerHTML = `
+                        <div class="not-found">
+                            <i class="fas fa-user-slash"></i>
+                            <p>لم يتم العثور على مستخدم بـ "${queryText}"</p>
+                            <p class="text-xs mt-2 text-white/5">تأكد من البريد الإلكتروني أو UID الصحيح</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error("[NOLX] Search error:", error);
+                resultContainer.innerHTML = `
+                    <div class="text-center text-red-400/50 py-12">
+                        <i class="fas fa-exclamation-circle text-2xl mb-3 block"></i>
+                        <p>حدث خطأ أثناء البحث</p>
+                    </div>
+                `;
+            }
+        };
+
+        // ===== RENDER USER CARD =====
+        function renderUserCard(user) {
+            const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username || user.email || 'User')}&background=D1F843&color=0a0a0f&size=64`;
+            
+            const templatesCount = user.templates?.length || 0;
+            const transactionsCount = user.transactions?.length || 0;
+
+            resultContainer.innerHTML = `
+                <div class="result-card fade-in">
+                    <div class="user-info">
+                        <img src="${avatarUrl}" class="avatar" alt="${user.username || 'User'}">
+                        <div class="details">
+                            <div class="name">${user.username || 'مستخدم'}</div>
+                            <div class="email">${user.email || 'بدون بريد'}</div>
+                            <div class="text-xs text-white/10 mt-1 font-mono">UID: ${user.uid}</div>
+                        </div>
+                    </div>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="label">الرصيد</div>
+                            <div class="value">${user.credits || 0} EGP</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="label">القوالب</div>
+                            <div class="value">${templatesCount}</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="label">المعاملات</div>
+                            <div class="value">${transactionsCount}</div>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button onclick="openAddModal('${user.uid}', '${user.username || 'User'}', ${user.credits || 0})" class="btn-action btn-add">
+                            <i class="fas fa-plus"></i> إضافة رصيد
+                        </button>
+                        <button onclick="openDeductModal('${user.uid}', '${user.username || 'User'}', ${user.credits || 0})" class="btn-action btn-deduct">
+                            <i class="fas fa-minus"></i> خصم رصيد
+                        </button>
+                        <button onclick="openHistoryModal('${user.uid}', '${user.username || 'User'}')" class="btn-action btn-history">
+                            <i class="fas fa-list"></i> سجل المعاملات
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ===== CLEAR SEARCH =====
+        window.clearSearch = function() {
+            searchInput.value = '';
+            currentUserData = null;
+            resultContainer.innerHTML = `
+                <div class="text-center text-white/15 py-12">
+                    <i class="fas fa-search text-3xl mb-4 block"></i>
+                    <p>ابحث عن مستخدم باستخدام البريد الإلكتروني أو UID</p>
+                    <p class="text-xs mt-1 text-white/5">مثال: user@email.com أو abc123...</p>
+                </div>
+            `;
+        };
+
+        // ===== MODALS =====
+        let selectedUid = '';
+        let selectedUsername = '';
+
+        window.openAddModal = function(uid, username, currentCredits) {
+            selectedUid = uid;
+            selectedUsername = username;
+            document.getElementById('addUserInfo').textContent = `${username} — الرصيد الحالي: ${currentCredits} EGP`;
+            document.getElementById('addAmount').value = '';
+            document.getElementById('addNote').value = '';
+            document.getElementById('addModal').classList.add('show');
+            setTimeout(() => document.getElementById('addAmount').focus(), 100);
+        };
+
+        window.openDeductModal = function(uid, username, currentCredits) {
+            selectedUid = uid;
+            selectedUsername = username;
+            document.getElementById('deductUserInfo').textContent = `${username} — الرصيد الحالي: ${currentCredits} EGP`;
+            document.getElementById('eductAmount').value = '';
+            document.getElementById('deductNote').value = '';
+            document.getElementById('deductModal').classList.add('show');
+            setTimeout(() => document.getElementById('eductAmount').focus(), 100);
+        };
+
+        window.closeModal = function(id) {
+            document.getElementById(id).classList.remove('show');
+        };
+
+        // ===== CONFIRM ADD =====
+        window.confirmAdd = async function() {
+            const amount = parseInt(document.getElementById('addAmount').value);
+            const note = document.getElementById('addNote').value.trim() || 'شحن رصيد يدوي';
+
+            if (!amount || amount <= 0) {
+                alert('الرجاء إدخال مبلغ صحيح');
+                return;
+            }
+
+            try {
+                const userRef = doc(db, "users", selectedUid);
+                const userSnap = await getDoc(userRef);
+                
+                if (!userSnap.exists()) {
+                    await setDoc(userRef, {
+                        credits: 0,
+                        transactions: [],
+                        templates: [],
+                        createdAt: new Date().toISOString()
+                    });
+                }
+
+                const currentCredits = userSnap.data()?.credits || 0;
+                const currentTransactions = userSnap.data()?.transactions || [];
+
+                await updateDoc(userRef, {
+                    credits: currentCredits + amount,
+                    transactions: [...currentTransactions, {
+                        type: "add",
+                        amount: amount,
+                        note: note,
+                        adminId: 'admin',
+                        timestamp: new Date().toISOString()
+                    }]
+                });
+
+                alert(`✅ تم إضافة ${amount} EGP إلى رصيد ${selectedUsername}`);
+                closeModal('addModal');
+                
+                if (currentUserData && currentUserData.uid === selectedUid) {
+                    const updatedSnap = await getDoc(userRef);
+                    if (updatedSnap.exists()) {
+                        currentUserData = { uid: selectedUid, ...updatedSnap.data() };
+                        renderUserCard(currentUserData);
+                    }
+                }
+            } catch (error) {
+                console.error("[NOLX] Add error:", error);
+                alert('❌ حدث خطأ أثناء إضافة الرصيد: ' + error.message);
+            }
+        };
+
+        // ===== CONFIRM DEDUCT =====
+        window.confirmDeduct = async function() {
+            const amount = parseInt(document.getElementById('eductAmount').value);
+            const note = document.getElementById('deductNote').value.trim() || 'خصم رصيد يدوي';
+
+            if (!amount || amount <= 0) {
+                alert('الرجاء إدخال مبلغ صحيح');
+                return;
+            }
+
+            try {
+                const userRef = doc(db, "users", selectedUid);
+                const userSnap = await getDoc(userRef);
+                
+                if (!userSnap.exists()) {
+                    alert('❌ المستخدم غير موجود');
+                    return;
+                }
+
+                const currentCredits = userSnap.data()?.credits || 0;
+                const currentTransactions = userSnap.data()?.transactions || [];
+
+                if (currentCredits < amount) {
+                    alert(`❌ الرصيد غير كافٍ! الرصيد الحالي: ${currentCredits} EGP`);
+                    return;
+                }
+
+                await updateDoc(userRef, {
+                    credits: currentCredits - amount,
+                    transactions: [...currentTransactions, {
+                        type: "deduct",
+                        amount: amount,
+                        note: note,
+                        adminId: 'admin',
+                        timestamp: new Date().toISOString()
+                    }]
+                });
+
+                alert(`✅ تم خصم ${amount} EGP من رصيد ${selectedUsername}`);
+                closeModal('deductModal');
+                
+                if (currentUserData && currentUserData.uid === selectedUid) {
+                    const updatedSnap = await getDoc(userRef);
+                    if (updatedSnap.exists()) {
+                        currentUserData = { uid: selectedUid, ...updatedSnap.data() };
+                        renderUserCard(currentUserData);
+                    }
+                }
+            } catch (error) {
+                console.error("[NOLX] Deduct error:", error);
+                alert('❌ حدث خطأ أثناء خصم الرصيد: ' + error.message);
+            }
+        };
+
+        // ===== HISTORY =====
+        window.openHistoryModal = async function(uid, username) {
+            document.getElementById('historyUserInfo').textContent = `${username} — سجل المعاملات`;
+            document.getElementById('historyList').innerHTML = '<div class="text-center text-white/15 text-sm py-4">جاري التحميل...</div>';
+            document.getElementById('historyModal').classList.add('show');
+
+            try {
+                const userRef = doc(db, "users", uid);
+                const userSnap = await getDoc(userRef);
+                
+                if (!userSnap.exists()) {
+                    document.getElementById('historyList').innerHTML = `
+                        <div class="text-center text-white/15 py-6">
+                            <i class="fas fa-inbox text-2xl mb-2 block"></i>
+                            <p>لا توجد معاملات</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const transactions = userSnap.data()?.transactions || [];
+
+                if (transactions.length === 0) {
+                    document.getElementById('historyList').innerHTML = `
+                        <div class="text-center text-white/15 py-6">
+                            <i class="fas fa-inbox text-2xl mb-2 block"></i>
+                            <p>لا توجد معاملات</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = '';
+                const sorted = [...transactions].reverse();
+                sorted.forEach(t => {
+                    const isAdd = t.type === 'add';
+                    const icon = isAdd ? 'fa-plus-circle' : 'fa-minus-circle';
+                    const color = isAdd ? 'text-emerald-400' : 'text-red-400';
+                    const sign = isAdd ? '+' : '-';
+                    const date = t.timestamp ? new Date(t.timestamp) : new Date();
+                    const dateStr = date.toLocaleDateString('ar-EG');
+                    const timeStr = date.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+
+                    html += `
+                        <div class="flex items-center justify-between py-3 border-b border-white/5 last:border-0">
+                            <div class="flex items-center gap-3">
+                                <i class="fas ${icon} ${color} w-5 text-center"></i>
+                                <div>
+                                    <p class="font-bold text-sm">${t.note || (isAdd ? 'شحن رصيد' : 'خصم رصيد')}</p>
+                                    <p class="text-xs text-white/15">${dateStr} - ${timeStr}</p>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="font-bold ${color}">${sign} ${t.amount} EGP</p>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                document.getElementById('historyList').innerHTML = html;
+
+            } catch (error) {
+                console.error("[NOLX] History error:", error);
+                document.getElementById('historyList').innerHTML = `
+                    <div class="text-center text-red-400/50 py-6">
+                        <i class="fas fa-exclamation-circle text-2xl mb-2 block"></i>
+                        <p>حدث خطأ أثناء تحميل السجل</p>
+                    </div>
+                `;
+            }
+        };
+
+        // ===== LOGOUT =====
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            window.location.replace('index.html');
+        });
+
+        console.log('[NOLX] Control Panel v2.0 - Search Only (Zero Reads on Load)');
+    </script>
+<script src="notify.js"></script>
+</body>
+</html>

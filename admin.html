@@ -1,0 +1,3404 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+        <link rel="icon" type="image/png" href="log.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOLX | لوحة تحكم الدعم</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Cairo',sans-serif;
+    background:#0a0a0f;
+    color:#fff;
+    height:100vh;
+    overflow:hidden;
+}
+
+/* نفس استايل موقع العميل */
+.bg-dark-grid{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    background:#0a0a0f;
+}
+
+.dot-grid{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+    background:radial-gradient(circle at 20% 30%,rgba(209,248,67,.04) 0%,transparent 50%),radial-gradient(circle at 80% 70%,rgba(209,248,67,.02) 0%,transparent 45%);
+}
+
+.dot-grid canvas{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    opacity:.4;
+}
+
+.glow-orb{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(80px);
+    pointer-events:none;
+}
+
+.glow-orb.g1{
+    width:500px;
+    height:500px;
+    top:-200px;
+    right:-150px;
+    background:rgba(209,248,67,.06);
+    animation:floatGlow 25s ease-in-out infinite alternate;
+}
+
+.glow-orb.g2{
+    width:400px;
+    height:400px;
+    bottom:-150px;
+    left:-100px;
+    background:rgba(209,248,67,.04);
+    animation:floatGlow 20s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes floatGlow{
+    0%{transform:translate(0,0) scale(1)}
+    100%{transform:translate(40px,-50px) scale(1.3)}
+}
+
+.admin-container{
+    position:relative;
+    z-index:1;
+    display:flex;
+    height:100vh;
+    overflow:hidden;
+    padding:20px;
+    gap:20px;
+}
+
+::-webkit-scrollbar{
+    width:4px;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#D1F843;
+    border-radius:99px;
+}
+
+.sidebar{
+    width:340px;
+    min-width:340px;
+    background:rgba(255,255,255,.02);
+    backdrop-filter:blur(40px) saturate(180%);
+    -webkit-backdrop-filter:blur(40px) saturate(180%);
+    display:flex;
+    flex-direction:column;
+    border-radius:28px;
+    border:1px solid rgba(255,255,255,.04);
+    overflow:hidden;
+}
+
+.sidebar-header{
+    padding:16px 20px;
+    background:rgba(255,255,255,.02);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid rgba(255,255,255,.04);
+}
+
+.sidebar-brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.logo-icon{
+    width:36px;
+    height:36px;
+    border-radius:12px;
+    background:#D1F843;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#0a0a0f;
+    font-size:18px;
+    font-weight:900;
+}
+
+.brand-text{
+    font-weight:900;
+    font-size:17px;
+    color:#fff;
+}
+
+.brand-text span{
+    font-weight:300;
+    opacity:.5;
+}
+
+.brand-sub{
+    font-size:8px;
+    color:rgba(255,255,255,.35);
+    letter-spacing:2px;
+}
+
+.admin-status-badge{
+    font-size:9px;
+    background:rgba(255,255,255,.05);
+    color:#fff;
+    padding:4px 12px;
+    border-radius:99px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    border:1px solid rgba(255,255,255,.04);
+}
+
+.dot{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:#22c55e;
+}
+
+.stats-bar{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:6px;
+    padding:12px;
+    background:rgba(255,255,255,.02);
+}
+
+.stat-card{
+    background:rgba(255,255,255,.03);
+    border-radius:14px;
+    padding:8px 4px;
+    text-align:center;
+    border:1px solid rgba(255,255,255,.04);
+}
+
+.stat-card .number{
+    display:block;
+    font-size:18px;
+    font-weight:900;
+    color:#D1F843;
+}
+
+.stat-card .label{
+    display:block;
+    font-size:8px;
+    color:rgba(255,255,255,.35);
+}
+
+.pending .number{
+    color:#f59e0b;
+}
+
+.active .number{
+    color:#22c55e;
+}
+
+.closed .number{
+    color:#6b7280;
+}
+
+.search-bar{
+    padding:8px 14px;
+    background:rgba(255,255,255,.02);
+}
+
+.search-bar input{
+    width:100%;
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:99px;
+    padding:7px 15px;
+    outline:none;
+    font-family:'Cairo';
+    background:rgba(255,255,255,.03);
+    color:#fff;
+}
+
+.search-bar input::placeholder{
+    color:rgba(255,255,255,.2);
+}
+
+.sidebar-section{
+    padding:8px 16px 4px;
+    font-size:9px;
+    font-weight:800;
+    color:rgba(255,255,255,.3);
+    flex-shrink:0;
+}
+
+.sidebar-section .count{
+    background:rgba(255,255,255,.05);
+    padding:1px 8px;
+    border-radius:99px;
+    color:#D1F843;
+}
+
+.chat-list{
+    overflow-y:auto;
+    padding:2px 6px 6px;
+}
+
+.chat-item{
+    padding:10px 14px;
+    cursor:pointer;
+    border-radius:14px;
+    margin-bottom:2px;
+    transition:.2s;
+}
+
+.chat-item:hover{
+    background:rgba(255,255,255,.04);
+}
+
+.chat-item.active{
+    background:rgba(209,248,67,.06);
+    border-right:3px solid #D1F843;
+}
+
+.chat-row{
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+}
+
+.name{
+    font-size:13px;
+    font-weight:700;
+    color:#fff;
+}
+
+.user-email{
+    display:block;
+    font-size:9px;
+    color:rgba(255,255,255,.3);
+}
+
+.last-msg{
+    font-size:10px;
+    color:rgba(255,255,255,.3);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    max-width:180px;
+}
+
+.time{
+    font-size:8px;
+    color:rgba(255,255,255,.25);
+}
+
+.status-badge{
+    font-size:7px;
+    padding:2px 8px;
+    border-radius:99px;
+}
+
+.status-badge.pending{
+    color:#f59e0b;
+    background:rgba(245,158,11,.1);
+}
+
+.status-badge.active{
+    color:#22c55e;
+    background:rgba(34,197,94,.1);
+}
+
+.status-badge.closed{
+    color:#6b7280;
+    background:rgba(107,114,128,.1);
+}
+
+.presence-dot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    display:inline-block;
+    margin-left:4px;
+}
+
+.presence-dot.online{
+    background:#22c55e;
+}
+
+.presence-dot.offline{
+    background:#9ca3af;
+}
+
+.main-chat{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+    background:rgba(255,255,255,.02);
+    backdrop-filter:blur(40px) saturate(180%);
+    -webkit-backdrop-filter:blur(40px) saturate(180%);
+    border-radius:28px;
+    border:1px solid rgba(255,255,255,.04);
+    overflow:hidden;
+}
+
+.chat-header{
+    padding:12px 20px;
+    background:rgba(255,255,255,.02);
+    border-bottom:1px solid rgba(255,255,255,.04);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    flex-shrink:0;
+}
+
+.chat-title{
+    font-size:15px;
+    font-weight:900;
+    color:#D1F843;
+}
+
+.chat-sub{
+    font-size:10px;
+    color:rgba(255,255,255,.3);
+}
+
+/* معلومات المستخدم الإضافية */
+.user-info-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,.04);
+    padding: 4px 12px;
+    border-radius: 99px;
+    font-size: 10px;
+    color: rgba(255,255,255,.6);
+    margin-top: 4px;
+    border: 1px solid rgba(255,255,255,.04);
+}
+
+.user-info-badge i {
+    font-size: 10px;
+    opacity: 0.6;
+}
+
+.user-info-badge .uid-copy {
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 0 4px;
+    border-radius: 4px;
+}
+
+.user-info-badge .uid-copy:hover {
+    background: rgba(209,248,67,0.1);
+    color: #D1F843;
+}
+
+.user-info-badge .uid-copy.copied {
+    background: rgba(209,248,67,0.2);
+    color: #D1F843;
+}
+
+.chat-actions{
+    display:flex;
+    gap:5px;
+}
+
+.chat-actions button{
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:99px;
+    padding:6px 12px;
+    cursor:pointer;
+    font-family:'Cairo';
+    font-size:9px;
+    font-weight:700;
+    background:rgba(255,255,255,.03);
+    color:rgba(255,255,255,.5);
+    transition:.2s;
+}
+
+.chat-actions button:hover{
+    background:rgba(255,255,255,.08);
+}
+
+.btn-refresh{color:#3b82f6;}
+.btn-refresh:hover{background:rgba(59,130,246,.1)!important;}
+
+.btn-ticket{color:#f59e0b;}
+.btn-ticket:hover{background:rgba(245,158,11,.1)!important;}
+
+.btn-close{color:#dc2626;}
+.btn-close:hover{background:rgba(220,38,38,.1)!important;}
+
+.btn-delete{color:#6b7280;}
+.btn-delete:hover{background:rgba(107,114,128,.1)!important;}
+
+.messages-area{
+    flex:1;
+    overflow-y:auto;
+    padding:18px 20px;
+    display:flex;
+    flex-direction:column;
+}
+
+.message-row{
+    display:flex;
+    margin-bottom:7px;
+}
+
+.message-row.user{
+    justify-content:flex-end;
+}
+
+.message-row.admin{
+    justify-content:flex-start;
+}
+
+.message-row.system{
+    justify-content:center;
+}
+
+.message-bubble{
+    max-width:78%;
+    padding:10px 15px;
+    border-radius:18px;
+    word-break:break-word;
+}
+
+.message-user{
+    background:rgba(255,255,255,.08);
+    color:#fff;
+    border-radius:18px 18px 4px 18px;
+    border:1px solid rgba(255,255,255,.04);
+}
+
+.message-admin{
+    background:#D1F843;
+    color:#0a0a0f;
+    border-radius:18px 18px 18px 4px;
+}
+
+.message-system{
+    background:rgba(209,248,67,.06);
+    color:rgba(255,255,255,.45);
+    padding:5px 15px;
+    border-radius:99px;
+    font-size:9px;
+    border:1px solid rgba(255,255,255,.04);
+}
+
+.message-time{
+    display:block;
+    font-size:7px;
+    opacity:.35;
+    margin-top:4px;
+}
+
+.message-admin .message-time{
+    color:#0a0a0f;
+}
+
+.empty-state{
+    margin:auto;
+    text-align:center;
+    color:rgba(255,255,255,.08);
+}
+
+.empty-state i{
+    font-size:45px;
+    margin-bottom:10px;
+    color:rgba(255,255,255,.04);
+}
+
+.empty-state h3{
+    font-size:16px;
+    color:rgba(255,255,255,.1);
+}
+
+.empty-state p{
+    font-size:11px;
+    color:rgba(255,255,255,.05);
+}
+
+.quick-keyboard{
+    padding:5px 12px;
+    background:rgba(255,255,255,.02);
+    border-top:1px solid rgba(255,255,255,.04);
+    display:none;
+    flex-shrink:0;
+}
+
+.quick-keyboard.show{
+    display:block;
+}
+
+.keyboard-grid{
+    display:flex;
+    flex-wrap:wrap;
+    gap:4px;
+}
+
+.key-btn{
+    border:1px solid rgba(255,255,255,.06);
+    background:rgba(255,255,255,.03);
+    border-radius:99px;
+    padding:4px 13px;
+    font-family:'Cairo';
+    font-size:9px;
+    cursor:pointer;
+    color:rgba(255,255,255,.4);
+    transition:.2s;
+}
+
+.key-btn:hover{
+    background:rgba(255,255,255,.08);
+    color:#fff;
+}
+
+.input-area{
+    padding:8px 14px 14px;
+    background:rgba(255,255,255,.02);
+    display:none;
+    gap:6px;
+    border-top:1px solid rgba(255,255,255,.04);
+    flex-shrink:0;
+}
+
+.input-area input{
+    flex:1;
+    border:1px solid rgba(255,255,255,.06);
+    background:rgba(255,255,255,.03);
+    border-radius:18px;
+    padding:9px 16px;
+    outline:none;
+    font-family:'Cairo';
+    color:#fff;
+}
+
+.input-area input::placeholder{
+    color:rgba(255,255,255,.2);
+}
+
+.btn-send{
+    background:#D1F843;
+    color:#0a0a0f;
+    border:0;
+    border-radius:18px;
+    padding:8px 20px;
+    cursor:pointer;
+    font-family:'Cairo';
+    font-weight:800;
+    transition:.2s;
+}
+
+.btn-send:hover{
+    opacity:.85;
+}
+
+.btn-send:disabled{
+    opacity:.4;
+}
+
+.toast-container{
+    position:fixed;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:9999;
+}
+
+.toast{
+    background:rgba(0,0,0,.9);
+    backdrop-filter:blur(20px);
+    padding:10px 18px;
+    border-radius:12px;
+    margin-top:6px;
+    border:1px solid rgba(255,255,255,.08);
+    font-size:11px;
+    font-weight:700;
+    color:#fff;
+}
+
+.toast.success{color:#D1F843;}
+.toast.error{color:#dc2626;}
+.toast.warning{color:#f59e0b;}
+.toast.info{color:#3b82f6;}
+
+@media(max-width:700px){
+    .admin-container{
+        flex-direction:column;
+        padding:10px;
+        gap:10px;
+    }
+
+    .sidebar{
+        width:100%;
+        min-width:100%;
+        height:40vh;
+        border-radius:16px;
+    }
+
+    .main-chat{
+        height:60vh;
+        border-radius:16px;
+    }
+
+    .chat-list{
+        max-height:100px;
+    }
+
+    .message-bubble{
+        max-width:90%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg-dark-grid">
+    <div class="dot-grid">
+        <canvas id="networkCanvas"></canvas>
+        <div class="glow-orb g1"></div>
+        <div class="glow-orb g2"></div>
+    </div>
+</div>
+
+<div id="toastContainer" class="toast-container"></div>
+
+<div class="admin-container">
+
+<aside class="sidebar">
+
+    <div class="sidebar-header">
+
+        <div class="sidebar-brand">
+
+            <div class="logo-icon">N</div>
+
+            <div>
+                <div class="brand-text">
+                    NOLX <span>PAGES</span>
+                </div>
+
+                <div class="brand-sub">
+                    دعم فني
+                </div>
+            </div>
+
+        </div>
+
+        <div class="admin-status-badge">
+            <span class="dot"></span>
+            متصل
+        </div>
+
+    </div>
+
+    <div class="stats-bar">
+
+        <div class="stat-card pending">
+            <span class="number" id="pendingCount">0</span>
+            <span class="label">قيد الانتظار</span>
+        </div>
+
+        <div class="stat-card active">
+            <span class="number" id="activeCount">0</span>
+            <span class="label">نشطة</span>
+        </div>
+
+        <div class="stat-card closed">
+            <span class="number" id="closedCount">0</span>
+            <span class="label">مغلقة</span>
+        </div>
+
+    </div>
+
+    <div class="search-bar">
+        <input
+            id="searchInput"
+            type="text"
+            placeholder="🔍 بحث..."
+            oninput="filterChats()"
+        >
+    </div>
+
+    <div class="sidebar-section">
+        ⏳ قيد الانتظار
+        <span class="count" id="pendingCountBadge">0</span>
+    </div>
+
+    <div id="pending-list" class="chat-list"></div>
+
+    <div class="sidebar-section">
+        🟢 محادثات نشطة
+        <span class="count" id="activeCountBadge">0</span>
+    </div>
+
+    <div id="active-list" class="chat-list"></div>
+
+    <div class="sidebar-section">
+        📦 مغلقة
+        <span class="count" id="closedCountBadge">0</span>
+    </div>
+
+    <div id="closed-list" class="chat-list"></div>
+
+</aside>
+
+
+<main class="main-chat">
+
+    <header class="chat-header">
+
+        <div>
+
+            <div class="chat-title" id="chatTitle">
+                اختر محادثة
+            </div>
+
+            <!-- معلومات المستخدم الإضافية مع خاصية النسخ -->
+            <div id="userInfoBadge" class="user-info-badge" style="display:none;">
+                <i class="fas fa-user"></i>
+                <span id="userUidDisplay" class="uid-copy" onclick="copyUid()" title="انقر لنسخ UID">UID: ---</span>
+                <i class="fas fa-envelope" style="margin-right:8px;"></i>
+                <span id="userEmailDisplay">---</span>
+                <i class="fas fa-copy" style="margin-right:4px; opacity:0.5; font-size:9px; cursor:pointer;" onclick="copyUid()" title="نسخ UID"></i>
+            </div>
+
+            <div class="chat-sub" id="chatSub">
+                اختر محادثة من القائمة
+            </div>
+
+        </div>
+
+        <div id="chatActions" class="chat-actions" style="display:none;">
+
+            <button class="btn-refresh" onclick="refreshChat()">
+                <i class="fas fa-sync"></i>
+            </button>
+
+            <button class="btn-ticket" onclick="convertToTicket()">
+                <i class="fas fa-ticket"></i>
+                تذكرة
+            </button>
+
+            <button class="btn-close" onclick="closeChat()">
+                <i class="fas fa-check"></i>
+                إنهاء
+            </button>
+
+            <button class="btn-delete" onclick="deleteChat()">
+                <i class="fas fa-trash"></i>
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <div id="messages-area" class="messages-area">
+
+        <div class="empty-state">
+
+            <i class="fas fa-comments"></i>
+
+            <h3>
+                لا توجد محادثة مفتوحة
+            </h3>
+
+            <p>
+                اختر محادثة من القائمة
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div id="quickKeyboard" class="quick-keyboard">
+
+        <div id="keyboardGrid" class="keyboard-grid"></div>
+
+    </div>
+
+
+    <div id="chatInput" class="input-area">
+
+        <input
+            id="adminInput"
+            type="text"
+            placeholder="اكتب ردك للمستخدم..."
+            onkeydown="if(event.key==='Enter') sendAdminMessage()"
+        >
+
+        <button
+            id="sendButton"
+            class="btn-send"
+            onclick="sendAdminMessage()"
+        >
+            <i class="fas fa-paper-plane"></i>
+            إرسال
+        </button>
+
+    </div>
+
+</main>
+
+</div>
+
+
+<script>
+
+/* ============================================================
+   SUPABASE
+============================================================ */
+
+const NOLX_SUPABASE_URL =
+    'https://ignqlldckbamdisudzie.supabase.co';
+
+const NOLX_SUPABASE_KEY =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlnbnFsbGRja2JhbWRpc3VkemllIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc1MDI2NDEsImV4cCI6MjEwMzA3ODY0MX0.NILj5aQmYSQmv_BAKt6xKFiMmhetDgbbm_A3PQu4ecg';
+
+let sb = null;
+
+try {
+
+    if (
+        !window.supabase ||
+        typeof window.supabase.createClient !== 'function'
+    ) {
+        throw new Error(
+            'Supabase JS library لم يتم تحميلها'
+        );
+    }
+
+    sb = window.supabase.createClient(
+        NOLX_SUPABASE_URL,
+        NOLX_SUPABASE_KEY
+    );
+
+    console.log('✅ Supabase client initialized');
+
+} catch(error) {
+
+    console.error(
+        '❌ Supabase initialization error:',
+        error
+    );
+
+}
+
+
+/* ============================================================
+   SETTINGS
+============================================================ */
+
+const MAX_MESSAGES = 30;
+
+const CHAT_CACHE_KEY =
+    'nolx_admin_chats_cache';
+
+const MESSAGE_CACHE_KEY =
+    'nolx_admin_messages_cache';
+
+
+/* ============================================================
+   VARIABLES
+============================================================ */
+
+let currentChatId = null;
+
+let currentUserData = null;
+
+let globalChannel = null;
+
+let roomChannel = null;
+
+let isSending = false;
+
+let chatsCache = [];
+
+let messagesCache = {};
+
+let realtimeStarted = false;
+
+
+/* ============================================================
+   TOAST
+============================================================ */
+
+function showToast(message,type='info'){
+
+    const container =
+        document.getElementById(
+            'toastContainer'
+        );
+
+    if(!container){
+
+        alert(message);
+
+        return;
+    }
+
+    const toast =
+        document.createElement('div');
+
+    toast.className =
+        `toast ${type}`;
+
+    toast.textContent =
+        message;
+
+    container.appendChild(
+        toast
+    );
+
+    setTimeout(()=>{
+
+        if(toast.parentNode){
+
+            toast.remove();
+
+        }
+
+    },4000);
+
+}
+
+
+/* ============================================================
+   COPY UID
+============================================================ */
+
+function copyUid() {
+    const uidDisplay = document.getElementById('userUidDisplay');
+    
+    let uidText = uidDisplay.dataset.fullUid || '';
+    
+    if (!uidText) {
+        uidText = uidDisplay.textContent || '';
+        uidText = uidText.replace(/🆔\s*/, '');
+        uidText = uidText.replace(/UID:\s*/, '');
+        uidText = uidText.replace(/\.\.\.$/, '');
+    }
+    
+    uidText = uidText.trim();
+    
+    if (!uidText || uidText === '---' || uidText === 'غير متاح') {
+        showToast('⚠️ لا يوجد UID للنسخ');
+        return;
+    }
+    
+    // تأثير بصري
+    uidDisplay.classList.add('copied');
+    
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(uidText)
+            .then(() => {
+                showToast('✅ تم نسخ UID: ' + uidText.substring(0, 10) + '...');
+                setTimeout(() => {
+                    uidDisplay.classList.remove('copied');
+                }, 600);
+            })
+            .catch(() => {
+                copyUidFallback(uidText);
+            });
+    } else {
+        copyUidFallback(uidText);
+    }
+}
+
+function copyUidFallback(text) {
+    const tempInput = document.createElement('input');
+    tempInput.value = text;
+    tempInput.style.position = 'fixed';
+    tempInput.style.opacity = '0';
+    tempInput.style.pointerEvents = 'none';
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    try {
+        document.execCommand('copy');
+        showToast('✅ تم نسخ UID: ' + text.substring(0, 10) + '...');
+    } catch (err) {
+        showToast('⚠️ تعذر نسخ UID، حاول يدوياً: ' + text);
+    }
+    document.body.removeChild(tempInput);
+    document.getElementById('userUidDisplay').classList.remove('copied');
+}
+
+
+/* ============================================================
+   SUPABASE ERROR
+============================================================ */
+
+function handleSupabaseError(
+    error,
+    context=''
+){
+
+    console.error(
+        `❌ Supabase error [${context}]:`,
+        error
+    );
+
+    let message =
+        '⚠️ حدث خطأ في قاعدة البيانات';
+
+    if(error?.message){
+
+        const msg =
+            error.message.toLowerCase();
+
+        if(msg.includes('duplicate')){
+
+            message =
+                '⚠️ هذا العنصر موجود مسبقاً';
+
+        }else if(
+            msg.includes('permission') ||
+            msg.includes('policy')
+        ){
+
+            message =
+                '⚠️ ليس لديك صلاحية لهذه العملية';
+
+        }else if(
+            msg.includes('network') ||
+            msg.includes('connection')
+        ){
+
+            message =
+                '⚠️ مشكلة في الاتصال بالخادم';
+
+        }else if(msg.includes('timeout')){
+
+            message =
+                '⚠️ انتهت مهلة الاتصال';
+
+        }else{
+
+            message =
+                `⚠️ ${error.message}`;
+
+        }
+
+    }
+
+    showToast(
+        message,
+        'error'
+    );
+
+}
+
+
+/* ============================================================
+   ESCAPE HTML
+============================================================ */
+
+function escapeHtml(value){
+
+    const div =
+        document.createElement('div');
+
+    div.textContent =
+        String(value ?? '');
+
+    return div.innerHTML;
+}
+
+
+/* ============================================================
+   LOCAL CACHE
+============================================================ */
+
+function saveChatsCache(){
+
+    try{
+
+        sessionStorage.setItem(
+            CHAT_CACHE_KEY,
+            JSON.stringify(chatsCache)
+        );
+
+    }catch(error){
+
+        console.warn(
+            'Chat cache save failed',
+            error
+        );
+
+    }
+
+}
+
+
+function loadChatsCache(){
+
+    try{
+
+        const data =
+            sessionStorage.getItem(
+                CHAT_CACHE_KEY
+            );
+
+        if(data){
+
+            chatsCache =
+                JSON.parse(data) || [];
+
+        }
+
+    }catch(error){
+
+        chatsCache = [];
+
+    }
+
+}
+
+
+function saveMessagesCache(){
+
+    try{
+
+        sessionStorage.setItem(
+            MESSAGE_CACHE_KEY,
+            JSON.stringify(messagesCache)
+        );
+
+    }catch(error){
+
+        console.warn(
+            'Message cache save failed',
+            error
+        );
+
+    }
+
+}
+
+
+function loadMessagesCache(){
+
+    try{
+
+        const data =
+            sessionStorage.getItem(
+                MESSAGE_CACHE_KEY
+            );
+
+        if(data){
+
+            messagesCache =
+                JSON.parse(data) || {};
+
+        }
+
+    }catch(error){
+
+        messagesCache = {};
+
+    }
+
+}
+
+
+/* ============================================================
+   LOAD CHATS - ONE INITIAL READ
+============================================================ */
+
+async function loadChats(){
+
+    if(!sb){
+
+        showToast(
+            '❌ Supabase غير جاهز',
+            'error'
+        );
+
+        return;
+    }
+
+    try{
+
+        console.log(
+            '📥 Loading chats...'
+        );
+
+        const result =
+            await sb
+            .from('chats')
+            .select('*')
+            .order(
+                'updated_at',
+                {
+                    ascending:false
+                }
+            )
+            .limit(100);
+
+        if(result.error){
+
+            handleSupabaseError(
+                result.error,
+                'Load chats'
+            );
+
+            return;
+        }
+
+        chatsCache =
+            result.data || [];
+
+        saveChatsCache();
+
+        renderChats(
+            chatsCache
+        );
+
+        updateStats(
+            chatsCache
+        );
+
+        if(!realtimeStarted){
+
+            setupGlobalRealtime();
+
+            realtimeStarted = true;
+
+        }
+
+    }catch(error){
+
+        handleSupabaseError(
+            error,
+            'Load chats'
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   RENDER CHATS
+============================================================ */
+
+function renderChats(chats){
+
+    const pending =
+        document.getElementById(
+            'pending-list'
+        );
+
+    const active =
+        document.getElementById(
+            'active-list'
+        );
+
+    const closed =
+        document.getElementById(
+            'closed-list'
+        );
+
+    pending.innerHTML = '';
+
+    active.innerHTML = '';
+
+    closed.innerHTML = '';
+
+    let pendingCount = 0;
+
+    let activeCount = 0;
+
+    let closedCount = 0;
+
+
+    chats.forEach(chat=>{
+
+        const item =
+            document.createElement('div');
+
+        const status =
+            chat.status || 'pending';
+
+        item.className =
+            'chat-item' +
+            (
+                currentChatId === chat.id
+                ? ' active'
+                : ''
+            );
+
+        item.dataset.user =
+            String(chat.id);
+
+        item.onclick =
+            ()=>openChat(chat.id);
+
+
+        const displayName =
+            chat.user_name ||
+            chat.user_email?.split('@')[0] ||
+            `مستخدم ${String(chat.id).substring(0,6)}`;
+
+        const uidShort =
+            chat.user_uid
+            ? `🆔 ${String(chat.user_uid).substring(0,8)}...`
+            : '';
+
+
+        const name =
+            escapeHtml(displayName);
+
+
+        const phone =
+            chat.user_phone
+            ? `📱 ${escapeHtml(chat.user_phone)}`
+            : '';
+
+
+        const email =
+            chat.user_email
+            ? `✉️ ${escapeHtml(chat.user_email)}`
+            : '';
+
+
+        const info =
+            [phone,email,uidShort]
+            .filter(Boolean)
+            .join(' | ') ||
+            'لا توجد معلومات';
+
+
+        const lastMessage =
+            escapeHtml(
+                chat.last_message ||
+                'لا توجد رسائل'
+            );
+
+
+        const time =
+            chat.updated_at
+            ? new Date(
+                chat.updated_at
+            ).toLocaleTimeString(
+                'ar-EG',
+                {
+                    hour:'2-digit',
+                    minute:'2-digit'
+                }
+            )
+            : '';
+
+
+        let badge = '📦';
+
+        if(status === 'pending')
+            badge = '⏳';
+
+        if(status === 'active')
+            badge = '🟢';
+
+
+        const online =
+            chat.online === true;
+
+
+        item.innerHTML = `
+
+            <div class="chat-row">
+
+                <div>
+
+                    <div class="name">
+
+                        <span class="presence-dot ${
+                            online
+                            ? 'online'
+                            : 'offline'
+                        }"></span>
+
+                        ${name}
+
+                    </div>
+
+                    <span class="user-email">
+                        ${info}
+                    </span>
+
+                    <div class="last-msg">
+                        ${lastMessage}
+                    </div>
+
+                </div>
+
+                <div>
+
+                    <div class="time">
+                        ${time}
+                    </div>
+
+                    <span class="status-badge ${status}">
+                        ${badge}
+                    </span>
+
+                </div>
+
+            </div>
+        `;
+
+
+        if(status === 'pending'){
+
+            pending.appendChild(item);
+
+            pendingCount++;
+
+        }else if(status === 'active'){
+
+            active.appendChild(item);
+
+            activeCount++;
+
+        }else{
+
+            closed.appendChild(item);
+
+            closedCount++;
+
+        }
+
+    });
+
+
+    document.getElementById(
+        'pendingCount'
+    ).textContent =
+        pendingCount;
+
+    document.getElementById(
+        'activeCount'
+    ).textContent =
+        activeCount;
+
+    document.getElementById(
+        'closedCount'
+    ).textContent =
+        closedCount;
+
+
+    document.getElementById(
+        'pendingCountBadge'
+    ).textContent =
+        pendingCount;
+
+    document.getElementById(
+        'activeCountBadge'
+    ).textContent =
+        activeCount;
+
+    document.getElementById(
+        'closedCountBadge'
+    ).textContent =
+        closedCount;
+
+}
+
+
+/* ============================================================
+   STATS
+============================================================ */
+
+function updateStats(chats){
+
+    let pending = 0;
+
+    let active = 0;
+
+    let closed = 0;
+
+
+    chats.forEach(chat=>{
+
+        if(chat.status === 'pending'){
+
+            pending++;
+
+        }else if(chat.status === 'active'){
+
+            active++;
+
+        }else{
+
+            closed++;
+
+        }
+
+    });
+
+}
+
+
+/* ============================================================
+   FIND CHAT
+============================================================ */
+
+function findChat(chatId){
+
+    return chatsCache.find(
+        chat =>
+            String(chat.id) ===
+            String(chatId)
+    );
+
+}
+
+
+/* ============================================================
+   UPDATE CHAT IN CACHE
+============================================================ */
+
+function updateChatCache(chat){
+
+    if(!chat?.id)
+        return;
+
+
+    const index =
+        chatsCache.findIndex(
+            item =>
+                String(item.id) ===
+                String(chat.id)
+        );
+
+
+    if(index === -1){
+
+        chatsCache.unshift(chat);
+
+    }else{
+
+        chatsCache[index] = {
+            ...chatsCache[index],
+            ...chat
+        };
+
+    }
+
+
+    chatsCache.sort(
+        (a,b)=>{
+
+            const da =
+                new Date(
+                    a.updated_at || 0
+                ).getTime();
+
+            const db =
+                new Date(
+                    b.updated_at || 0
+                ).getTime();
+
+            return db - da;
+
+        }
+    );
+
+
+    saveChatsCache();
+
+    renderChats(
+        chatsCache
+    );
+
+}
+
+
+/* ============================================================
+   REMOVE CHAT FROM CACHE
+============================================================ */
+
+function removeChatFromCache(chatId){
+
+    chatsCache =
+        chatsCache.filter(
+            chat =>
+                String(chat.id) !==
+                String(chatId)
+        );
+
+    saveChatsCache();
+
+    renderChats(
+        chatsCache
+    );
+
+}
+
+
+/* ============================================================
+   GLOBAL REALTIME
+============================================================ */
+
+function setupGlobalRealtime(){
+
+    if(!sb)
+        return;
+
+
+    if(globalChannel){
+
+        console.log(
+            '📡 Global realtime already exists'
+        );
+
+        return;
+
+    }
+
+
+    globalChannel =
+        sb
+        .channel(
+            'admin-global-chats'
+        )
+
+        .on(
+            'postgres_changes',
+            {
+                event:'INSERT',
+                schema:'public',
+                table:'chats'
+            },
+            payload=>{
+
+                console.log(
+                    '🆕 New chat'
+                );
+
+                updateChatCache(
+                    payload.new
+                );
+
+            }
+        )
+
+        .on(
+            'postgres_changes',
+            {
+                event:'UPDATE',
+                schema:'public',
+                table:'chats'
+            },
+            payload=>{
+
+                console.log(
+                    '🔄 Chat updated'
+                );
+
+                updateChatCache(
+                    payload.new
+                );
+
+
+                if(
+                    currentChatId &&
+                    String(currentChatId) ===
+                    String(payload.new.id)
+                ){
+
+                    currentUserData = {
+                        ...currentUserData,
+                        ...payload.new
+                    };
+                    
+                    updateUserInfoDisplay(payload.new);
+
+                }
+
+            }
+        )
+
+        .on(
+            'postgres_changes',
+            {
+                event:'DELETE',
+                schema:'public',
+                table:'chats'
+            },
+            payload=>{
+
+                console.log(
+                    '🗑️ Chat deleted'
+                );
+
+                removeChatFromCache(
+                    payload.old.id
+                );
+
+                if(
+                    currentChatId &&
+                    String(currentChatId) ===
+                    String(payload.old.id)
+                ){
+
+                    resetChatView();
+
+                }
+
+            }
+        )
+
+        .subscribe(
+            status=>{
+
+                console.log(
+                    '📡 Global realtime:',
+                    status
+                );
+
+            }
+        );
+
+}
+
+
+/* ============================================================
+   عرض معلومات المستخدم في الهيدر
+============================================================ */
+
+function updateUserInfoDisplay(chatData) {
+    const badge = document.getElementById('userInfoBadge');
+    const uidDisplay = document.getElementById('userUidDisplay');
+    const emailDisplay = document.getElementById('userEmailDisplay');
+
+    if (chatData && (chatData.user_uid || chatData.user_email)) {
+        badge.style.display = 'flex';
+        
+        const fullUid = chatData.user_uid || '';
+        uidDisplay.dataset.fullUid = fullUid;
+        
+        if (fullUid) {
+            uidDisplay.textContent = `🆔 ${fullUid.substring(0, 12)}...`;
+        } else {
+            uidDisplay.textContent = 'UID: غير متاح';
+        }
+        
+        emailDisplay.textContent = chatData.user_email || 'بريد غير متاح';
+        
+        uidDisplay.style.cursor = 'pointer';
+        uidDisplay.title = 'انقر لنسخ UID بالكامل';
+        
+    } else {
+        badge.style.display = 'none';
+    }
+}
+
+
+/* ============================================================
+   OPEN CHAT
+============================================================ */
+
+async function openChat(chatId){
+
+    if(!chatId || !sb)
+        return;
+
+
+    currentChatId =
+        chatId;
+
+
+    try{
+
+        if(roomChannel){
+
+            await sb.removeChannel(
+                roomChannel
+            );
+
+            roomChannel = null;
+
+        }
+
+
+        let chat =
+            findChat(chatId);
+
+
+        if(!chat){
+
+            const result =
+                await sb
+                .from('chats')
+                .select('*')
+                .eq(
+                    'id',
+                    chatId
+                )
+                .single();
+
+
+            if(result.error){
+
+                handleSupabaseError(
+                    result.error,
+                    'Open chat'
+                );
+
+                return;
+
+            }
+
+            chat =
+                result.data;
+
+            updateChatCache(
+                chat
+            );
+
+        }
+
+
+        currentUserData =
+            chat;
+
+        updateUserInfoDisplay(chat);
+
+
+        document.getElementById(
+            'chatTitle'
+        ).textContent =
+            `🟢 ${chat.user_name || chat.user_email?.split('@')[0] || 'مستخدم'}`;
+
+
+        document.getElementById(
+            'chatSub'
+        ).textContent =
+            [
+                chat.user_phone,
+                chat.user_email
+            ]
+            .filter(Boolean)
+            .join(' | ') ||
+            'مستخدم';
+
+
+        document.getElementById(
+            'chatActions'
+        ).style.display =
+            'flex';
+
+
+        document.getElementById(
+            'chatInput'
+        ).style.display =
+            'flex';
+
+
+        document.getElementById(
+            'quickKeyboard'
+        ).classList.add(
+            'show'
+        );
+
+
+        document.getElementById(
+            'adminInput'
+        ).disabled =
+            false;
+
+
+        if(chat.status === 'pending'){
+
+            const now =
+                new Date().toISOString();
+
+
+            await sb
+                .from('messages')
+                .insert([
+                    {
+                        chat_id: chatId,
+                        text: '🔵 انضم فريق الدعم إلى المحادثة',
+                        sender: 'system',
+                        type: 'admin_join',
+                        created_at: now
+                    }
+                ]);
+
+            const updateResult =
+                await sb
+                .from('chats')
+                .update({
+                    status:'active',
+                    updated_at:now
+                })
+                .eq(
+                    'id',
+                    chatId
+                );
+
+
+            if(updateResult.error){
+
+                handleSupabaseError(
+                    updateResult.error,
+                    'Activate chat'
+                );
+
+            }else{
+
+                const updatedChatResult = await sb
+                    .from('chats')
+                    .select('*')
+                    .eq('id', chatId)
+                    .single();
+
+                if (updatedChatResult.data) {
+                    updateChatCache({
+                        ...updatedChatResult.data,
+                        status:'active',
+                        updated_at:now
+                    });
+                } else {
+                    updateChatCache({
+                        ...chat,
+                        status:'active',
+                        updated_at:now
+                    });
+                }
+
+            }
+
+        }
+
+
+        delete messagesCache[chatId];
+        await loadRoomMessages(chatId);
+
+
+        setupRoomRealtime(
+            chatId
+        );
+
+
+        document.querySelectorAll(
+            '.chat-item'
+        ).forEach(item=>{
+
+            item.classList.toggle(
+                'active',
+                String(item.dataset.user) ===
+                String(chatId)
+            );
+
+        });
+
+
+    }catch(error){
+
+        handleSupabaseError(
+            error,
+            'Open chat'
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   LOAD LAST 30 MESSAGES ONLY
+============================================================ */
+
+async function loadRoomMessages(chatId){
+
+    try{
+
+        console.log(
+            `📥 Loading last ${MAX_MESSAGES} messages`
+        );
+
+
+        const result =
+            await sb
+            .from('messages')
+            .select('*')
+            .eq(
+                'chat_id',
+                chatId
+            )
+            .order(
+                'created_at',
+                {
+                    ascending:false
+                }
+            )
+            .limit(
+                MAX_MESSAGES
+            );
+
+
+        if(result.error){
+
+            handleSupabaseError(
+                result.error,
+                'Load messages'
+            );
+
+            return;
+
+        }
+
+
+        const messages =
+            (result.data || [])
+            .reverse();
+
+
+        messagesCache[chatId] =
+            messages;
+
+
+        saveMessagesCache();
+
+
+        renderMessages(
+            messages
+        );
+
+
+    }catch(error){
+
+        handleSupabaseError(
+            error,
+            'Load messages'
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   RENDER MESSAGES
+============================================================ */
+
+function renderMessages(messages){
+
+    const container =
+        document.getElementById(
+            'messages-area'
+        );
+
+
+    container.innerHTML = '';
+
+
+    if(!messages || !messages.length){
+
+        container.innerHTML = `
+
+            <div class="empty-state">
+
+                <i class="fas fa-comment"></i>
+
+                <h3>
+                    لا توجد رسائل
+                </h3>
+
+                <p>
+                    لم تبدأ المحادثة بعد
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    messages.forEach(msg=>{
+
+        const row =
+            document.createElement('div');
+
+
+        const sender =
+            msg.sender;
+
+
+        if(
+            sender === 'system' ||
+            msg.type === 'admin_join' ||
+            msg.type === 'admin_close' ||
+            msg.type === 'auto_reply'
+        ){
+
+            row.className =
+                'message-row system';
+
+
+            row.innerHTML = `
+
+                <div class="message-system">
+
+                    <i class="fas fa-info-circle"></i>
+
+                    ${escapeHtml(
+                        msg.text || ''
+                    )}
+
+                </div>
+
+            `;
+
+        }else{
+
+            const isUser =
+                sender === 'user';
+
+
+            row.className =
+                'message-row ' +
+                (
+                    isUser
+                    ? 'user'
+                    : 'admin'
+                );
+
+
+            const bubble =
+                document.createElement(
+                    'div'
+                );
+
+
+            bubble.className =
+                'message-bubble ' +
+                (
+                    isUser
+                    ? 'message-user'
+                    : 'message-admin'
+                );
+
+
+            const time =
+                msg.created_at
+                ? new Date(
+                    msg.created_at
+                ).toLocaleTimeString(
+                    'ar-EG',
+                    {
+                        hour:'2-digit',
+                        minute:'2-digit'
+                    }
+                )
+                : '';
+
+
+            bubble.innerHTML = `
+
+                ${
+                    !isUser
+                    ? '<small>🛡️ فريق الدعم</small><br>'
+                    : ''
+                }
+
+                ${escapeHtml(
+                    msg.text || ''
+                )}
+
+                <span class="message-time">
+                    ${time}
+                </span>
+
+            `;
+
+
+            row.appendChild(
+                bubble
+            );
+
+        }
+
+
+        container.appendChild(
+            row
+        );
+
+    });
+
+
+    container.scrollTop =
+        container.scrollHeight;
+
+}
+
+
+/* ============================================================
+   ADD MESSAGE TO CACHE
+============================================================ */
+
+function addMessageToCache(message){
+
+    if(!message?.chat_id)
+        return;
+
+
+    const chatId =
+        message.chat_id;
+
+
+    if(!messagesCache[chatId]){
+
+        messagesCache[chatId] = [];
+
+    }
+
+
+    const list =
+        messagesCache[chatId];
+
+
+    if(
+        list.some(
+            msg =>
+                String(msg.id) ===
+                String(message.id)
+        )
+    ){
+
+        return;
+
+    }
+
+
+    list.push(
+        message
+    );
+
+
+    if(list.length > MAX_MESSAGES){
+
+        list.splice(
+            0,
+            list.length - MAX_MESSAGES
+        );
+
+    }
+
+
+    messagesCache[chatId] =
+        list;
+
+
+    saveMessagesCache();
+
+
+    if(
+        currentChatId &&
+        String(currentChatId) ===
+        String(chatId)
+    ){
+
+        renderMessages(
+            list
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   ROOM REALTIME
+============================================================ */
+
+function setupRoomRealtime(chatId){
+
+    if(!sb)
+        return;
+
+
+    if(roomChannel){
+
+        sb.removeChannel(
+            roomChannel
+        );
+
+        roomChannel = null;
+
+    }
+
+
+    roomChannel =
+        sb
+        .channel(
+            `admin-room-${chatId}`
+        )
+
+        .on(
+            'postgres_changes',
+            {
+                event:'INSERT',
+                schema:'public',
+                table:'messages',
+                filter:
+                    `chat_id=eq.${chatId}`
+            },
+            payload=>{
+
+                console.log(
+                    '💬 New message'
+                );
+
+                addMessageToCache(
+                    payload.new
+                );
+
+            }
+        )
+
+        .subscribe(
+            status=>{
+
+                console.log(
+                    '📡 Room realtime:',
+                    status
+                );
+
+            }
+        );
+
+}
+
+
+/* ============================================================
+   SEND MESSAGE
+============================================================ */
+
+async function sendAdminMessage(){
+
+    const input =
+        document.getElementById(
+            'adminInput'
+        );
+
+
+    const text =
+        input.value.trim();
+
+
+    if(!currentChatId){
+
+        showToast(
+            '⚠️ اختر محادثة أولاً',
+            'warning'
+        );
+
+        return;
+
+    }
+
+
+    if(!text){
+
+        showToast(
+            '⚠️ اكتب رسالة أولاً',
+            'warning'
+        );
+
+        return;
+
+    }
+
+
+    if(isSending)
+        return;
+
+
+    isSending = true;
+
+
+    const button =
+        document.getElementById(
+            'sendButton'
+        );
+
+
+    button.disabled = true;
+
+    button.innerHTML =
+        '⏳ جاري...';
+
+
+    try{
+
+        const now =
+            new Date().toISOString();
+
+
+        const result =
+            await sb
+            .from('messages')
+            .insert([
+                {
+                    chat_id:
+                        currentChatId,
+
+                    text:
+                        text,
+
+                    sender:
+                        'admin',
+
+                    created_at:
+                        now
+                }
+            ])
+            .select()
+            .single();
+
+
+        if(result.error){
+
+            handleSupabaseError(
+                result.error,
+                'Send message'
+            );
+
+            return;
+
+        }
+
+
+        addMessageToCache(
+            result.data
+        );
+
+
+        const chatUpdate =
+            await sb
+            .from('chats')
+            .update({
+                last_message:text,
+                updated_at:now
+            })
+            .eq(
+                'id',
+                currentChatId
+            );
+
+
+        if(chatUpdate.error){
+
+            handleSupabaseError(
+                chatUpdate.error,
+                'Update chat'
+            );
+
+        }else{
+
+            const chat =
+                findChat(
+                    currentChatId
+                );
+
+            if(chat){
+
+                updateChatCache({
+
+                    ...chat,
+
+                    last_message:
+                        text,
+
+                    updated_at:
+                        now,
+
+                    status:
+                        chat.status === 'pending'
+                        ? 'active'
+                        : chat.status
+
+                });
+
+            }
+
+        }
+
+
+        input.value = '';
+
+        input.focus();
+
+
+    }catch(error){
+
+        handleSupabaseError(
+            error,
+            'Send message'
+        );
+
+    }finally{
+
+        isSending = false;
+
+        button.disabled = false;
+
+        button.innerHTML =
+            '<i class="fas fa-paper-plane"></i> إرسال';
+
+    }
+
+}
+
+
+/* ============================================================
+   CLOSE CHAT
+============================================================ */
+
+async function closeChat(){
+
+    if(
+        !currentChatId ||
+        !confirm(
+            '⚠️ هل تريد إنهاء المحادثة؟'
+        )
+    )
+        return;
+
+
+    try{
+
+        const chatId =
+            currentChatId;
+
+
+        const now =
+            new Date().toISOString();
+
+
+        const messageResult =
+            await sb
+            .from('messages')
+            .insert([
+                {
+                    chat_id:
+                        chatId,
+
+                    text:
+                        '🔴 تم إنهاء المحادثة بواسطة فريق الدعم',
+
+                    sender:
+                        'system',
+
+                    type:
+                        'admin_close',
+
+                    created_at:
+                        now
+                }
+            ])
+            .select()
+            .single();
+
+
+        if(
+            !messageResult.error &&
+            messageResult.data
+        ){
+
+            addMessageToCache(
+                messageResult.data
+            );
+
+        }
+
+
+        const updateData = {
+            status: 'closed',
+            updated_at: now
+        };
+
+        try {
+            updateData.closed_at = now;
+            updateData.closed_reason = 'admin';
+            updateData.closed_by = 'admin';
+        } catch(e) {
+            console.warn('بعض الحقول غير موجودة في الجدول، سيتم تحديث الأساسيات فقط');
+        }
+
+        const result =
+            await sb
+            .from('chats')
+            .update(updateData)
+            .eq(
+                'id',
+                chatId
+            );
+
+
+        if(result.error){
+
+            handleSupabaseError(
+                result.error,
+                'Close chat'
+            );
+
+            const chat = findChat(chatId);
+            if(chat) {
+                updateChatCache({
+                    ...chat,
+                    status: 'closed',
+                    updated_at: now
+                });
+            }
+
+            resetChatView();
+            showToast(
+                '✅ تم إنهاء المحادثة (مع بعض الأخطاء في التحديث)',
+                'warning'
+            );
+            return;
+
+        }
+
+
+        const chat =
+            findChat(chatId);
+
+
+        if(chat){
+
+            updateChatCache({
+
+                ...chat,
+
+                status:'closed',
+
+                updated_at:now
+
+            });
+
+        }
+
+
+        showToast(
+            '✅ تم إنهاء المحادثة',
+            'success'
+        );
+
+
+        resetChatView();
+
+
+    }catch(error){
+
+        handleSupabaseError(
+            error,
+            'Close chat'
+        );
+        
+        resetChatView();
+
+    }
+
+}
+
+
+/* ============================================================
+   DELETE CHAT
+============================================================ */
+
+async function deleteChat(){
+
+    if(
+        !currentChatId ||
+        !confirm(
+            '⚠️ سيتم حذف المحادثة ورسائلها نهائياً. هل أنت متأكد؟'
+        )
+    )
+        return;
+
+
+    try{
+
+        const chatId =
+            currentChatId;
+
+
+        const messagesResult =
+            await sb
+            .from('messages')
+            .delete()
+            .eq(
+                'chat_id',
+                chatId
+            );
+
+
+        if(messagesResult.error){
+
+            handleSupabaseError(
+                messagesResult.error,
+                'Delete messages'
+            );
+
+            return;
+
+        }
+
+
+        const chatResult =
+            await sb
+            .from('chats')
+            .delete()
+            .eq(
+                'id',
+                chatId
+            );
+
+
+        if(chatResult.error){
+
+            handleSupabaseError(
+                chatResult.error,
+                'Delete chat'
+            );
+
+            return;
+
+        }
+
+
+        delete messagesCache[
+            chatId
+        ];
+
+
+        saveMessagesCache();
+
+
+        removeChatFromCache(
+            chatId
+        );
+
+
+        resetChatView();
+
+
+        showToast(
+            '🗑️ تم حذف المحادثة',
+            'success'
+        );
+
+
+    }catch(error){
+
+        handleSupabaseError(
+            error,
+            'Delete chat'
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   TICKET
+============================================================ */
+
+async function convertToTicket(){
+
+    if(!currentChatId)
+        return;
+
+
+    if(
+        !confirm(
+            '📌 هل تريد تحويل المحادثة إلى تذكرة؟'
+        )
+    )
+        return;
+
+
+    try{
+
+        const result =
+            await sb
+            .from('messages')
+            .select('*')
+            .eq(
+                'chat_id',
+                currentChatId
+            )
+            .order(
+                'created_at',
+                {
+                    ascending:true
+                }
+            );
+
+
+        if(result.error){
+
+            handleSupabaseError(
+                result.error,
+                'Load ticket messages'
+            );
+
+            return;
+
+        }
+
+
+        const text =
+            (result.data || [])
+            .map(msg=>{
+
+                let sender =
+                    'النظام';
+
+
+                if(
+                    msg.sender === 'user'
+                )
+                    sender =
+                        'المستخدم';
+
+
+                if(
+                    msg.sender === 'admin'
+                )
+                    sender =
+                        'فريق الدعم';
+
+
+                return `[${sender}] ${msg.text || ''}`;
+
+            })
+            .join('\n');
+
+
+        const ticket =
+            await sb
+            .from('tickets')
+            .insert([
+                {
+
+                    chat_id:
+                        currentChatId,
+
+                    messages:
+                        text,
+
+                    status:
+                        'open',
+
+                    created_at:
+                        new Date()
+                        .toISOString(),
+
+                    user_id:
+                        currentChatId,
+
+                    user_name:
+                        currentUserData?.user_name || '',
+
+                    user_email:
+                        currentUserData?.user_email || '',
+
+                    user_phone:
+                        currentUserData?.user_phone || '',
+
+                    user_uid:
+                        currentUserData?.user_uid || ''
+
+                }
+            ]);
+
+
+        if(ticket.error){
+
+            handleSupabaseError(
+                ticket.error,
+                'Create ticket'
+            );
+
+            return;
+
+        }
+
+
+        showToast(
+            '✅ تم إنشاء التذكرة',
+            'success'
+        );
+
+
+    }catch(error){
+
+        handleSupabaseError(
+            error,
+            'Create ticket'
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   MANUAL REFRESH
+============================================================ */
+
+async function refreshChat(){
+
+    if(!currentChatId)
+        return;
+
+
+    const id =
+        currentChatId;
+
+
+    await loadChats();
+
+
+    delete messagesCache[id];
+
+    saveMessagesCache();
+
+
+    await loadRoomMessages(
+        id
+    );
+
+}
+
+
+/* ============================================================
+   RESET
+============================================================ */
+
+function resetChatView(){
+
+    if(roomChannel){
+
+        sb.removeChannel(
+            roomChannel
+        );
+
+        roomChannel = null;
+
+    }
+
+
+    currentChatId = null;
+
+    currentUserData = null;
+
+
+    document.getElementById('userInfoBadge').style.display = 'none';
+
+
+    document.getElementById(
+        'chatTitle'
+    ).textContent =
+        'اختر محادثة';
+
+
+    document.getElementById(
+        'chatSub'
+    ).textContent =
+        'اختر محادثة من القائمة';
+
+
+    document.getElementById(
+        'chatActions'
+    ).style.display =
+        'none';
+
+
+    document.getElementById(
+        'chatInput'
+    ).style.display =
+        'none';
+
+
+    document.getElementById(
+        'quickKeyboard'
+    ).classList.remove(
+        'show'
+    );
+
+
+    document.getElementById(
+        'messages-area'
+    ).innerHTML = `
+
+        <div class="empty-state">
+
+            <i class="fas fa-comments"></i>
+
+            <h3>
+                لا توجد محادثة مفتوحة
+            </h3>
+
+            <p>
+                اختر محادثة من القائمة
+            </p>
+
+        </div>
+
+    `;
+
+
+    document.querySelectorAll(
+        '.chat-item'
+    ).forEach(item=>{
+
+        item.classList.remove(
+            'active'
+        );
+
+    });
+
+}
+
+
+/* ============================================================
+   SEARCH - LOCAL ONLY
+============================================================ */
+
+let searchTimer = null;
+
+function filterChats(){
+
+    clearTimeout(
+        searchTimer
+    );
+
+
+    searchTimer =
+        setTimeout(()=>{
+
+            const search =
+                document.getElementById(
+                    'searchInput'
+                )
+                .value
+                .toLowerCase()
+                .trim();
+
+
+            document.querySelectorAll(
+                '.chat-item'
+            ).forEach(item=>{
+
+                item.style.display =
+                    item.textContent
+                    .toLowerCase()
+                    .includes(search)
+                    ? ''
+                    : 'none';
+
+            });
+
+        },120);
+
+}
+
+
+/* ============================================================
+   QUICK REPLIES
+============================================================ */
+
+const quickPhrases = [
+    'أهلاً بيك يا أستاذ',
+    'أقدر أساعد حضرتك إزاي؟',
+    'إيه المشكلة اللي حضرتك بتوجها ؟',
+    'لحظات معيا اراجع بعض البيانات وارجع لحضرتك',
+    'أتمنى أكون قدرت أساعد حضرتك',
+    'تم إنهاء المحادثة تلقائياً لعدم وجود رد خلال دقيقتين. نحن متواجدون على مدار اليوم لخدمتك والإجابة عن أي استفسار. شكراً لتواصلك معنا، ونسعد بخدمتك دائماً 🌟',
+    'حضرتك معيا؟',
+    'ممكن توضحلي أكتر؟',
+    'في أي استفسار تاني أقدر أساعد حضرتك فيه؟',
+    'بنتأسف جدا لحضرتك',
+    'السلام عليكم، معاك دعم نولكس، أتمنى حضرتك تكون بخير',
+    'شكراً لتفهمك',
+    'ممكن توضحلي رقم العملية؟',
+    'ممكن أتشرف باسم حضرتك؟',
+    'ممكن البريد الإلكتروني المسجل في المنصة لدينا؟',
+    'متفهم انزعاج حضرتك من الموضوع',
+    'شكراً ليك، كان معاك دعم نولكس، أتمنى ليك يوم سعيد 😊🌹',
+    'إحنا بنشتغل على حل المشكلة دلوقتي',
+    'شكراً لاختيارك نولكس  وخلي الشات بيتقفل عادي'
+];
+
+
+const keyboard =
+    document.getElementById(
+        'keyboardGrid'
+    );
+
+
+quickPhrases.forEach(
+    phrase=>{
+
+        const button =
+            document.createElement(
+                'button'
+            );
+
+
+        button.className =
+            'key-btn';
+
+
+        button.textContent =
+            phrase;
+
+
+        button.onclick = ()=>{
+
+            const input =
+                document.getElementById(
+                    'adminInput'
+                );
+
+
+            input.value =
+                phrase;
+
+
+            input.focus();
+
+        };
+
+
+        keyboard.appendChild(
+            button
+        );
+
+    }
+);
+
+
+/* ============================================================
+   START
+============================================================ */
+
+window.addEventListener(
+    'load',
+    async()=>{
+
+        console.log(
+            '🔥 NOLX Admin starting...'
+        );
+
+
+        if(!sb){
+
+            showToast(
+                '❌ Supabase غير متصل',
+                'error'
+            );
+
+            return;
+
+        }
+
+
+        loadChatsCache();
+
+        loadMessagesCache();
+
+
+        if(chatsCache.length){
+
+            renderChats(
+                chatsCache
+            );
+
+            updateStats(
+                chatsCache
+            );
+
+        }
+
+
+        await loadChats();
+
+
+        console.log(
+            '🔥 NOLX Admin panel ready!'
+        );
+
+    }
+);
+
+
+/* ============================================================
+   ESCAPE KEY
+============================================================ */
+
+document.addEventListener(
+    'keydown',
+    event=>{
+
+        if(
+            event.key === 'Escape' &&
+            currentChatId
+        ){
+
+            resetChatView();
+
+        }
+
+    }
+);
+
+
+/* ============================================================
+   PAGE VISIBILITY
+============================================================ */
+
+document.addEventListener(
+    'visibilitychange',
+    ()=>{
+
+        if(
+            document.visibilityState === 'visible'
+        ){
+
+            console.log(
+                '👁️ Admin visible - using realtime/cache'
+            );
+
+        }
+
+    }
+);
+
+
+/* ============================================================
+   NETWORK CANVAS (نفس استايل موقع العميل)
+============================================================ */
+
+(function(){
+    const canvas=document.getElementById('networkCanvas');
+    const ctx=canvas.getContext('2d');
+
+    let width=0,height=0,dots=[];
+    const NUM_DOTS=window.innerWidth<600?20:40;
+    const CONNECTION_DISTANCE=100;
+
+    function resize(){
+        width=window.innerWidth;
+        height=window.innerHeight;
+
+        const dpr=Math.min(window.devicePixelRatio||1,2);
+
+        canvas.width=width*dpr;
+        canvas.height=height*dpr;
+        canvas.style.width=width+'px';
+        canvas.style.height=height+'px';
+
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+
+    function createDots(){
+        dots=[];
+
+        for(let i=0;i<NUM_DOTS;i++){
+            dots.push({
+                x:Math.random()*width,
+                y:Math.random()*height,
+                vx:(Math.random()-.5)*.3,
+                vy:(Math.random()-.5)*.3,
+                r:1+Math.random()*1.5
+            });
+        }
+    }
+
+    function draw(){
+        ctx.clearRect(0,0,width,height);
+
+        for(const d of dots){
+            d.x+=d.vx;
+            d.y+=d.vy;
+
+            if(d.x<0||d.x>width)d.vx*=-1;
+            if(d.y<0||d.y>height)d.vy*=-1;
+        }
+
+        for(let i=0;i<dots.length;i++){
+            for(let j=i+1;j<dots.length;j++){
+                const dx=dots[i].x-dots[j].x;
+                const dy=dots[i].y-dots[j].y;
+                const dist=Math.sqrt(dx*dx+dy*dy);
+
+                if(dist<CONNECTION_DISTANCE){
+                    const alpha=1-dist/CONNECTION_DISTANCE;
+
+                    ctx.beginPath();
+                    ctx.moveTo(dots[i].x,dots[i].y);
+                    ctx.lineTo(dots[j].x,dots[j].y);
+                    ctx.strokeStyle=`rgba(209,248,67,${alpha*.06})`;
+                    ctx.lineWidth=.5;
+                    ctx.stroke();
+                }
+            }
+        }
+
+        for(const d of dots){
+            ctx.beginPath();
+            ctx.arc(d.x,d.y,d.r,0,Math.PI*2);
+            ctx.fillStyle='rgba(209,248,67,.12)';
+            ctx.fill();
+        }
+
+        requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize',()=>{
+        resize();
+        createDots();
+    });
+
+    resize();
+    createDots();
+    draw();
+})();
+
+</script>
+<script src="notify.js"></script>
+</body>
+</html>
