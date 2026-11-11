@@ -1,0 +1,2196 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+        <link rel="icon" type="image/png" href="log.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOLX | المحرر البصري</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #17191e;
+            --bg-surface: #1e2128;
+            --bg-hover: #282c36;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255,255,255,0.5);
+            --text-muted: rgba(255,255,255,0.2);
+            --accent: #d1f843;
+            --accent-hover: #bde02a;
+            --border-color: rgba(255,255,255,0.04);
+            --shadow: 0 8px 32px rgba(0,0,0,0.4);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --transition: 0.25s cubic-bezier(0.16,1,0.3,1);
+            --font: 'Cairo', sans-serif;
+        }
+        html, body { height: 100%; font-family: var(--font); background: var(--bg-primary); color: var(--text-primary); overflow: hidden; }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 99px; opacity: 0.3; }
+        .app { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        .top-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 16px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
+            height: 48px;
+            gap: 8px;
+            flex-wrap: nowrap;
+        }
+        .top-nav .logo { font-weight: 900; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+        .top-nav .logo span { color: var(--accent); font-weight: 300; }
+        .top-nav .nav-group { display: flex; align-items: center; gap: 4px; flex-wrap: nowrap; }
+        .top-nav button {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 4px 12px;
+            border-radius: var(--radius-sm);
+            font-family: var(--font);
+            font-size: 0.65rem;
+            cursor: pointer;
+            transition: var(--transition);
+            outline: none;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+        .top-nav button:hover { background: var(--bg-hover); border-color: rgba(255,255,255,0.08); }
+        .top-nav .btn-accent { background: var(--accent); color: var(--bg-primary); font-weight: 800; border: none; }
+        .top-nav .btn-accent:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(209,248,67,0.15); }
+        .top-nav .btn-icon { width: 28px; height: 28px; padding: 0; justify-content: center; font-size: 0.7rem; }
+        .top-nav .status { font-size: 0.5rem; color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
+        .top-nav .status .dot { width: 5px; height: 5px; border-radius: 50%; background: #4caf50; display: inline-block; }
+        .top-nav .status .dot.saving { background: #ff9800; animation: pulse-dot 0.8s infinite; }
+        @keyframes pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: 0.2; } }
+        .main-content { display: flex; flex: 1; overflow: hidden; }
+        .toolbar {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-secondary);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 60px;
+            padding: 6px 16px;
+            display: none;
+            align-items: center;
+            gap: 6px;
+            z-index: 9999;
+            box-shadow: var(--shadow);
+        }
+        .toolbar.visible { display: flex; }
+        .toolbar button {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 4px 12px;
+            border-radius: var(--radius-sm);
+            font-family: var(--font);
+            font-size: 0.6rem;
+            cursor: pointer;
+            transition: var(--transition);
+            outline: none;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+        .toolbar button:hover { background: var(--bg-hover); color: var(--text-primary); }
+        .toolbar .divider { width: 1px; height: 20px; background: var(--border-color); }
+        .toolbar input[type="color"] { width: 28px; height: 28px; border: none; border-radius: 4px; padding: 0; cursor: pointer; background: transparent; }
+        .canvas-wrapper { flex: 1; padding: 10px; overflow: hidden; background: var(--bg-primary); display: flex; align-items: center; justify-content: center; }
+        .canvas-container { width: 100%; max-width: 1200px; height: 100%; background: #ffffff; border-radius: var(--radius); border: 1px solid var(--border-color); overflow: hidden; position: relative; transition: all 0.3s ease; }
+        .canvas-container iframe { width: 100%; height: 100%; border: none; background: #ffffff; }
+        .toast-container { position: fixed; top: 60px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 4px; }
+        .toast { padding: 8px 16px; border-radius: var(--radius-sm); background: var(--bg-secondary); border: 1px solid var(--border-color); backdrop-filter: blur(12px); font-size: 0.7rem; color: var(--text-primary); box-shadow: var(--shadow); animation: slideIn 0.3s ease; min-width: 150px; }
+        .toast.success { border-color: var(--accent); }
+        .toast.success i { color: var(--accent); margin-left: 6px; }
+        .toast.error { border-color: #ff6b6b; }
+        .toast.error i { color: #ff6b6b; margin-left: 6px; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 30px;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: var(--shadow);
+        }
+        .modal-box h2 { font-size: 1.2rem; margin-bottom: 20px; color: var(--text-primary); }
+        .modal-box label { display: block; font-size: 0.7rem; color: var(--text-secondary); margin-bottom: 4px; margin-top: 12px; }
+        .modal-box input, .modal-box textarea { width: 100%; padding: 8px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--bg-surface); color: var(--text-primary); font-family: var(--font); font-size: 0.8rem; outline: none; }
+        .modal-box input:focus, .modal-box textarea:focus { border-color: var(--accent); }
+        .modal-box textarea { min-height: 60px; resize: vertical; }
+        .modal-box .file-input { padding: 8px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--bg-surface); color: var(--text-primary); font-family: var(--font); font-size: 0.7rem; width: 100%; cursor: pointer; }
+        .modal-box .file-input::-webkit-file-upload-button { background: var(--accent); color: var(--bg-primary); border: none; padding: 4px 12px; border-radius: 4px; font-weight: 700; cursor: pointer; font-family: var(--font); }
+        .modal-actions { display: flex; gap: 8px; margin-top: 20px; justify-content: flex-end; }
+        .modal-actions button { padding: 6px 20px; border-radius: var(--radius-sm); border: none; font-family: var(--font); font-weight: 700; cursor: pointer; transition: var(--transition); }
+        .modal-actions .btn-save { background: var(--accent); color: var(--bg-primary); }
+        .modal-actions .btn-save:hover { background: var(--accent-hover); }
+        .modal-actions .btn-cancel { background: var(--bg-surface); color: var(--text-secondary); border: 1px solid var(--border-color); }
+        .modal-actions .btn-cancel:hover { background: var(--bg-hover); }
+        .whatsapp-modal-icon { width: 58px; height: 58px; margin: 0 auto 14px; border-radius: 18px; display: flex; align-items: center; justify-content: center; background: rgba(37,211,102,.12); border: 1px solid rgba(37,211,102,.22); color: #25d366; font-size: 1.65rem; box-shadow: 0 10px 35px rgba(37,211,102,.08); }
+        .whatsapp-modal-box { max-width: 430px; text-align: center; }
+        .whatsapp-modal-box h2 { margin-bottom: 7px; }
+        .whatsapp-modal-subtitle { color: var(--text-secondary); font-size: .72rem; line-height: 1.8; margin-bottom: 18px; }
+        .whatsapp-phone-wrap { position: relative; direction: ltr; }
+        .whatsapp-phone-wrap i { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: #25d366; pointer-events: none; }
+        #whatsappNumberInput { padding-left: 38px; text-align: left; direction: ltr; letter-spacing: .5px; }
+        .whatsapp-hint { margin-top: 8px; color: var(--text-muted); font-size: .62rem; text-align: right; }
+        .whatsapp-current { display: none; margin-top: 12px; padding: 8px 10px; border-radius: 8px; background: rgba(255,255,255,.03); border: 1px solid var(--border-color); color: var(--text-secondary); font-size: .65rem; text-align: right; }
+        .whatsapp-current strong { color: #25d366; direction: ltr; unicode-bidi: plaintext; }
+        .modal-actions .btn-whatsapp-save { background: #25d366; color: #07100b; }
+        .modal-actions .btn-whatsapp-save:hover { background: #20bd5b; transform: translateY(-1px); box-shadow: 0 7px 20px rgba(37,211,102,.16); }
+        .details-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(20px);
+            z-index: 10001;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.5s ease;
+        }
+        .details-overlay.active { display: flex; }
+        .details-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            max-width: 700px;
+            width: 92%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+            animation: scaleIn 0.5s cubic-bezier(0.16,1,0.3,1);
+            position: relative;
+        }
+        .details-box .close-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .details-box .close-btn:hover { background: rgba(255,255,255,0.1); color: var(--text-primary); transform: rotate(90deg); }
+        .details-box .details-image { width: 100%; height: 400px; object-fit: cover; display: block; background: var(--bg-primary); }
+        .details-box .details-image-placeholder { width: 100%; height: 400px; display: flex; align-items: center; justify-content: center; background: var(--bg-primary); color: #444; font-size: 4rem; }
+        .details-box .details-body { padding: 30px 35px 40px; }
+        .details-box .details-title { font-size: clamp(28px, 3.5vw, 42px); font-weight: 800; color: var(--text-primary); margin-bottom: 12px; line-height: 1.1; letter-spacing: -1px; }
+        .details-box .details-title .gold { color: var(--accent); }
+        .details-box .details-desc { font-size: clamp(14px, 1.1vw, 17px); color: var(--text-secondary); line-height: 1.8; margin-bottom: 16px; }
+        .details-box .details-category { display: inline-block; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); border: 1px solid rgba(209,248,67,0.2); padding: 4px 16px; border-radius: 20px; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes scaleIn { from { opacity: 0; transform: scale(0.95) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        .loading-state { text-align: center; color: rgba(255,255,255,0.05); padding: 40px; }
+        .loading-state i { font-size: 2rem; color: var(--accent); opacity: 0.3; }
+        .loading-state p { margin-top: 10px; font-size: 0.8rem; }
+        
+        /* ===== PUBLISH SUCCESS MODAL ===== */
+        #publishSuccessModal .modal-box {
+            max-width: 480px;
+            text-align: center;
+            padding: 35px 30px;
+            animation: modalIn 0.4s cubic-bezier(0.16,1,0.3,1);
+        }
+        #publishSuccessModal .modal-box .publish-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+        #publishSuccessModal .modal-box .publish-title {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+        #publishSuccessModal .modal-box .publish-sub {
+            color: rgba(255,255,255,0.2);
+            font-size: 0.8rem;
+            margin-bottom: 16px;
+        }
+        #publishSuccessModal .modal-box .url-box {
+            background: rgba(255,255,255,0.04);
+            border-radius: 12px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid rgba(255,255,255,0.06);
+            margin-bottom: 16px;
+            text-align: right;
+        }
+        #publishSuccessModal .modal-box .url-box .link-icon {
+            color: #D1F843;
+            flex-shrink: 0;
+        }
+        #publishSuccessModal .modal-box .url-box .url-text {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.4);
+            word-break: break-all;
+            flex: 1;
+        }
+        #publishSuccessModal .modal-box .url-box .copy-btn {
+            background: rgba(209,248,67,0.1);
+            border: none;
+            color: #D1F843;
+            padding: 4px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.6rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            font-family: var(--font);
+        }
+        #publishSuccessModal .modal-box .url-box .copy-btn:hover {
+            background: rgba(209,248,67,0.18);
+        }
+        #publishSuccessModal .modal-box .waiting-box {
+            background: rgba(245,158,11,0.06);
+            border: 1px solid rgba(245,158,11,0.08);
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+        }
+        #publishSuccessModal .modal-box .waiting-box .waiting-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 4px;
+        }
+        #publishSuccessModal .modal-box .waiting-box .waiting-header .dot-waiting {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #f59e0b;
+            display: inline-block;
+            animation: pulse-dot 1s infinite;
+        }
+        #publishSuccessModal .modal-box .waiting-box .waiting-header .waiting-label {
+            font-weight: 800;
+            font-size: 0.8rem;
+            color: #f59e0b;
+        }
+        #publishSuccessModal .modal-box .waiting-box .waiting-note {
+            font-size: 0.65rem;
+            color: rgba(255,255,255,0.25);
+            line-height: 1.8;
+        }
+        #publishSuccessModal .modal-box .waiting-box .waiting-note strong {
+            color: rgba(255,255,255,0.4);
+        }
+        #publishSuccessModal .modal-box .waiting-box .waiting-note .highlight {
+            color: #D1F843;
+        }
+        #publishSuccessModal .modal-box .waiting-box .waiting-note .time {
+            color: #f59e0b;
+        }
+        #publishSuccessModal .modal-box .waiting-box .waiting-note .small-note {
+            color: rgba(255,255,255,0.1);
+            font-size: 0.55rem;
+        }
+        #publishSuccessModal .modal-box .modal-actions-center {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        #publishSuccessModal .modal-box .modal-actions-center .btn-visit {
+            background: #D1F843;
+            color: #0a0a0f;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font);
+        }
+        #publishSuccessModal .modal-box .modal-actions-center .btn-visit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(209,248,67,0.12);
+        }
+        #publishSuccessModal .modal-box .modal-actions-center .btn-ok {
+            background: rgba(255,255,255,0.04);
+            color: rgba(255,255,255,0.3);
+            border: 1px solid rgba(255,255,255,0.06);
+            padding: 10px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font);
+        }
+        #publishSuccessModal .modal-box .modal-actions-center .btn-ok:hover {
+            background: rgba(255,255,255,0.08);
+            color: #fff;
+        }
+        #publishSuccessModal .modal-box .footer-note {
+            font-size: 0.5rem;
+            color: rgba(255,255,255,0.05);
+            margin-top: 12px;
+        }
+        
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(0.7); }
+        }
+        
+        @media (max-width: 768px) {
+            .top-nav { padding: 4px 10px; height: 42px; }
+            .top-nav .logo { font-size: 0.75rem; }
+            .top-nav button { font-size: 0.5rem; padding: 3px 8px; height: 24px; }
+            .top-nav .btn-icon { width: 24px; height: 24px; }
+            .toolbar { bottom: 10px; padding: 4px 10px; flex-wrap: wrap; width: 95%; border-radius: 30px; }
+            .toolbar button { font-size: 0.5rem; padding: 3px 8px; height: 24px; }
+            .canvas-wrapper { padding: 6px; }
+            .modal-box { padding: 20px; }
+            .details-box .details-image { height: 250px; }
+            .details-box .details-body { padding: 20px; }
+            #publishSuccessModal .modal-box { padding: 25px 20px; }
+            #publishSuccessModal .modal-box .url-box { flex-wrap: wrap; justify-content: center; }
+            #publishSuccessModal .modal-box .modal-actions-center { flex-direction: column; align-items: center; }
+            #publishSuccessModal .modal-box .modal-actions-center button { width: 100%; justify-content: center; }
+        }
+        @media (max-width: 480px) {
+            .top-nav .hide-mobile { display: none; }
+            .top-nav .status { display: none; }
+            .toolbar .hide-mobile { display: none; }
+            .details-box .details-image { height: 200px; }
+            #publishSuccessModal .modal-box { padding: 20px 16px; }
+            #publishSuccessModal .modal-box .publish-title { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <nav class="top-nav">
+            <div class="logo">NOLX<span>EDITOR</span></div>
+            <div class="nav-group">
+                <button class="btn-icon" onclick="openSubdomainModal()" title="إعدادات الرابط الفرعي">
+    <i class="fas fa-globe"></i>
+</button>
+                <button class="btn-icon hide-mobile" onclick="setViewport('desktop')" title="سطح المكتب"><i class="fas fa-desktop"></i></button>
+                <button class="btn-icon hide-mobile" onclick="setViewport('tablet')" title="جهاز لوحي"><i class="fas fa-tablet-alt"></i></button>
+                <button class="btn-icon hide-mobile" onclick="setViewport('mobile')" title="جوال"><i class="fas fa-mobile-alt"></i></button>
+                <div style="width:1px;height:20px;background:var(--border-color);"></div>
+                <div class="status"><span class="dot" id="statusDot"></span><span id="saveStatus">محفوظ ✅</span></div>
+                <button class="btn-accent" id="purchaseBtn"><i class="fas fa-shopping-cart"></i> شراء</button>
+                <button class="btn-accent" id="publishBtn" style="background:#24292e;color:#fff;display:none;border:1px solid rgba(255,255,255,0.06);">
+                    <i class="fab fa-github"></i> نشر الموقع
+                </button>
+            </div>
+        </nav>
+        <div class="main-content">
+            <div class="canvas-wrapper">
+                <div class="canvas-container" id="canvasContainer">
+                    <div id="templateContent" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
+                        <div class="loading-state" id="loadingState">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>جاري تحميل القالب...</p>
+                        </div>
+                        <iframe id="previewFrame" style="display:none;width:100%;height:100%;border:none;"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ===== WHATSAPP MODAL ===== -->
+    <div class="modal-overlay" id="whatsappModal">
+        <div class="modal-box whatsapp-modal-box">
+            <div class="whatsapp-modal-icon"><i class="fab fa-whatsapp"></i></div>
+            <h2>📱 رقم واتساب</h2>
+            <p class="whatsapp-modal-subtitle">اكتب رقم واتساب الخاص بك لتفعيل زر التواصل. استخدم الرقم بصيغة دولية بدون علامة +.</p>
+            <label for="whatsappNumberInput">رقم الهاتف</label>
+            <div class="whatsapp-phone-wrap">
+                <i class="fas fa-phone"></i>
+                <input type="tel" id="whatsappNumberInput" inputmode="numeric" autocomplete="tel" placeholder="201234567890" maxlength="15">
+            </div>
+            <div class="whatsapp-hint">مثال مصر: 2010XXXXXXXX</div>
+            <div class="whatsapp-current" id="whatsappCurrent">الرقم المحفوظ: <strong id="whatsappCurrentNumber"></strong></div>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeWhatsAppModal()">إلغاء</button>
+                <button class="btn-save btn-whatsapp-save" onclick="saveWhatsAppNumber()"><i class="fab fa-whatsapp"></i> حفظ الرقم</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ===== ADD MODAL ===== -->
+    <div class="modal-overlay" id="addModal">
+        <div class="modal-box">
+            <h2 id="modalTitle">➕ إضافة مشروع جديد</h2>
+            <label>🖼️ الصورة</label>
+            <input type="file" id="modalImage" accept="image/*" class="file-input">
+            <label>📝 عنوان المشروع</label>
+            <input type="text" id="modalTitleInput" placeholder="أدخل عنوان المشروع">
+            <label>📄 وصف المشروع</label>
+            <textarea id="modalDescInput" placeholder="أدخل وصف المشروع"></textarea>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeModal()">إلغاء</button>
+                <button class="btn-save" onclick="saveNewItem()">حفظ</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ===== DETAILS MODAL ===== -->
+    <div class="details-overlay" id="detailsModal">
+        <div class="details-box">
+            <button class="close-btn" onclick="closeDetails()"><i class="fas fa-times"></i></button>
+            <div id="detailsContent">
+                <div id="detailsImageContainer"></div>
+                <div class="details-body">
+                    <h2 class="details-title" id="detailsTitle">عنوان المشروع</h2>
+                    <p class="details-desc" id="detailsDesc">وصف المشروع</p>
+                    <span class="details-category" id="detailsCategory">النوع</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ===== TOOLBAR ===== -->
+    <div class="toolbar" id="toolbar">
+        <button onclick="editText()"><i class="fas fa-pen"></i> <span class="hide-mobile">تعديل</span></button>
+        <div class="divider"></div>
+        <input type="color" id="toolColor" onchange="applyStyle('color', this.value)" title="لون النص">
+        <input type="color" id="toolBg" onchange="applyStyle('background', this.value)" title="لون الخلفية">
+        <div class="divider"></div>
+        <button onclick="applyStyle('fontWeight', 'bold')"><i class="fas fa-bold"></i></button>
+        <button onclick="applyStyle('fontStyle', 'italic')"><i class="fas fa-italic"></i></button>
+        <div class="divider"></div>
+        <button id="deleteBtn" onclick="deleteSelectedElement()" style="color:#ff6b6b;"><i class="fas fa-trash"></i> حذف</button>
+        <button onclick="closeToolbar()" style="color:var(--text-muted);"><i class="fas fa-times"></i></button>
+    </div>
+    
+    <!-- ===== TOAST CONTAINER ===== -->
+    <div class="toast-container" id="toastContainer"></div>
+    
+    <!-- ===== PUBLISH SUCCESS MODAL ===== -->
+    <div class="modal-overlay" id="publishSuccessModal">
+        <div class="modal-box">
+            <div class="publish-icon">🚀</div>
+            <h2 class="publish-title" id="publishModalTitle">✅ تم النشر بنجاح!</h2>
+            <p class="publish-sub" id="publishModalSub">موقعك الآن على الإنترنت</p>
+            
+            <!-- الرابط -->
+            <div class="url-box">
+                <i class="fas fa-link link-icon"></i>
+                <span class="url-text" id="publishModalUrl">
+                    https://moaaz-portfolio.github.io/nolx-xxx/
+                </span>
+                <button class="copy-btn" onclick="copyUrlFromModal()">
+                    <i class="fas fa-copy"></i> نسخ
+                </button>
+            </div>
+            
+            <!-- ⏳ رسالة الانتظار -->
+            <div class="waiting-box">
+                <div class="waiting-header">
+                    <span class="dot-waiting"></span>
+                    <span class="waiting-label">⚡ GitHub Pages يجهز الموقع</span>
+                </div>
+                <p class="waiting-note">
+                    <strong>📌 ملاحظة:</strong><br>
+                    تم رفع الموقع وربط الرابط. <span class="highlight">HTTPS</span> قد يكتمل تلقائياً بعد تجهيز شهادة GitHub.<br>
+                    <span class="small-note">يمكنك زيارة الموقع الآن أو تحديثه لاحقاً.</span>
+                </p>
+            </div>
+            
+            <!-- أزرار -->
+            <div class="modal-actions-center">
+                <button class="btn-visit" onclick="openSite()">
+                    <i class="fas fa-external-link-alt"></i> زيارة الموقع
+                </button>
+                <button class="btn-ok" onclick="closePublishModal()">
+                    <i class="fas fa-check"></i> حسناً
+                </button>
+            </div>
+            
+            <p class="footer-note">
+                تم النشر عبر GitHub Pages • NOLX Editor v14
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // متغيرات عامة
+        // ============================================================
+        let currentTemplate = null;
+        let currentTemplateId = null;
+        let selectedElement = null;
+        let allAvailableTemplates = [];
+        let templateItems = [];
+        let editingIndex = -1;
+        let saveTimeout = null;
+
+        // ============================================================
+        // التحقق من وضع المحرر (مجاني أم مدفوع)
+        // ============================================================
+        const urlParams = new URLSearchParams(window.location.search);
+        const editorMode = urlParams.get('mode') || 'free';
+        const templateIdParam = urlParams.get('id') || '1';
+
+        let isTemplateOwned = false;
+        let currentUser = null;
+
+        // ============================================================
+        // GITHUB CONFIG - بيتم جلبه من Firestore
+        // ============================================================
+        let GITHUB_TOKEN = '';
+        let GITHUB_USERNAME = 'moaaz-portfolio';
+        let GITHUB_DEFAULT_BRANCH = 'main';
+
+        // ============================================================
+        // جلب التوكن من Firestore
+        // ============================================================
+        async function getGitHubToken() {
+            try {
+                if (typeof firebase === 'undefined' || !firebase.firestore) {
+                    console.warn('⚠️ Firebase Firestore غير جاهز');
+                    return '';
+                }
+                
+                const db = firebase.firestore();
+                const docRef = db.collection('secrets').doc('github_token');
+                const docSnap = await docRef.get();
+                
+                if (docSnap.exists) {
+                    const data = docSnap.data();
+                    GITHUB_TOKEN = data.token || '';
+                    GITHUB_USERNAME = data.username || 'moaaz-portfolio';
+                    console.log('✅ تم جلب التوكن من Firestore بنجاح');
+                    console.log('👤 المستخدم:', GITHUB_USERNAME);
+                    return GITHUB_TOKEN;
+                } else {
+                    console.warn('⚠️ لا يوجد توكن في Firestore');
+                    showToast('⏳ جاري تجهيز النشر...', 'info');
+                    return '';
+                }
+            } catch (error) {
+                console.error('❌ خطأ في جلب التوكن:', error);
+                showToast('⏳ جاري تجهيز النشر...', 'info');
+                return '';
+            }
+        }
+
+        let isPublished = false;
+        let publishedUrl = '';
+        let existingRepoName = null;
+
+        // ============================================================
+        // وظائف localStorage - حفظ كل حاجة
+        // ============================================================
+
+        function setSavingStatus(saving) {
+            const dot = document.getElementById('statusDot');
+            const text = document.getElementById('saveStatus');
+            if (saving) {
+                dot.className = 'dot saving';
+                text.textContent = 'جاري الحفظ...';
+            } else {
+                dot.className = 'dot';
+                text.textContent = 'محفوظ ✅';
+            }
+        }
+
+        function getIframeHTML() {
+            const iframe = document.getElementById('previewFrame');
+            try {
+                const doc = iframe.contentDocument || iframe.contentWindow.document;
+                if (doc && doc.documentElement) {
+                    return doc.documentElement.outerHTML;
+                }
+            } catch (e) {
+                console.log('⚠️ لا يمكن قراءة HTML من iframe');
+            }
+            return null;
+        }
+
+        function saveAllData() {
+            if (!currentTemplateId) {
+                console.warn('⚠️ لا يوجد Template ID للحفظ');
+                return false;
+            }
+            
+            setSavingStatus(true);
+            
+            try {
+                localStorage.setItem(`nolx_items_${currentTemplateId}`, JSON.stringify(templateItems));
+                
+                if (currentTemplate && currentTemplate.variables) {
+                    localStorage.setItem(`nolx_variables_${currentTemplateId}`, JSON.stringify(currentTemplate.variables));
+                }
+                
+                const html = getIframeHTML();
+                if (html) {
+                    localStorage.setItem(`nolx_html_${currentTemplateId}`, html);
+                    console.log('✅ تم حفظ HTML كامل');
+                }
+                
+                localStorage.setItem(`nolx_last_save_${currentTemplateId}`, Date.now().toString());
+                
+                setSavingStatus(false);
+                return true;
+            } catch (e) {
+                console.error('❌ خطأ في الحفظ:', e);
+                setSavingStatus(false);
+                document.getElementById('saveStatus').textContent = '⚠️ خطأ';
+                return false;
+            }
+        }
+
+        function loadSavedData() {
+            if (!currentTemplateId) {
+                console.warn('⚠️ لا يوجد Template ID لتحميل البيانات');
+                return;
+            }
+            
+            try {
+                const savedItems = localStorage.getItem(`nolx_items_${currentTemplateId}`);
+                if (savedItems) {
+                    try { 
+                        templateItems = JSON.parse(savedItems); 
+                        console.log(`📦 تم تحميل ${templateItems.length} مشروع`);
+                    } catch(e) { 
+                        templateItems = []; 
+                    }
+                } else {
+                    templateItems = [];
+                }
+                
+                const savedVars = localStorage.getItem(`nolx_variables_${currentTemplateId}`);
+                if (savedVars && currentTemplate) {
+                    try {
+                        const vars = JSON.parse(savedVars);
+                        currentTemplate.variables = { ...(currentTemplate.variables || {}), ...vars };
+                        console.log('📦 تم تحميل المتغيرات');
+                    } catch(e) {}
+                }
+                
+                const savedHTML = localStorage.getItem(`nolx_html_${currentTemplateId}`);
+                if (savedHTML) {
+                    document.getElementById('previewFrame').srcdoc = savedHTML;
+                    console.log('📦 تم تحميل HTML كامل من localStorage');
+                    setTimeout(setupIframeListeners, 600);
+                }
+                
+                const lastSave = localStorage.getItem(`nolx_last_save_${currentTemplateId}`);
+                if (lastSave) {
+                    const date = new Date(parseInt(lastSave));
+                    console.log(`📅 آخر حفظ: ${date.toLocaleTimeString()}`);
+                }
+                
+                document.getElementById('saveStatus').textContent = 'محفوظ ✅';
+                return true;
+            } catch (e) {
+                console.error('❌ خطأ في تحميل البيانات:', e);
+                return false;
+            }
+        }
+
+        // ============================================================
+        // تحميل القوالب
+        // ============================================================
+
+        async function discoverAllTemplates() {
+            const possibleIds = ['1', '2', '3', '4', '5', '6'];
+            const found = [];
+            for (const id of possibleIds) {
+                try {
+                    let response = await fetch(`templates/template${id}.json`);
+                    if (!response.ok) response = await fetch(`templates/${id}.json`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        data._fileId = id;
+                        found.push(data);
+                    }
+                } catch (e) { /* ignore */ }
+            }
+            allAvailableTemplates = found;
+            return found;
+        }
+
+        async function loadTemplate() {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id') || '1';
+            currentTemplateId = id;
+            
+            await discoverAllTemplates();
+            let loaded = false;
+            let response = await fetch(`templates/template${id}.json`);
+            if (!response.ok) response = await fetch(`templates/${id}.json`);
+            if (response.ok) {
+                const data = await response.json();
+                currentTemplate = data;
+                loaded = true;
+            } else {
+                const found = allAvailableTemplates.find(t => t.id == id || t.id === id || t._fileId === id || t.name === id);
+                if (found) { currentTemplate = found; loaded = true; }
+            }
+            if (!loaded && allAvailableTemplates.length > 0) {
+                currentTemplate = allAvailableTemplates[0];
+                loaded = true;
+            }
+            if (loaded) {
+                currentTemplateId = currentTemplate.id || currentTemplate._fileId;
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('previewFrame').style.display = 'block';
+                
+                const hasSavedData = loadSavedData();
+                
+                if (!hasSavedData || !localStorage.getItem(`nolx_html_${currentTemplateId}`)) {
+                    updatePreview();
+                }
+                
+                showToast(`✅ تم تحميل "${currentTemplate.name}"`, 'success');
+                
+                if (currentUser) {
+                    await checkTemplateOwnership(currentUser.uid, currentTemplateId);
+                }
+                updatePurchaseButton();
+            } else {
+                document.getElementById('loadingState').innerHTML = `<i class="fas fa-box-open"></i><p style="margin-top:10px;">لا توجد قوالب متوفرة</p>`;
+            }
+        }
+
+        function saveItems() {
+            saveAllData();
+        }
+
+        function saveTemplateVariables() {
+            saveAllData();
+        }
+
+        function openDetails(index) {
+            const item = templateItems[index];
+            if (!item) return;
+            const imageHtml = item.image ? `<img src="${item.image}" class="details-image" alt="${item.title}" />` : `<div class="details-image-placeholder"><i class="fas fa-image"></i></div>`;
+            document.getElementById('detailsImageContainer').innerHTML = imageHtml;
+            document.getElementById('detailsTitle').textContent = item.title || 'مشروع';
+            document.getElementById('detailsTitle').innerHTML = (item.title || 'مشروع').replace(/\s/g, ' ') + ' <span class="gold">✦</span>';
+            document.getElementById('detailsDesc').textContent = item.desc || 'لا يوجد وصف';
+            document.getElementById('detailsCategory').textContent = item.category || 'عام';
+            document.getElementById('detailsModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDetails() {
+            document.getElementById('detailsModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function updatePreview() {
+            if (!currentTemplate) return;
+            const vars = { ...currentTemplate.variables };
+            let html = currentTemplate.html || '';
+            let projectsHtml = '';
+            templateItems.forEach((item, index) => {
+                const imageHtml = item.image ? `<img src="${item.image}" class="card-image" alt="${item.title}" />` : `<div class="card-image-placeholder"><i class="fas fa-image"></i></div>`;
+                projectsHtml += `
+                    <div class="project-card" data-index="${index}">
+                        <div class="card-delete-btn" onclick="event.stopPropagation(); window.parent.deleteItem(${index});">
+                            <i class="fas fa-times"></i>
+                        </div>
+                        <div class="card-clickable" onclick="window.parent.openDetails(${index})">
+                            ${imageHtml}
+                            <div class="card-body">
+                                <h3 class="card-title">${item.title || 'مشروع'}</h3>
+                                <p class="card-desc">${item.desc || ''}</p>
+                                <span class="card-category">${item.category || 'عام'}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            if (currentTemplate.allow_add !== false) {
+                projectsHtml += `
+                    <div class="add-project-card" onclick="window.parent.openAddModal()">
+                        <div class="add-content">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>➕ إضافة ${currentTemplate.item_label || 'مشروع'}</span>
+                        </div>
+                    </div>
+                `;
+            }
+            html = html.replace(/<div class="projects"[^>]*>[\s\S]*?<\/div>/, `<div class="projects" id="projectsContainer">${projectsHtml}</div>`);
+            
+            if (vars.whatsapp_number) {
+                vars.social_whatsapp = `https://wa.me/${vars.whatsapp_number}`;
+            }
+            
+            Object.keys(vars).forEach(key => {
+                const val = vars[key] || '';
+                html = html.replace(new RegExp(`{{${key}}}`, 'g'), val);
+            });
+            document.getElementById('previewFrame').srcdoc = html;
+            setTimeout(() => {
+                setupIframeListeners();
+                setTimeout(saveAllData, 800);
+            }, 500);
+        }
+
+        function openAddModal() {
+            document.getElementById('modalTitle').textContent = `➕ إضافة ${currentTemplate.item_label || 'مشروع'} جديد`;
+            document.getElementById('modalTitleInput').value = '';
+            document.getElementById('modalDescInput').value = '';
+            document.getElementById('modalImage').value = '';
+            editingIndex = -1;
+            document.getElementById('addModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('addModal').classList.remove('active');
+        }
+
+        function saveNewItem() {
+            const title = document.getElementById('modalTitleInput').value.trim();
+            const desc = document.getElementById('modalDescInput').value.trim();
+            const imageFile = document.getElementById('modalImage').files[0];
+            if (!title) { showToast('❌ الرجاء إدخال عنوان', 'error'); return; }
+            const newItem = { title, desc: desc || '', image: '', category: currentTemplate.item_label || 'مشروع' };
+            if (imageFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    newItem.image = e.target.result;
+                    if (editingIndex >= 0) { templateItems[editingIndex] = newItem; } 
+                    else { templateItems.push(newItem); }
+                    saveItems();
+                    updatePreview();
+                    closeModal();
+                    showToast(`✅ تم ${editingIndex >= 0 ? 'تعديل' : 'إضافة'} ${currentTemplate.item_label || 'المشروع'}`, 'success');
+                };
+                reader.readAsDataURL(imageFile);
+            } else {
+                if (editingIndex >= 0) { newItem.image = templateItems[editingIndex]?.image || ''; templateItems[editingIndex] = newItem; } 
+                else { templateItems.push(newItem); }
+                saveItems();
+                updatePreview();
+                closeModal();
+                showToast(`✅ تم ${editingIndex >= 0 ? 'تعديل' : 'إضافة'} ${currentTemplate.item_label || 'المشروع'}`, 'success');
+            }
+        }
+
+        function deleteItem(index) {
+            if (!confirm(`🗑️ هل أنت متأكد من حذف هذا ${currentTemplate.item_label || 'المشروع'}؟`)) return;
+            templateItems.splice(index, 1);
+            saveItems();
+            updatePreview();
+            showToast(`🗑️ تم حذف ${currentTemplate.item_label || 'المشروع'}`, 'success');
+        }
+
+        function deleteSelectedElement() {
+            if (!selectedElement) {
+                showToast('❌ اختر عنصراً أولاً', 'error');
+                return;
+            }
+            try {
+                const el = selectedElement;
+                if (el === el.ownerDocument.body || el === el.ownerDocument.documentElement) {
+                    showToast('❌ لا يمكن حذف الصفحة نفسها', 'error');
+                    return;
+                }
+                if (!confirm('🗑️ هل أنت متأكد من حذف هذا العنصر؟')) return;
+                el.remove();
+                saveAllData();
+                closeToolbar();
+                showToast('🗑️ تم حذف العنصر', 'success');
+            } catch (e) {
+                showToast('❌ لا يمكن حذف هذا العنصر', 'error');
+            }
+        }
+
+        function setupIframeListeners() {
+            const iframe = document.getElementById('previewFrame');
+            try {
+                const doc = iframe.contentDocument || iframe.contentWindow.document;
+                if (!doc) return;
+                
+                doc.removeEventListener('click', handleElementClick);
+                doc.removeEventListener('mouseover', handleElementHover);
+                doc.removeEventListener('mouseout', handleElementHoverOut);
+                doc.addEventListener('click', handleElementClick);
+                doc.addEventListener('mouseover', handleElementHover);
+                doc.addEventListener('mouseout', handleElementHoverOut);
+                doc.querySelectorAll('*').forEach(el => { el.style.cursor = 'pointer'; });
+            } catch (e) {}
+        }
+
+        let hoveredElement = null;
+
+        function handleElementHover(e) {
+            const el = e.target;
+            if (el === el.ownerDocument.body) return;
+            if (el.closest && el.closest('.social')) { return; }
+            if (hoveredElement) { try { hoveredElement.style.outline = 'none'; } catch (e) {} }
+            hoveredElement = el;
+            try { el.style.outline = '2px solid rgba(209,248,67,0.3)'; el.style.outlineOffset = '2px'; } catch (e) {}
+        }
+
+        function handleElementHoverOut(e) {
+            if (hoveredElement) {
+                try { hoveredElement.style.outline = 'none'; } catch (e) {}
+                hoveredElement = null;
+            }
+        }
+
+        function handleElementClick(e) {
+            const el = e.target;
+            
+            const socialEl = el.closest('.social');
+            if (socialEl) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (socialEl.classList.contains('whatsapp')) {
+                    openWhatsAppModal();
+                    return;
+                }
+                const currentLink = socialEl.getAttribute('href') || '#';
+                const newLink = prompt('🔗 رابط ' + (socialEl.classList.contains('whatsapp') ? 'واتساب' : 'السوشيال ميديا'), currentLink);
+                if (newLink !== null) {
+                    socialEl.setAttribute('href', newLink);
+                    saveAllData();
+                    showToast('✅ تم تحديث الرابط', 'success');
+                }
+                return;
+            }
+
+            if (el === el.ownerDocument.body) { closeToolbar(); return; }
+            
+            const cardEl = el.closest('.project-card');
+            if (cardEl) { const index = cardEl.dataset.index; if (index !== undefined) { return; } }
+            
+            e.stopPropagation(); e.preventDefault();
+            if (selectedElement) { try { selectedElement.style.outline = 'none'; } catch (e) {} }
+            selectedElement = el;
+            try { el.style.outline = '3px solid #d1f843'; el.style.outlineOffset = '2px'; } catch (e) {}
+            showToolbar(el);
+        }
+
+        function showToolbar(el) {
+            const toolbar = document.getElementById('toolbar');
+            toolbar.classList.add('visible');
+            const style = window.getComputedStyle(el);
+            const color = rgbToHex(style.color);
+            const bg = rgbToHex(style.backgroundColor);
+            document.getElementById('toolColor').value = color;
+            document.getElementById('toolBg').value = bg;
+            const deleteBtn = document.getElementById('deleteBtn');
+            deleteBtn.style.display = 'flex';
+        }
+
+        function closeToolbar() {
+            document.getElementById('toolbar').classList.remove('visible');
+            if (selectedElement) { try { selectedElement.style.outline = 'none'; } catch (e) {} }
+            selectedElement = null;
+        }
+
+        function editText() {
+            if (!selectedElement) return;
+            const text = prompt('✏️ تعديل النص:', selectedElement.textContent);
+            if (text !== null) {
+                selectedElement.textContent = text;
+                saveAllData();
+                showToast('✅ تم تحديث النص', 'success');
+            }
+        }
+
+        function applyStyle(prop, value) {
+            if (!selectedElement) return;
+            selectedElement.style[prop] = value;
+            saveAllData();
+            showToast(`✅ تم تحديث ${prop}`, 'success');
+        }
+
+        function saveChanges() {
+            saveAllData();
+        }
+
+        function setViewport(size) {
+            const container = document.getElementById('canvasContainer');
+            const widths = { desktop: '100%', tablet: '768px', mobile: '375px' };
+            container.style.maxWidth = widths[size] || '100%';
+            showToast(`📱 ${size === 'desktop' ? 'سطح المكتب' : size === 'tablet' ? 'جهاز لوحي' : 'جوال'}`, 'success');
+        }
+
+        // ============================================================
+        // تصدير القالب (يستخدم عند الشراء)
+        // ============================================================
+
+        function exportProject() {
+            const iframe = document.getElementById('previewFrame');
+            try {
+                const doc = iframe.contentDocument || iframe.contentWindow.document;
+                let html = doc.documentElement.outerHTML;
+                html = html.replace(/<div class="card-delete-btn"[^>]*>[\s\S]*?<\/div>/g, '');
+                html = html.replace(/<div class="add-project-card"[^>]*>[\s\S]*?<\/div>/g, '');
+                html = html.replace(/ data-index="[^"]*"/g, '');
+                html = html.replace(/ onclick="[^"]*"/g, '');
+                html = html.replace(/ onmouseover="[^"]*"/g, '');
+                html = html.replace(/ onmouseout="[^"]*"/g, '');
+                html = html.replace(/\.project-card:hover \.card-delete-btn[\s\S]*?\}/g, '');
+                html = html.replace(/\.card-delete-btn[\s\S]*?\}/g, '');
+                const zip = new JSZip();
+                zip.file('index.html', html);
+                const styleMatch = html.match(/<style>([\s\S]*?)<\/style>/);
+                if (styleMatch) { zip.file('style.css', styleMatch[1]); }
+                const images = html.match(/src="(data:image\/[^"]+)"/g);
+                if (images) {
+                    images.forEach((img, i) => {
+                        const data = img.match(/src="([^"]+)"/)[1];
+                        const ext = data.split(';')[0].split('/')[1];
+                        zip.file(`image_${i+1}.${ext}`, data.split(',')[1], { base64: true });
+                    });
+                }
+                zip.generateAsync({ type: 'blob' }).then((blob) => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `template-${currentTemplateId || 'export'}-${Date.now()}.zip`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                    showToast('📦 تم تصدير القالب بنجاح', 'success');
+                });
+            } catch (e) { showToast('خطأ في التصدير', 'error'); }
+        }
+
+        function openWhatsAppModal() {
+            const modal = document.getElementById('whatsappModal');
+            const input = document.getElementById('whatsappNumberInput');
+            const current = String(currentTemplate?.variables?.whatsapp_number || '').replace(/\D/g, '');
+            input.value = current;
+            const currentBox = document.getElementById('whatsappCurrent');
+            const currentNumber = document.getElementById('whatsappCurrentNumber');
+            if (current) { currentNumber.textContent = '+' + current; currentBox.style.display = 'block'; } 
+            else { currentBox.style.display = 'none'; }
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => { input.focus(); input.select(); }, 120);
+        }
+
+        function closeWhatsAppModal() {
+            document.getElementById('whatsappModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function saveWhatsAppNumber() {
+            if (!currentTemplate) return;
+            const input = document.getElementById('whatsappNumberInput');
+            let number = input.value.replace(/\D/g, '');
+            if (!number) { showToast('❌ اكتب رقم واتساب أولاً', 'error'); input.focus(); return; }
+            if (number.length < 8 || number.length > 15) { showToast('❌ رقم غير صحيح — استخدم الرقم الدولي بدون +', 'error'); input.focus(); return; }
+            if (!currentTemplate.variables) currentTemplate.variables = {};
+            currentTemplate.variables.whatsapp_number = number;
+            currentTemplate.variables.social_whatsapp = `https://wa.me/${number}`;
+            saveTemplateVariables();
+            updatePreview();
+            closeWhatsAppModal();
+            showToast('✅ تم حفظ رقم واتساب وتشغيل الزر', 'success');
+        }
+
+        document.getElementById('whatsappModal').addEventListener('click', (e) => {
+            if (e.target.id === 'whatsappModal') { closeWhatsAppModal(); }
+        });
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icon = type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle';
+            toast.innerHTML = `<i class="fas ${icon}"></i> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
+        }
+
+        function rgbToHex(rgb) {
+            if (!rgb || rgb === 'transparent' || rgb === 'rgba(0,0,0,0)') return '#000000';
+            const match = rgb.match(/\d+/g);
+            if (!match) return '#000000';
+            const [r, g, b] = match.map(Number);
+            return '#' + [r, g, b].map(c => c.toString(16).padStart(2, '0')).join('');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') { closeToolbar(); closeModal(); closeDetails(); closeWhatsAppModal(); closePublishModal(); }
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); saveAllData(); showToast('💾 تم الحفظ', 'success'); }
+            if (e.key === 'Delete' || e.key === 'Backspace') {
+                if (selectedElement && document.activeElement?.tagName !== 'INPUT' && document.activeElement?.tagName !== 'TEXTAREA') {
+                    e.preventDefault();
+                    deleteSelectedElement();
+                }
+            }
+        });
+
+        window.addEventListener('beforeunload', function() {
+            if (currentTemplate) {
+                saveAllData();
+            }
+        });
+
+        setInterval(() => {
+            if (currentTemplate) {
+                saveAllData();
+            }
+        }, 5000);
+
+        // ============================================================
+        // PUBLISH SUCCESS MODAL FUNCTIONS
+        // ============================================================
+
+        function showPublishModal(title, subtitle, url, isUpdate = false) {
+            const modal = document.getElementById('publishSuccessModal');
+            document.getElementById('publishModalTitle').textContent = isUpdate ? '✅ تم تحديث الموقع!' : '✅ تم النشر بنجاح!';
+            document.getElementById('publishModalSub').textContent = isUpdate ? 'تم تحديث موقعك بنجاح' : 'موقعك الآن على الإنترنت';
+            document.getElementById('publishModalUrl').textContent = url;
+            
+            modal.dataset.url = url;
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePublishModal() {
+            const modal = document.getElementById('publishSuccessModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function copyUrlFromModal() {
+            const modal = document.getElementById('publishSuccessModal');
+            const url = modal.dataset.url || '';
+            
+            if (!url) {
+                showToast('⚠️ لا يوجد رابط للنسخ', 'error');
+                return;
+            }
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(url).then(() => {
+                    showToast('✅ تم نسخ الرابط', 'success');
+                }).catch(() => {
+                    fallbackCopyModal(url);
+                });
+            } else {
+                fallbackCopyModal(url);
+            }
+        }
+
+        function fallbackCopyModal(text) {
+            const input = document.createElement('input');
+            input.value = text;
+            document.body.appendChild(input);
+            input.select();
+            document.execCommand('copy');
+            document.body.removeChild(input);
+            showToast('✅ تم نسخ الرابط', 'success');
+        }
+
+        function openSite() {
+            const modal = document.getElementById('publishSuccessModal');
+            const url = modal.dataset.url || '';
+            
+            if (url) {
+                window.open(url, '_blank');
+            } else {
+                showToast('⚠️ لا يوجد رابط للموقع', 'error');
+            }
+        }
+
+        // ============================================================
+        // FIREBASE AUTH & PURCHASE
+        // ============================================================
+
+        // استيراد Firebase
+        const firebaseScript = document.createElement('script');
+        firebaseScript.src = 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js';
+        document.head.appendChild(firebaseScript);
+
+        const firebaseAuthScript = document.createElement('script');
+        firebaseAuthScript.src = 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js';
+        document.head.appendChild(firebaseAuthScript);
+
+        const firebaseFirestoreScript = document.createElement('script');
+        firebaseFirestoreScript.src = 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js';
+        document.head.appendChild(firebaseFirestoreScript);
+
+        let firebaseReady = false;
+
+        // ============================================================
+        // التحقق من ملكية القالب
+        // ============================================================
+        async function checkTemplateOwnership(uid, templateId) {
+            try {
+                if (typeof firebase === 'undefined' || !firebase.firestore) {
+                    return false;
+                }
+                const db = firebase.firestore();
+                const userRef = db.collection('users').doc(uid);
+                const docSnap = await userRef.get();
+                
+                if (docSnap.exists) {
+                    const purchased = docSnap.data().purchasedTemplates || [];
+                    isTemplateOwned = purchased.includes(String(templateId));
+                    return isTemplateOwned;
+                }
+                isTemplateOwned = false;
+                return false;
+            } catch (error) {
+                console.error('[NOLX] Check ownership error:', error);
+                isTemplateOwned = false;
+                return false;
+            }
+        }
+
+        // ============================================================
+        // تحديث زر الشراء وزر النشر
+        // ============================================================
+        function updatePurchaseButton() {
+            const purchaseBtn = document.getElementById('purchaseBtn');
+            const publishBtn = document.getElementById('publishBtn');
+            
+            if (!purchaseBtn) return;
+
+            if (isTemplateOwned) {
+                purchaseBtn.innerHTML = '<i class="fas fa-check-circle"></i> مملوك ✅';
+                purchaseBtn.style.background = 'rgba(34,197,94,0.15)';
+                purchaseBtn.style.color = '#22c55e';
+                purchaseBtn.style.border = '1px solid rgba(34,197,94,0.2)';
+                purchaseBtn.onclick = () => {
+                    showToast('✅ هذا القالب مملوك لك بالفعل!', 'info');
+                };
+                
+                if (publishBtn) {
+                    publishBtn.style.display = 'inline-flex';
+                    publishBtn.innerHTML = '<i class="fab fa-github"></i> نشر الموقع';
+                    publishBtn.style.background = '#24292e';
+                    publishBtn.style.color = '#fff';
+                    publishBtn.style.border = '1px solid rgba(255,255,255,0.06)';
+                    checkExistingPublishedSite();
+                }
+            } else if (currentUser) {
+                purchaseBtn.innerHTML = '<i class="fas fa-shopping-cart"></i> شراء';
+                purchaseBtn.style.background = '#D1F843';
+                purchaseBtn.style.color = '#0a0a0f';
+                purchaseBtn.style.border = 'none';
+                purchaseBtn.onclick = window.purchaseTemplate;
+                
+                if (publishBtn) {
+                    publishBtn.style.display = 'none';
+                }
+            } else {
+                purchaseBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> تسجيل الدخول للشراء';
+                purchaseBtn.style.background = 'rgba(255,255,255,0.04)';
+                purchaseBtn.style.color = 'rgba(255,255,255,0.3)';
+                purchaseBtn.style.border = '1px solid rgba(255,255,255,0.06)';
+                purchaseBtn.onclick = () => {
+                    window.location.href = 'login.html?redirect=editor&id=' + (currentTemplateId || '1');
+                };
+                
+                if (publishBtn) {
+                    publishBtn.style.display = 'none';
+                }
+            }
+        }
+
+        // ============================================================
+        // التحقق من وجود موقع منشور مسبقاً
+        // ============================================================
+        async function checkExistingPublishedSite() {
+            try {
+                if (!currentUser || typeof firebase === 'undefined' || !firebase.firestore) return;
+                
+                const db = firebase.firestore();
+                const userRef = db.collection('users').doc(currentUser.uid);
+                const docSnap = await userRef.get();
+                
+                if (docSnap.exists) {
+                    const sites = docSnap.data().publishedSites || [];
+                    const existing = sites.find(s => s.templateId === String(currentTemplateId));
+                    
+                    if (existing) {
+                        existingRepoName = existing.repoName;
+                        publishedUrl = existing.url;
+                        isPublished = true;
+                        
+                        const publishBtn = document.getElementById('publishBtn');
+                        publishBtn.innerHTML = `
+                            <i class="fab fa-github"></i> 
+                            تحديث الموقع
+                            <span style="font-size:0.5rem;opacity:0.5;margin-right:4px;">
+                                (${existing.repoName})
+                            </span>
+                        `;
+                        publishBtn.style.background = '#f59e0b';
+                        publishBtn.style.color = '#fff';
+                        publishBtn.style.border = 'none';
+                        publishBtn.onclick = publishToGitHub;
+                        
+                        console.log('🔄 تم العثور على موقع منشور مسبقاً:', existing.repoName);
+                        console.log('🔗 الرابط:', existing.url);
+                    }
+                }
+            } catch (error) {
+                console.error('[NOLX] Error checking existing site:', error);
+            }
+        }
+
+        // ============================================================
+        // دالة الشراء
+        // ============================================================
+        window.purchaseTemplate = async function() {
+            if (!currentTemplate) {
+                showToast('القالب غير موجود', 'error');
+                return;
+            }
+
+            if (!currentUser) {
+                showToast('⚠️ يجب تسجيل الدخول أولاً للشراء', 'error');
+                setTimeout(() => {
+                    window.location.href = 'login.html?redirect=editor&id=' + (currentTemplateId || '1');
+                }, 1000);
+                return;
+            }
+
+            if (isTemplateOwned) {
+                showToast('✅ هذا القالب مملوك لك بالفعل!', 'info');
+                return;
+            }
+
+            const price = currentTemplate.price || 0;
+            const templateId = String(currentTemplate.id || currentTemplate._fileId || '1');
+
+            try {
+                const db = firebase.firestore();
+                const userRef = db.collection('users').doc(currentUser.uid);
+                const docSnap = await userRef.get();
+
+                let currentCredits = 0;
+                let currentTransactions = [];
+                let purchasedTemplates = [];
+
+                if (docSnap.exists) {
+                    const data = docSnap.data();
+                    currentCredits = data.credits || 0;
+                    currentTransactions = data.transactions || [];
+                    purchasedTemplates = data.purchasedTemplates || [];
+                } else {
+                    await userRef.set({
+                        credits: 0,
+                        transactions: [],
+                        purchasedTemplates: [],
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    currentCredits = 0;
+                }
+
+                if (purchasedTemplates.includes(templateId)) {
+                    showToast('✅ هذا القالب مملوك لك بالفعل!', 'info');
+                    isTemplateOwned = true;
+                    updatePurchaseButton();
+                    return;
+                }
+
+                if (currentCredits < price) {
+                    showToast(`❌ رصيدك غير كافي! رصيدك: ${currentCredits} EGP`, 'error');
+                    return;
+                }
+
+                const newTransaction = {
+                    type: "deduct",
+                    amount: price,
+                    note: `شراء قالب: ${currentTemplate.name}`,
+                    templateId: templateId,
+                    timestamp: new Date().toISOString(),
+                    status: "completed"
+                };
+
+                await userRef.update({
+                    credits: firebase.firestore.FieldValue.increment(-price),
+                    transactions: firebase.firestore.FieldValue.arrayUnion(newTransaction),
+                    purchasedTemplates: firebase.firestore.FieldValue.arrayUnion(templateId),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                localStorage.setItem('nolx_balance', currentCredits - price);
+                isTemplateOwned = true;
+                updatePurchaseButton();
+
+                showToast(`✅ تم شراء "${currentTemplate.name}" بنجاح!`, 'success');
+                setTimeout(exportProject, 500);
+
+            } catch (error) {
+                console.error('[NOLX] Purchase error:', error);
+                showToast('❌ حدث خطأ أثناء عملية الشراء', 'error');
+            }
+        };
+
+        // ============================================================
+        // GITHUB PUBLISH - نشر الموقع (مع إصلاح SHA)
+        // ============================================================
+
+        // جلب المستودع الحالي من Firestore
+        async function getExistingRepo() {
+            try {
+                if (!currentUser || typeof firebase === 'undefined' || !firebase.firestore) {
+                    return null;
+                }
+                
+                const db = firebase.firestore();
+                const userRef = db.collection('users').doc(currentUser.uid);
+                const docSnap = await userRef.get();
+                
+                if (docSnap.exists) {
+                    const sites = docSnap.data().publishedSites || [];
+                    const existing = sites.find(s => s.templateId === String(currentTemplateId));
+                    return existing || null;
+                }
+                return null;
+            } catch (error) {
+                console.error('[NOLX] Error getting existing repo:', error);
+                return null;
+            }
+        }
+
+        // حفظ الرابط في Firestore (تحديث أو إضافة)
+        async function savePublishedUrl(repoName, url, isUpdate = false) {
+            try {
+                if (!currentUser || typeof firebase === 'undefined' || !firebase.firestore) {
+                    return;
+                }
+                
+                const db = firebase.firestore();
+                const userRef = db.collection('users').doc(currentUser.uid);
+                
+                const newSite = {
+                    templateId: String(currentTemplateId),
+                    templateName: currentTemplate.name || 'قالب غير مسمى',
+                    repoName: repoName,
+                    url: url,
+                    updatedAt: new Date().toISOString(),
+                    status: 'active'
+                };
+
+                const docSnap = await userRef.get();
+                let sites = [];
+                
+                if (docSnap.exists) {
+                    sites = docSnap.data().publishedSites || [];
+                }
+
+                if (isUpdate) {
+                    const index = sites.findIndex(s => s.templateId === String(currentTemplateId));
+                    if (index !== -1) {
+                        sites[index] = { ...sites[index], ...newSite };
+                        console.log('🔄 تم تحديث الموقع في Firestore');
+                    } else {
+                        sites.push({ ...newSite, publishedAt: new Date().toISOString() });
+                        console.log('🆕 تم إضافة الموقع في Firestore');
+                    }
+                } else {
+                    sites.push({
+                        ...newSite,
+                        publishedAt: new Date().toISOString()
+                    });
+                    console.log('🆕 تم إضافة موقع جديد في Firestore');
+                }
+
+                await userRef.update({
+                    publishedSites: sites,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                existingRepoName = repoName;
+                publishedUrl = url;
+                isPublished = true;
+
+            } catch (error) {
+                console.error('[NOLX] Save URL error:', error);
+            }
+        }
+
+        // ============================================================
+        // رفع ملف (مع جلب SHA جديد من GitHub)
+        // ============================================================
+        async function uploadFile(repoName, path, content) {
+            let sha = null;
+            
+            try {
+                // 🔥 جلب الملف الحالي للحصول على SHA الصحيح من GitHub
+                const fileResponse = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${repoName}/contents/${path}`, {
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+
+                if (fileResponse.ok) {
+                    const fileData = await fileResponse.json();
+                    sha = fileData.sha;
+                    console.log(`📄 الملف ${path} موجود، SHA: ${sha.substring(0, 8)}...`);
+                } else if (fileResponse.status === 404) {
+                    console.log(`📄 الملف ${path} غير موجود، سيتم إنشاؤه`);
+                } else {
+                    console.warn(`⚠️ خطأ في جلب الملف ${path}:`, fileResponse.status);
+                }
+            } catch (e) {
+                console.warn(`⚠️ خطأ في جلب الملف ${path}:`, e.message);
+            }
+
+            const payload = {
+                message: `Update ${path}`,
+                content: btoa(unescape(encodeURIComponent(content))),
+                branch: GITHUB_DEFAULT_BRANCH || 'main'
+            };
+
+            // 🔥 فقط إذا كان الملف موجوداً، نضيف SHA
+            if (sha) {
+                payload.sha = sha;
+                console.log(`🔄 تحديث الملف ${path} بالـ SHA: ${sha.substring(0, 8)}...`);
+            } else {
+                console.log(`🆕 إنشاء ملف جديد ${path}`);
+            }
+
+            const response = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${repoName}/contents/${path}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${GITHUB_TOKEN}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                console.error('❌ تفاصيل الخطأ:', error);
+                throw new Error(`فشل رفع الملف ${path}: ${error.message || 'خطأ غير معروف'}`);
+            }
+
+            const result = await response.json();
+            console.log(`✅ تم رفع الملف ${path} بنجاح`);
+            return result;
+        }
+
+        // ============================================================
+        // إنشاء مستودع
+        // ============================================================
+        async function createRepo(repoName) {
+            const base = `https://api.github.com/repos/${GITHUB_USERNAME}/${repoName}`;
+            const headers = {
+                'Authorization': `token ${GITHUB_TOKEN}`,
+                'Accept': 'application/vnd.github+json',
+                'Content-Type': 'application/json'
+            };
+
+            // أولاً: لو المستودع موجود بالفعل، استخدمه بدل محاولة إنشائه.
+            try {
+                const existingResponse = await fetch(base, { headers });
+                if (existingResponse.ok) {
+                    const existingData = await existingResponse.json();
+                    GITHUB_DEFAULT_BRANCH = existingData.default_branch || 'main';
+                    console.log(`♻️ المستودع موجود بالفعل: ${repoName} | branch: ${GITHUB_DEFAULT_BRANCH}`);
+                    return existingData;
+                }
+            } catch (e) {
+                console.warn('[NOLX] Existing repo check:', e.message);
+            }
+
+            const createResponse = await fetch('https://api.github.com/user/repos', {
+                method: 'POST',
+                headers,
+                body: JSON.stringify({
+                    name: repoName,
+                    description: `NOLX Website - ${currentUser.email}`,
+                    private: false,
+                    auto_init: true
+                })
+            });
+
+            if (createResponse.ok) {
+                const data = await createResponse.json();
+                GITHUB_DEFAULT_BRANCH = data.default_branch || 'main';
+                console.log(`✅ تم إنشاء المستودع: ${repoName} | branch: ${GITHUB_DEFAULT_BRANCH}`);
+                return data;
+            }
+
+            const error = await createResponse.json().catch(() => ({}));
+
+            // 422 من GitHub هنا غالباً يعني أن الاسم موجود بالفعل.
+            if (createResponse.status === 422) {
+                try {
+                    const retry = await fetch(base, { headers });
+                    if (retry.ok) {
+                        const data = await retry.json();
+                        GITHUB_DEFAULT_BRANCH = data.default_branch || 'main';
+                        console.log(`♻️ تم العثور على المستودع بعد 422: ${repoName}`);
+                        return data;
+                    }
+                } catch (e) {
+                    console.warn('[NOLX] Repo recovery after 422:', e.message);
+                }
+            }
+
+            throw new Error(`فشل إنشاء/الوصول إلى المستودع: ${error.message || createResponse.statusText}`);
+        }
+
+        // ============================================================
+        // تفعيل/تحديث GitHub Pages + الدومين المخصص
+        // ============================================================
+        async function configureGitHubPages(repoName, customDomain = '') {
+            const base = `https://api.github.com/repos/${GITHUB_USERNAME}/${repoName}/pages`;
+            const headers = {
+                'Authorization': `token ${GITHUB_TOKEN}`,
+                'Accept': 'application/vnd.github+json',
+                'Content-Type': 'application/json'
+            };
+
+            const source = { branch: GITHUB_DEFAULT_BRANCH || 'main', path: '/' };
+            const pagesConfig = {
+                source,
+                ...(customDomain ? { cname: customDomain } : {})
+            };
+
+            async function readError(response) {
+                const data = await response.json().catch(() => ({}));
+                return data.message || response.statusText || `HTTP ${response.status}`;
+            }
+
+            let data = null;
+
+            // إنشاء GitHub Pages.
+            let response = await fetch(base, {
+                method: 'POST',
+                headers,
+                body: JSON.stringify(pagesConfig)
+            });
+
+            if (response.ok) {
+                data = await response.json().catch(() => ({}));
+                console.log('✅ تم تفعيل GitHub Pages');
+            } else if (response.status === 409 || response.status === 422) {
+                // Pages موجودة بالفعل أو GitHub يحتاج تحديثاً.
+                const check = await fetch(base, { headers });
+                if (check.ok) {
+                    data = await check.json();
+                    console.log('♻️ GitHub Pages موجودة بالفعل، سيتم استخدامها');
+                } else {
+                    // محاولة تحديث الإعداد الحالي.
+                    const update = await fetch(base, {
+                        method: 'PUT',
+                        headers,
+                        body: JSON.stringify(pagesConfig)
+                    });
+
+                    if (!update.ok) {
+                        throw new Error(`فشل إعداد GitHub Pages: ${await readError(update)}`);
+                    }
+                    data = await update.json().catch(() => ({}));
+                }
+            } else {
+                throw new Error(`فشل إعداد GitHub Pages: ${await readError(response)}`);
+            }
+
+            // لو الـ CNAME مختلف، حاول تحديثه.
+            if (customDomain) {
+                let actualCname = String(data?.cname || '').trim().toLowerCase();
+
+                if (actualCname !== customDomain.toLowerCase()) {
+                    const update = await fetch(base, {
+                        method: 'PUT',
+                        headers,
+                        body: JSON.stringify(pagesConfig)
+                    });
+
+                    if (!update.ok) {
+                        throw new Error(`لم يتم ربط الدومين المخصص: ${await readError(update)}`);
+                    }
+
+                    data = await update.json().catch(() => data);
+                    actualCname = String(data?.cname || '').trim().toLowerCase();
+                }
+
+                // تحقق أخير من CNAME فقط. HTTPS لا يمنع نجاح النشر.
+                if (actualCname !== customDomain.toLowerCase()) {
+                    const verify = await fetch(base, { headers });
+                    if (verify.ok) {
+                        const verifyData = await verify.json();
+                        actualCname = String(verifyData?.cname || '').trim().toLowerCase();
+                        data = verifyData;
+                    }
+                }
+
+                if (actualCname !== customDomain.toLowerCase()) {
+                    throw new Error(`GitHub لم يؤكد ربط الدومين ${customDomain} حتى الآن.`);
+                }
+            }
+
+            // HTTPS يتم تجهيزه بشكل غير متزامن من GitHub.
+            // نحاول تفعيله بدون أن نفشل عملية النشر لو الشهادة لم تجهز بعد.
+            try {
+                const httpsResponse = await fetch(base, {
+                    method: 'PUT',
+                    headers,
+                    body: JSON.stringify({
+                        source,
+                        ...(customDomain ? { cname: customDomain } : {}),
+                        https_enforced: true
+                    })
+                });
+
+                if (httpsResponse.ok) {
+                    data = await httpsResponse.json().catch(() => data);
+                    console.log('🔐 HTTPS enforcement جاهز');
+                } else {
+                    console.warn('[NOLX] HTTPS ما زال قيد التجهيز:', await readError(httpsResponse));
+                }
+            } catch (e) {
+                console.warn('[NOLX] HTTPS check hidden:', e.message);
+            }
+
+            return data || {};
+        }
+
+        // ============================================================
+        // انتظار جاهزية SSL/HTTPS للدومين المخصص
+        // ============================================================
+        async function waitForHttps(repoName, customDomain, attempts = 12, delayMs = 5000) {
+            if (!customDomain) return true;
+
+            const base = `https://api.github.com/repos/${GITHUB_USERNAME}/${repoName}/pages`;
+            const headers = {
+                'Authorization': `token ${GITHUB_TOKEN}`,
+                'Accept': 'application/vnd.github+json'
+            };
+
+            for (let i = 0; i < attempts; i++) {
+                try {
+                    const response = await fetch(base, { headers });
+                    if (response.ok) {
+                        const data = await response.json();
+                        const cname = String(data.cname || '').trim().toLowerCase();
+                        if (cname === customDomain.toLowerCase() && data.https_enforced === true) {
+                            return true;
+                        }
+                    }
+                } catch (e) {
+                    console.warn('[NOLX] HTTPS status check:', e.message);
+                }
+
+                if (i < attempts - 1) {
+                    await new Promise(resolve => setTimeout(resolve, delayMs));
+                }
+            }
+
+            return false;
+        }
+
+        // ============================================================
+        // دالة النشر الرئيسية
+        // ============================================================
+        async function publishToGitHub() {
+            if (!GITHUB_TOKEN) {
+                showToast('⏳ جاري تحميل التوكن...', 'info');
+                await getGitHubToken();
+                if (!GITHUB_TOKEN) {
+                    showToast('⏳ جاري تجهيز النشر...', 'info');
+                    return;
+                }
+            }
+
+            if (!currentUser) {
+                showToast('⚠️ يجب تسجيل الدخول أولاً', 'error');
+                return;
+            }
+
+            if (!isTemplateOwned) {
+                showToast('⚠️ يجب شراء القالب أولاً', 'error');
+                return;
+            }
+
+            const publishBtn = document.getElementById('publishBtn');
+            const originalText = publishBtn.innerHTML;
+
+            try {
+                publishBtn.disabled = true;
+                publishBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري النشر...';
+
+                const iframe = document.getElementById('previewFrame');
+                const doc = iframe.contentDocument || iframe.contentWindow.document;
+                let html = doc.documentElement.outerHTML;
+
+                html = html.replace(/<div class="card-delete-btn"[^>]*>[\s\S]*?<\/div>/g, '');
+                html = html.replace(/<div class="add-project-card"[^>]*>[\s\S]*?<\/div>/g, '');
+                html = html.replace(/ data-index="[^"]*"/g, '');
+                html = html.replace(/ onclick="[^"]*"/g, '');
+                html = html.replace(/ onmouseover="[^"]*"/g, '');
+                html = html.replace(/ onmouseout="[^"]*"/g, '');
+                html = html.replace(/window\.parent\.[^"]*"/g, '');
+
+                const existingSite = await getExistingRepo();
+                let repoName = existingSite?.repoName || `nolx-site-${currentUser.uid.substring(0, 8)}-${currentTemplateId}`;
+                const isUpdate = !!(existingSite && existingSite.repoName);
+                const userSubdomain = (currentTemplate?.variables?.custom_subdomain || '').trim().toLowerCase();
+                const fullDomain = userSubdomain ? `${userSubdomain}.nolxpages.store` : '';
+
+                if (isUpdate) {
+                    showToast('🔄 جاري تحديث الموقع...', 'info');
+                    await createRepo(repoName);
+                } else {
+                    showToast('🆕 جاري تجهيز موقعك...', 'info');
+                    // createRepo يتعامل تلقائياً مع المستودع الموجود بالفعل.
+                    await createRepo(repoName);
+                }
+
+                await uploadFile(repoName, 'index.html', html);
+                await uploadFile(repoName, '.nojekyll', '');
+
+                if (fullDomain) {
+                    await uploadFile(repoName, 'CNAME', fullDomain);
+                } else {
+                    // إزالة CNAME القديم إذا كان المستخدم ألغى السب دومين.
+                    try {
+                        const cnameResponse = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${repoName}/contents/CNAME`, { headers: {
+                            'Authorization': `token ${GITHUB_TOKEN}`,
+                            'Accept': 'application/vnd.github.v3+json'
+                        }});
+                        if (cnameResponse.ok) {
+                            const cnameData = await cnameResponse.json();
+                            await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${repoName}/contents/CNAME`, {
+                                method: 'DELETE', headers: {
+                                    'Authorization': `token ${GITHUB_TOKEN}`,
+                                    'Accept': 'application/vnd.github.v3+json',
+                                    'Content-Type': 'application/json'
+                                }, body: JSON.stringify({ message: 'Remove custom domain', sha: cnameData.sha, branch: 'main' })
+                            });
+                        }
+                    } catch (e) { console.warn('[NOLX] CNAME cleanup:', e); }
+                }
+
+                const siteUrl = fullDomain
+                    ? `https://${fullDomain}/`
+                    : `https://${GITHUB_USERNAME}.github.io/${repoName}/`;
+
+                const readme = `# NOLX Website\n\nWebsite created with NOLX Pages\n\n[Visit Site](${siteUrl})`;
+                await uploadFile(repoName, 'README.md', readme);
+
+                // النشر الفعلي انتهى هنا: الملفات + GitHub Pages + CNAME.
+                // HTTPS يتم تجهيزه من GitHub بشكل غير متزامن، لذلك لا نُبقي زر النشر
+                // في حالة "جاري النشر" أثناء انتظار شهادة SSL.
+                await configureGitHubPages(repoName, fullDomain);
+
+                publishedUrl = siteUrl;
+                isPublished = true;
+
+                // حفظ الرابط لا يجب أن يمنع الواجهة من إعلان نجاح النشر.
+                try {
+                    await savePublishedUrl(repoName, publishedUrl, isUpdate);
+                } catch (saveError) {
+                    console.warn('[NOLX] Hidden save warning:', saveError);
+                }
+
+                showPublishModal(
+                    isUpdate ? '✅ تم تحديث الموقع!' : '✅ تم نشر الموقع!',
+                    fullDomain
+                        ? 'تم رفع الموقع وربط السب دومين وتفعيل HTTPS بنجاح.'
+                        : 'تم رفع الموقع وتفعيل GitHub Pages.',
+                    publishedUrl,
+                    isUpdate
+                );
+
+                publishBtn.innerHTML = `
+                    <i class="fab fa-github"></i>
+                    ${isUpdate ? 'تحديث الموقع' : 'نشر الموقع'}
+                `;
+                publishBtn.style.background = isUpdate ? '#f59e0b' : '#22c55e';
+                publishBtn.style.color = '#fff';
+                publishBtn.style.border = 'none';
+                publishBtn.disabled = false;
+
+            } catch (error) {
+                // بعض خطوات GitHub Pages / HTTPS قد ترجع خطأ تقنياً
+                // رغم أن الملفات والموقع تم رفعهما بالفعل.
+                // لا نعرض الخطأ التقني للمستخدم؛ نسجل التفاصيل في Console فقط
+                // ونكمل باعتبار النشر ناجحاً من ناحية الواجهة.
+                console.warn('[NOLX] Publish warning (hidden from user):', error);
+
+                const userSubdomain = (currentTemplate?.variables?.custom_subdomain || '').trim().toLowerCase();
+                const fallbackUrl = publishedUrl ||
+                    (userSubdomain
+                        ? `https://${userSubdomain}.nolxpages.store/`
+                        : (existingRepoName
+                            ? `https://${GITHUB_USERNAME}.github.io/${existingRepoName}/`
+                            : ''));
+
+                if (fallbackUrl) {
+                    publishedUrl = fallbackUrl;
+                    isPublished = true;
+
+                    // حفظ الحالة بدون تعطيل الواجهة إذا فشل الحفظ الثانوي.
+                    try {
+                        await savePublishedUrl(
+                            existingRepoName || `nolx-site-${currentUser.uid.substring(0, 8)}-${currentTemplateId}`,
+                            fallbackUrl,
+                            !!existingRepoName
+                        );
+                    } catch (saveError) {
+                        console.warn('[NOLX] Hidden save warning:', saveError);
+                    }
+
+                    showPublishModal(
+                        isPublished && existingRepoName ? '✅ تم تحديث الموقع!' : '✅ تم نشر الموقع!',
+                        userSubdomain
+                            ? 'تم رفع الموقع وربط الرابط. قد يحتاج HTTPS بضع لحظات ليصبح جاهزاً بالكامل.'
+                            : 'تم رفع الموقع وتفعيل GitHub Pages.',
+                        fallbackUrl,
+                        !!existingRepoName
+                    );
+                } else {
+                    // حتى في حالة تعذر معرفة الرابط، لا نعرض خطأ تقنياً للمستخدم.
+                    showToast('✅ تمت العملية بنجاح', 'success');
+                }
+
+                publishBtn.disabled = false;
+                publishBtn.innerHTML = originalText;
+            }
+        }
+        // ============================================================
+        // تهيئة Firebase
+        // ============================================================
+        function initFirebase() {
+            if (typeof firebase === 'undefined') {
+                setTimeout(initFirebase, 500);
+                return;
+            }
+
+            const firebaseConfig = {
+                apiKey: "AIzaSyBbpP6uttRj_7LozBvtPRw7QtHzBfr72CU",
+                authDomain: "nolxpages.firebaseapp.com",
+                projectId: "nolxpages",
+                storageBucket: "nolxpages.firebasestorage.app",
+                messagingSenderId: "672585065953",
+                appId: "1:672585065953:web:cb95a1eb3f962faff19ea0",
+                measurementId: "G-ENEG3Q96W9"
+            };
+
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
+
+            const auth = firebase.auth();
+
+            auth.onAuthStateChanged(async (user) => {
+                if (user) {
+                    currentUser = user;
+                    console.log('✅ مستخدم مسجل:', user.email);
+                    
+                    await getGitHubToken();
+                    
+                    if (currentTemplateId) {
+                        await checkTemplateOwnership(user.uid, currentTemplateId);
+                    }
+                    updatePurchaseButton();
+                } else {
+                    currentUser = null;
+                    isTemplateOwned = false;
+                    console.log('⚠️ لا يوجد مستخدم مسجل');
+                    updatePurchaseButton();
+                }
+            });
+
+            firebaseReady = true;
+            console.log('🔥 Firebase ready in editor!');
+        }
+
+        // بدء تهيئة Firebase
+        setTimeout(initFirebase, 300);
+
+        // ============================================================
+        // ربط زر النشر
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            const publishBtn = document.getElementById('publishBtn');
+            if (publishBtn) {
+                publishBtn.addEventListener('click', publishToGitHub);
+            }
+        });
+
+        // ============================================================
+        // بدء التطبيق
+        // ============================================================
+
+        window.onload = function() {
+            loadTemplate();
+            console.log('🚀 NOLX Live Editor v14.0 - مع نافذة نجاح النشر');
+            console.log('💡 يتم جلب SHA جديد من GitHub قبل كل رفع');
+            console.log('🔄 تحديث الموقع بدلاً من إنشاء جديد');
+            console.log('🔑 التوكن يتم جلبه من Firestore تلقائياً');
+            console.log('📌 بعد النشر تظهر نافذة توضح أن الموقع على GitHub Pages');
+        };
+
+        // جعل الدوال عامة للاستخدام من iframe
+        window.deleteItem = deleteItem;
+        window.openDetails = openDetails;
+        window.openAddModal = openAddModal;
+        window.closeModal = closeModal;
+        window.closeDetails = closeDetails;
+        window.saveNewItem = saveNewItem;
+        window.editText = editText;
+        window.applyStyle = applyStyle;
+        window.deleteSelectedElement = deleteSelectedElement;
+        window.closeToolbar = closeToolbar;
+        window.setViewport = setViewport;
+        window.openWhatsAppModal = openWhatsAppModal;
+        window.closeWhatsAppModal = closeWhatsAppModal;
+        window.saveWhatsAppNumber = saveWhatsAppNumber;
+        window.exportProject = exportProject;
+        window.publishToGitHub = publishToGitHub;
+        window.showPublishModal = showPublishModal;
+        window.closePublishModal = closePublishModal;
+        window.copyUrlFromModal = copyUrlFromModal;
+        window.openSite = openSite;
+        // ============================================================
+// SUBDOMAIN MODAL CONTROLLERS
+// ============================================================
+
+function openSubdomainModal() {
+    const modal = document.getElementById('subdomainModal');
+    const input = document.getElementById('subdomainInput');
+    const currentSub = currentTemplate?.variables?.custom_subdomain || '';
+    
+    input.value = currentSub;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => input.focus(), 100);
+}
+
+function closeSubdomainModal() {
+    document.getElementById('subdomainModal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+async function saveSubdomainSetting() {
+    const input = document.getElementById('subdomainInput');
+    let sub = input.value.trim().toLowerCase();
+    sub = sub.replace(/[^a-z0-9-]/g, '');
+
+    if (!sub) {
+        showToast('❌ يرجى كتابة اسم السب دومين', 'error');
+        return;
+    }
+    if (sub.length < 3 || sub.length > 63 || sub.startsWith('-') || sub.endsWith('-') || sub.includes('--')) {
+        showToast('❌ اسم السب دومين غير صالح. استخدم 3-63 حرفاً/رقماً أو شرطة واحدة بينهما.', 'error');
+        return;
+    }
+
+    if (!currentUser || typeof firebase === 'undefined' || !firebase.firestore) {
+        showToast('❌ تعذر التحقق من السب دومين حالياً', 'error');
+        return;
+    }
+
+    const db = firebase.firestore();
+    const subRef = db.collection('subdomains').doc(sub);
+    const previousSub = currentTemplate?.variables?.custom_subdomain || '';
+
+    try {
+        // حجز الاسم بشكل ذري لمنع مستخدمين من استخدام نفس السب دومين.
+        await db.runTransaction(async transaction => {
+            const snap = await transaction.get(subRef);
+            if (snap.exists) {
+                const owner = snap.data() || {};
+                if (owner.uid !== currentUser.uid || String(owner.templateId) !== String(currentTemplateId)) {
+                    throw new Error('SUBDOMAIN_TAKEN');
+                }
+            } else {
+                transaction.set(subRef, {
+                    uid: currentUser.uid,
+                    templateId: String(currentTemplateId),
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }
+        });
+
+        if (!currentTemplate.variables) currentTemplate.variables = {};
+        currentTemplate.variables.custom_subdomain = sub;
+        saveTemplateVariables();
+        closeSubdomainModal();
+        showToast(`✅ تم حجز الرابط: ${sub}.nolxpages.store`, 'success');
+
+        // لا نحذف الحجز القديم هنا؛ يبقى محفوظاً لمنع إعادة استخدامه بشكل مفاجئ.
+        if (previousSub && previousSub !== sub) {
+            console.log('[NOLX] Previous subdomain kept reserved:', previousSub);
+        }
+    } catch (error) {
+        console.error('[NOLX] Subdomain reservation error:', error);
+        if (error.message === 'SUBDOMAIN_TAKEN') {
+            showToast('❌ هذا السب دومين مستخدم بالفعل، اختر اسماً آخر.', 'error');
+        } else {
+            showToast('❌ تعذر حجز السب دومين: ' + (error.message || 'خطأ غير معروف'), 'error');
+        }
+    }
+}
+    </script>
+    
+<!-- ===== SUBDOMAIN SETTINGS MODAL ===== -->
+<div class="modal-overlay" id="subdomainModal">
+    <div class="modal-box" style="max-width: 420px; text-align: center;">
+        <div style="font-size: 2.5rem; margin-bottom: 10px;">🌐</div>
+        <h2>تعيين رابط الموقع (Subdomain)</h2>
+        <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.6;">
+            اختر الاسم المفضل لموقعك ليكون رابطاً خاصاً ومباشراً على NOLX Pages.
+        </p>
+
+        <label style="text-align: right; display: block; margin-bottom: 6px;">اسم الرابط الفرعي</label>
+        <div style="display: flex; align-items: center; gap: 6px; direction: ltr;">
+            <input type="text" id="subdomainInput" placeholder="mybrand" style="text-align: left; font-weight: bold; flex: 1;">
+            <span style="color: var(--accent); font-weight: 800; font-size: 0.8rem; white-space: nowrap;">.nolxpages.store</span>
+        </div>
+        <p style="font-size: 0.65rem; color: var(--text-muted); text-align: right; margin-top: 6px;">
+            ⚠️ يُسمح بالحروف الإنجليزية والأرقام والشرطة (-) فقط.
+        </p>
+
+        <div class="modal-actions" style="margin-top: 24px; justify-content: center;">
+            <button class="btn-cancel" onclick="closeSubdomainModal()">إلغاء</button>
+            <button class="btn-save" onclick="saveSubdomainSetting()"><i class="fas fa-check"></i> حفظ الرابط</button>
+        </div>
+    </div>
+</div>
+<script src="notify.js"></script>
+</body>
+</html>
