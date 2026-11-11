@@ -630,18 +630,21 @@
         async function discoverAllTemplates() {
             const catalogResponse = await fetch('templates/catalog.json', { cache: 'no-store' });
             const catalog = catalogResponse.ok ? await catalogResponse.json() : { templates: [{ id: '1' }] };
-            const possibleIds = (catalog.templates || []).map(item => String(item.id));
+            const entries = Array.isArray(catalog.templates) ? catalog.templates : [];
             const found = [];
-            for (const id of possibleIds) {
+
+            for (const entry of entries) {
+                const id = String(entry.id);
+                if (!/^[a-zA-Z0-9_-]+$/.test(id)) continue;
+                const file = entry.file || ('template' + id + '.json');
                 try {
-                    let response = await fetch(`templates/template${id}.json`);
-                    if (!response.ok) response = await fetch(`templates/${id}.json`);
+                    const response = await fetch('templates/' + file);
                     if (response.ok) {
                         const data = await response.json();
                         data._fileId = id;
                         found.push(data);
                     }
-                } catch (e) { /* ignore */ }
+                } catch (e) { /* skip an unavailable template */ }
             }
             allAvailableTemplates = found;
             return found;
