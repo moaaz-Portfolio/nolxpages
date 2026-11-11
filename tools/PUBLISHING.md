@@ -36,3 +36,11 @@ Use the **نشر على GitHub** button in the editor and enter a new repository
 - GitHub Pages deployment may take a short time after GitHub accepts the Pages configuration.
 - If GitHub refuses Pages activation, the HTML is still committed. Open the new repository's **Settings → Pages**, select the main branch and root folder, then save.
 - A published repository is public. Do not publish private data, passwords, access tokens, or information you do not want public.
+
+## Publish the NOLX PAGES application itself
+
+With the same local publisher server running, open:
+
+`http://127.0.0.1:4173/dashboard.html`
+
+A local-only **نشر الموقع** shortcut appears in the dashboard. Press it once to configure GitHub Pages to publish the NOLX repository's `main` branch root. Later commits to `main` are published from that branch. The Pages API requires repository administration access; a classic token with `repo` scope provides the needed permission. The custom domain is not changed by this action.

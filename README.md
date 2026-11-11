@@ -57,4 +57,4 @@ The editor includes a **Publish to GitHub** action. To use it securely, run the 
 
 ### Deploy the NOLX application itself
 
-A GitHub Actions workflow is included at `.github/workflows/deploy-pages.yml`. In the repository settings, choose **Settings → Pages → Build and deployment → Source → GitHub Actions**. A push to `main` then triggers the deployment workflow. Check the Actions tab for the deployment result.
+Run the local publisher and open the dashboard on `http://127.0.0.1:4173/dashboard.html`. A local-only button configures GitHub Pages to publish the `main` branch root through the GitHub Pages API. Later commits to `main` are published automatically. See [tools/PUBLISHING.md](tools/PUBLISHING.md).

@@ -2346,6 +2346,12 @@
 
                         </a>
 
+                        <a href="#" id="publishMainSiteBtn" class="action" style="display:none" onclick="event.preventDefault(); window.publishNolxPages()">
+                            <div class="action-icon"><i class="fas fa-cloud-arrow-up"></i></div>
+                            <div class="action-title">نشر الموقع</div>
+                            <div class="action-description">GitHub Pages</div>
+                        </a>
+
                     </div>
 
                 </section>
@@ -2666,11 +2672,31 @@
         Object.entries(fields).forEach(([id, value]) => { if ($(id)) $(id).textContent = value; });
         if ($("headerAvatar")) $("headerAvatar").src = "logo.png";
     }
+    window.publishNolxPages = async function () {
+        const button = $("publishMainSiteBtn");
+        if (!confirm("سيتم تفعيل استضافة NOLX PAGES على GitHub Pages باستخدام ملفات main الحالية. هل تتابع؟")) return;
+        const previousText = button ? button.querySelector(".action-title")?.textContent : "";
+        if (button && button.querySelector(".action-title")) button.querySelector(".action-title").textContent = "جاري النشر...";
+        try {
+            const response = await fetch("/api/enable-nolx-pages", { method: "POST" });
+            const result = await response.json().catch(() => ({}));
+            if (!response.ok) throw new Error(result.error || "تعذر تفعيل GitHub Pages.");
+            alert("تم ربط GitHub Pages بفرع main. رابط الموقع:\\n" + result.pageUrl + "\\n\nقد يحتاج ظهور أول نشر لبعض الوقت.");
+        } catch (error) {
+            alert("تعذر تفعيل النشر: " + (error.message || error) + "\\nتأكد أن خدمة النشر المحلية تعمل وأن التوكن لديه صلاحية repo.");
+        } finally {
+            if (button && button.querySelector(".action-title")) button.querySelector(".action-title").textContent = previousText || "نشر الموقع";
+        }
+    };
     window.openLogoutModal = function () { $("logoutModal")?.classList.add("show"); };
     window.closeLogoutModal = function () { $("logoutModal")?.classList.remove("show"); };
     $("confirmLogoutBtn")?.addEventListener("click", () => { window.location.href = "index.html"; });
     $("logoutModal")?.addEventListener("click", event => { if (event.target === $("logoutModal")) window.closeLogoutModal(); });
     document.addEventListener("keydown", event => { if (event.key === "Escape") window.closeLogoutModal(); });
+    const localPublishButton = $("publishMainSiteBtn");
+    if (localPublishButton && location.hostname === "127.0.0.1" && location.port === "4173") {
+        localPublishButton.style.display = "block";
+    }
     window.setLanguage(currentLanguage);
     setupWorkspaceProfile();
     loadSavedProjects();

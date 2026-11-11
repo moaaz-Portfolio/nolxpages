@@ -180,6 +180,40 @@ async function publishSite(repoName, html) {
   };
 }
 
+async function enableMainPages() {
+  if (!TOKEN) throw Object.assign(new Error("لم يتم ضبط NOLX_GITHUB_TOKEN في PowerShell."), { status: 401 });
+  const owner = "moaaz-Portfolio";
+  const repo = "nolxpages";
+  const endpoint = "/repos/" + owner + "/" + repo + "/pages";
+  let pages;
+  try {
+    pages = await github(endpoint);
+  } catch (error) {
+    if (error.status !== 404) throw error;
+    pages = await github(endpoint, {
+      method: "POST",
+      body: { build_type: "legacy", source: { branch: "main", path: "/" } }
+    });
+    return {
+      enabled: true,
+      pageUrl: pages.html_url || "https://" + owner.toLowerCase() + ".github.io/" + repo + "/",
+      source: "main"
+    };
+  }
+
+  if (pages.source?.branch !== "main" || pages.source?.path !== "/" || pages.build_type === "workflow") {
+    await github(endpoint, {
+      method: "PUT",
+      body: { build_type: "legacy", source: { branch: "main", path: "/" } }
+    });
+  }
+  return {
+    enabled: true,
+    pageUrl: pages.html_url || "https://" + owner.toLowerCase() + ".github.io/" + repo + "/",
+    source: "main"
+  };
+}
+
 async function handleApi(req, res, pathname) {
   if (!requireLocalOrigin(req, res)) return;
 
@@ -190,6 +224,15 @@ async function handleApi(req, res, pathname) {
       return sendJson(res, 200, { ready: true, username: user.login });
     } catch (error) {
       return sendJson(res, error.status || 502, { ready: false, error: error.message });
+    }
+  }
+
+  if (pathname === "/api/enable-nolx-pages" && req.method === "POST") {
+    try {
+      const result = await enableMainPages();
+      return sendJson(res, 200, result);
+    } catch (error) {
+      return sendJson(res, error.status || 500, { error: error.message || "تعذر تفعيل GitHub Pages." });
     }
   }
 
