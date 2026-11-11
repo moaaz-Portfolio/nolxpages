@@ -45,3 +45,16 @@ This is a software prototype, not a completed scientific study. An ISEF submissi
 ## Licensing
 
 The repository is publicly accessible and the prototype has no paywall. No formal open-source license is assigned yet because rights to all template, image, font, icon, and dependency assets must be verified first.
+
+
+## Original dashboard and publishing
+
+The original NOLX dashboard layout is retained. Commercial balance, recharge, and purchased-template UI have been replaced by local project counts, available-template counts, and export counts. Projects are read from this browser's `localStorage`.
+
+### Publish an edited website to GitHub
+
+The editor includes a **Publish to GitHub** action. To use it securely, run the local publisher described in [tools/PUBLISHING.md](tools/PUBLISHING.md). The GitHub token is held by the local Node.js process and is not embedded in client-side JavaScript.
+
+### Deploy the NOLX application itself
+
+A GitHub Actions workflow is included at `.github/workflows/deploy-pages.yml`. In the repository settings, choose **Settings → Pages → Build and deployment → Source → GitHub Actions**. A push to `main` then triggers the deployment workflow. Check the Actions tab for the deployment result.

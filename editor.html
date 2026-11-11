@@ -256,6 +256,7 @@
                 <button class="btn-icon hide-mobile" onclick="setViewport('mobile')" title="جوال"><i class="fas fa-mobile-alt"></i></button>
                 <div style="width:1px;height:20px;background:var(--border-color);"></div>
                 <div class="status"><span class="dot" id="statusDot"></span><span id="saveStatus">محفوظ ✅</span></div>
+                <button class="btn-accent" id="publishBtn" type="button" onclick="publishToGitHub()"><i class="fab fa-github"></i> نشر على GitHub</button>
                 <button class="btn-accent" onclick="saveAllData(); showToast('تم حفظ التعديلات على جهازك','success')"><i class="fas fa-floppy-disk"></i> حفظ</button>
                 <button class="btn-accent" onclick="exportProject()"><i class="fas fa-file-zipper"></i> تصدير ZIP</button>
             </div>
@@ -798,6 +799,58 @@
         // تصدير المشروع كملف ZIP
         // ============================================================
 
+        function getPublishableHTML() {
+            const iframe = document.getElementById('previewFrame');
+            const doc = iframe.contentDocument || iframe.contentWindow.document;
+            if (!doc || !doc.documentElement) throw new Error('المعاينة لم تجهز بعد');
+            const clone = doc.documentElement.cloneNode(true);
+            clone.querySelectorAll('.card-delete-btn,.add-project-card').forEach(node => node.remove());
+            clone.querySelectorAll('[onclick],[onmouseover],[onmouseout],[onmouseenter],[onmouseleave]').forEach(node => {
+                ['onclick','onmouseover','onmouseout','onmouseenter','onmouseleave'].forEach(attr => node.removeAttribute(attr));
+            });
+            clone.querySelectorAll('[data-index]').forEach(node => node.removeAttribute('data-index'));
+            return '<!doctype html>\\n' + clone.outerHTML;
+        }
+
+        async function publishToGitHub() {
+            const button = document.getElementById('publishBtn');
+            if (!currentTemplateId) { showToast('حمّل قالبًا أولًا قبل النشر', 'error'); return; }
+            saveAllData();
+            const repoName = prompt('اكتب اسم مستودع GitHub الجديد (سيكون عامًا):', 'nolx-site-' + String(currentTemplateId));
+            if (repoName === null || !repoName.trim()) return;
+            if (!/^[a-zA-Z0-9._-]{1,90}$/.test(repoName.trim())) {
+                showToast('اسم المستودع غير صالح. استخدم حروفًا وأرقامًا وشرطة فقط.', 'error'); return;
+            }
+            if (!confirm('سيتم إنشاء مستودع GitHub عام باسم ' + repoName.trim() + ' ورفع موقعك إليه. هل تتابع؟')) return;
+            const oldText = button ? button.innerHTML : '';
+            try {
+                if (button) { button.disabled = true; button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري النشر...'; }
+                const html = getPublishableHTML();
+                const response = await fetch('/api/publish', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ repoName: repoName.trim(), html })
+                });
+                const result = await response.json().catch(() => ({}));
+                if (!response.ok) throw new Error(result.error || 'تعذر رفع الموقع إلى GitHub');
+                showToast('تم رفع ملفات الموقع إلى GitHub بنجاح', 'success');
+                if (result.pageUrl) {
+                    const openNow = confirm('تم إنشاء المستودع. رابط موقعك على GitHub Pages:\\n' + result.pageUrl + '\\n\\nاضغط OK لفتح الموقع.');
+                    if (openNow) window.open(result.pageUrl, '_blank', 'noopener,noreferrer');
+                    else prompt('رابط موقعك:', result.pageUrl);
+                }
+                if (result.pagesEnabled === false) showToast('الملفات اترفعت، لكن تفعيل Pages يحتاج خطوة من Settings → Pages.', 'error');
+            } catch (error) {
+                console.error('[NOLX] GitHub publish failed:', error);
+                const message = String(error.message || error);
+                if (message.includes('Failed to fetch') || message.includes('Unexpected token')) {
+                    showToast('شغّل خدمة النشر المحلية من Terminal وافتح المحرر من localhost.', 'error');
+                } else showToast(message, 'error');
+            } finally {
+                if (button) { button.disabled = false; button.innerHTML = oldText || '<i class="fab fa-github"></i> نشر على GitHub'; }
+            }
+        }
+
         function exportProject() {
             const iframe = document.getElementById('previewFrame');
             try {
@@ -824,6 +877,8 @@
                     });
                 }
                 zip.generateAsync({ type: 'blob' }).then((blob) => {
+                    const exportCount = Number(localStorage.getItem('nolx_download_count') || 0);
+                    localStorage.setItem('nolx_download_count', String(exportCount + 1));
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement('a');
                     a.href = url;
