@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "templates": [
+    {
+      "id": "1",
+      "file": "template1.json"
+    }
+  ]
+}
